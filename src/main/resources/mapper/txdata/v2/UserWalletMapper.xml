@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.UserWalletDao">
+	<resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.UserWalletEntity">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="uid" property="uid" jdbcType="INTEGER" />
+		<result column="balance" property="balance" jdbcType="DOUBLE" />
+		<result column="frozen_balance" property="frozenBalance"
+			jdbcType="DOUBLE" />
+		<result column="type" property="type" jdbcType="CHAR" />
+		<result column="uptime" property="uptime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, uid, balance, frozen_balance, type, uptime
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_user_wallet
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByParams" resultMap="BaseResultMap" parameterType="com.cn.tianxia.api.project.v2.UserWalletEntity">
+		select
+		<include refid="Base_Column_List" />
+		from t_user_wallet
+		where 1=1
+		<if test="id != null">
+			and id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="uid != null">
+			and uid = #{uid,jdbcType=INTEGER}
+		</if>
+		<if test="balance != null">
+			and balance = #{balance,jdbcType=DOUBLE}
+		</if>
+		<if test="frozenBalance != null">
+			and frozen_balance = #{frozenBalance,jdbcType=DOUBLE}
+		</if>
+		<if test="type != null">
+			and type = #{type,jdbcType=CHAR}
+		</if>
+		<if test="uptime != null">
+			and uptime = #{uptime,jdbcType=TIMESTAMP}
+		</if>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_user_wallet
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.cn.tianxia.api.project.v2.UserWalletEntity">
+		insert into t_user_wallet (id, uid, balance,
+		frozen_balance, type, uptime
+		)
+		values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER},
+		#{balance,jdbcType=DOUBLE},
+		#{frozenBalance,jdbcType=DOUBLE}, #{type,jdbcType=CHAR}, #{uptime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.UserWalletEntity">
+		insert into t_user_wallet
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="balance != null">
+				balance,
+			</if>
+			<if test="frozenBalance != null">
+				frozen_balance,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="uptime != null">
+				uptime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="balance != null">
+				#{balance,jdbcType=DOUBLE},
+			</if>
+			<if test="frozenBalance != null">
+				#{frozenBalance,jdbcType=DOUBLE},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=CHAR},
+			</if>
+			<if test="uptime != null">
+				#{uptime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.UserWalletEntity">
+		update t_user_wallet
+		<set>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=INTEGER},
+			</if>
+			<if test="balance != null">
+				balance = #{balance,jdbcType=DOUBLE},
+			</if>
+			<if test="frozenBalance != null">
+				frozen_balance = #{frozenBalance,jdbcType=DOUBLE},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=CHAR},
+			</if>
+			<if test="uptime != null">
+				uptime = #{uptime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.UserWalletEntity">
+		update t_user_wallet
+		set uid = #{uid,jdbcType=INTEGER},
+		balance = #{balance,jdbcType=DOUBLE},
+		frozen_balance = #{frozenBalance,jdbcType=DOUBLE},
+		type = #{type,jdbcType=CHAR},
+		uptime = #{uptime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- 查询用户积分余额 -->
+	<select id="getIntegralBalance" resultType="Double">
+		SELECT balance FROM t_user_wallet
+		WHERE type='1' AND uid=#{uid}
+	</select>
+	
+	<!-- 修改用户积分余额 -->
+	<update id="deductUserIntegralBalance">
+		update t_user_wallet
+		set balance=balance-#{balance},frozen_balance=frozen_balance+#{balance}
+		where type='1' and uid = #{uid} and balance>=#{balance}
+	</update>
+	
+	<!-- 修改用户积分余额 -->
+	<update id="plusUserIntegralBalance">
+		update t_user_wallet
+		set balance=balance+#{balance}
+		where type='1' and uid = #{uid}
+	</update>
+</mapper>

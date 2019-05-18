@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.UserLoginDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.UserLoginEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="login_time" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="login_ip" property="loginIp" jdbcType="VARCHAR" />
+    <result column="is_login" property="isLogin" jdbcType="TINYINT" />
+    <result column="login_num" property="loginNum" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="is_mobile" property="isMobile" jdbcType="CHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="refurl" property="refurl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, login_time, login_ip, is_login, login_num, status, is_mobile, address, refurl
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_login
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_login
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.UserLoginEntity" >
+    insert into t_user_login (id, uid, login_time, 
+      login_ip, is_login, login_num, 
+      status, is_mobile, address, 
+      refurl)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{loginTime,jdbcType=TIMESTAMP},
+      INET_ATON(#{loginIp,jdbcType=VARCHAR}), #{isLogin,jdbcType=TINYINT}, #{loginNum,jdbcType=INTEGER},
+      #{status,jdbcType=VARCHAR}, #{isMobile,jdbcType=CHAR}, #{address,jdbcType=VARCHAR}, 
+      #{refurl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.UserLoginEntity" >
+    insert into t_user_login
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="loginTime != null" >
+        login_time,
+      </if>
+      <if test="loginIp != null" >
+        login_ip,
+      </if>
+      <if test="isLogin != null" >
+        is_login,
+      </if>
+      <if test="loginNum != null" >
+        login_num,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isMobile != null" >
+        is_mobile,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="refurl != null" >
+        refurl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="loginTime != null" >
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null" >
+        INET_ATON(#{loginIp,jdbcType=VARCHAR}),
+      </if>
+      <if test="isLogin != null" >
+        #{isLogin,jdbcType=TINYINT},
+      </if>
+      <if test="loginNum != null" >
+        #{loginNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isMobile != null" >
+        #{isMobile,jdbcType=CHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="refurl != null" >
+        #{refurl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.UserLoginEntity" >
+    update t_user_login
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="loginTime != null" >
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null" >
+        login_ip = INET_ATON(#{loginIp,jdbcType=VARCHAR}),
+      </if>
+      <if test="isLogin != null" >
+        is_login = #{isLogin,jdbcType=TINYINT},
+      </if>
+      <if test="loginNum != null" >
+        login_num = #{loginNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isMobile != null" >
+        is_mobile = #{isMobile,jdbcType=CHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="refurl != null" >
+        refurl = #{refurl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.UserLoginEntity" >
+    update t_user_login
+    set uid = #{uid,jdbcType=INTEGER},
+      login_time = #{loginTime,jdbcType=TIMESTAMP},
+      login_ip = INET_ATON(#{loginIp,jdbcType=VARCHAR}),
+      is_login = #{isLogin,jdbcType=TINYINT},
+      login_num = #{loginNum,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      is_mobile = #{isMobile,jdbcType=CHAR},
+      address = #{address,jdbcType=VARCHAR},
+      refurl = #{refurl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getUserBalance" resultType="Double">
+		SELECT
+		IFNULL(wallet,0.00) AS balance
+		FROM t_user WHERE uid=#{uid}
+	</select>
+
+</mapper>

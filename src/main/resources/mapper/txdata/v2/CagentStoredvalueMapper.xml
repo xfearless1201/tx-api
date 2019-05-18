@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.CagentStoredvalueDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.CagentStoredvalueEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="totalvalue" property="totalvalue" jdbcType="DOUBLE" />
+    <result column="usedvaue" property="usedvaue" jdbcType="DOUBLE" />
+    <result column="remainvalue" property="remainvalue" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cid, totalvalue, usedvaue, remainvalue
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cagent_storedvalue
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_cagent_storedvalue
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.CagentStoredvalueEntity" >
+    insert into t_cagent_storedvalue (id, cid, totalvalue, 
+      usedvaue, remainvalue)
+    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{totalvalue,jdbcType=DOUBLE}, 
+      #{usedvaue,jdbcType=DOUBLE}, #{remainvalue,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.CagentStoredvalueEntity" >
+    insert into t_cagent_storedvalue
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="totalvalue != null" >
+        totalvalue,
+      </if>
+      <if test="usedvaue != null" >
+        usedvaue,
+      </if>
+      <if test="remainvalue != null" >
+        remainvalue,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="totalvalue != null" >
+        #{totalvalue,jdbcType=DOUBLE},
+      </if>
+      <if test="usedvaue != null" >
+        #{usedvaue,jdbcType=DOUBLE},
+      </if>
+      <if test="remainvalue != null" >
+        #{remainvalue,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.CagentStoredvalueEntity" >
+    update t_cagent_storedvalue
+    <set >
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="totalvalue != null" >
+        totalvalue = #{totalvalue,jdbcType=DOUBLE},
+      </if>
+      <if test="usedvaue != null" >
+        usedvaue = #{usedvaue,jdbcType=DOUBLE},
+      </if>
+      <if test="remainvalue != null" >
+        remainvalue = #{remainvalue,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.CagentStoredvalueEntity" >
+    update t_cagent_storedvalue
+    set cid = #{cid,jdbcType=INTEGER},
+      totalvalue = #{totalvalue,jdbcType=DOUBLE},
+      usedvaue = #{usedvaue,jdbcType=DOUBLE},
+      remainvalue = #{remainvalue,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getCagentRemainvalue" resultType="Double">
+    select 
+    	ifnull(remainvalue,0) as remainvalue
+    from t_cagent_storedvalue
+    where cid = #{cid,jdbcType=INTEGER} 
+  </select>
+  
+  
+  <update id="updateCagentRemainvalue">
+    update t_cagent_storedvalue
+    set remainvalue = remainvalue-#{remainvalue}
+    where cid = #{cid} and remainvalue >= #{remainvalue}
+  </update>
+  
+</mapper>

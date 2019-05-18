@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.WebcomConfigDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.WebcomConfigEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="img1" property="img1" jdbcType="VARCHAR" />
+    <result column="src1" property="src1" jdbcType="VARCHAR" />
+    <result column="img2" property="img2" jdbcType="VARCHAR" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="img3" property="img3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, type, name, title, weight, status, img1, src1, img2, rmk, updatetime, userid, 
+    img3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_webcom_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_webcom_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.WebcomConfigEntity" >
+    insert into t_webcom_config (id, type, name, 
+      title, weight, status, 
+      img1, src1, img2, rmk, 
+      updatetime, userid, img3
+      )
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, 
+      #{img1,jdbcType=VARCHAR}, #{src1,jdbcType=VARCHAR}, #{img2,jdbcType=VARCHAR}, #{rmk,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{userid,jdbcType=VARCHAR}, #{img3,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.WebcomConfigEntity" >
+    insert into t_webcom_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="img1 != null" >
+        img1,
+      </if>
+      <if test="src1 != null" >
+        src1,
+      </if>
+      <if test="img2 != null" >
+        img2,
+      </if>
+      <if test="rmk != null" >
+        rmk,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="img3 != null" >
+        img3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="img1 != null" >
+        #{img1,jdbcType=VARCHAR},
+      </if>
+      <if test="src1 != null" >
+        #{src1,jdbcType=VARCHAR},
+      </if>
+      <if test="img2 != null" >
+        #{img2,jdbcType=VARCHAR},
+      </if>
+      <if test="rmk != null" >
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="img3 != null" >
+        #{img3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.WebcomConfigEntity" >
+    update t_webcom_config
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="img1 != null" >
+        img1 = #{img1,jdbcType=VARCHAR},
+      </if>
+      <if test="src1 != null" >
+        src1 = #{src1,jdbcType=VARCHAR},
+      </if>
+      <if test="img2 != null" >
+        img2 = #{img2,jdbcType=VARCHAR},
+      </if>
+      <if test="rmk != null" >
+        rmk = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="img3 != null" >
+        img3 = #{img3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.WebcomConfigEntity" >
+    update t_webcom_config
+    set type = #{type,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=INTEGER},
+      status = #{status,jdbcType=CHAR},
+      img1 = #{img1,jdbcType=VARCHAR},
+      src1 = #{src1,jdbcType=VARCHAR},
+      img2 = #{img2,jdbcType=VARCHAR},
+      rmk = #{rmk,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      userid = #{userid,jdbcType=VARCHAR},
+      img3 = #{img3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 查询网站banner图列表 -->
+  <select id="findAllByCagent" resultType="com.cn.tianxia.api.po.v2.WebConfigPO">
+		SELECT
+			id,type,title,img1,img2,img3,src1,weight,rmk,date_format(updatetime,'%Y-%m-%d') updatetime
+		FROM t_webcom_config WHERE
+		status=1 and type IN (1,2,3,4,5)
+		<if test="cagent != null and cagent != '' ">
+		AND userid=#{cagent}
+		</if>
+		ORDER BY type,weight desc
+	</select>
+	
+	<!-- 查询网站公告信息 -->
+	<select id="getNoticesByCagent" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List" /> 
+		FROM t_webcom_config WHERE
+		status=1 and type=6
+		<if test="cagent != null and cagent != '' ">
+		AND userid=#{cagent}
+		</if>
+		ORDER BY type,weight desc
+	</select>
+	
+	<select id="findAllByMobileType" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List" /> 
+		FROM t_webcom_config WHERE
+		status=1 and type=#{type}
+		<if test="cagent != null and cagent != '' ">
+		AND userid=#{cagent}
+		</if>
+		ORDER BY type,weight desc
+	</select>
+</mapper>

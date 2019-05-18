@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.CagnetYsepayDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.CagnetYsepayEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="path_parter_pkcs12" property="pathParterPkcs12" jdbcType="VARCHAR" />
+    <result column="password_parter_pkcs12" property="passwordParterPkcs12" jdbcType="VARCHAR" />
+    <result column="path_ysepay_public_cert" property="pathYsepayPublicCert" jdbcType="VARCHAR" />
+    <result column="rsa_algorithm" property="rsaAlgorithm" jdbcType="VARCHAR" />
+    <result column="sign_algorithm" property="signAlgorithm" jdbcType="VARCHAR" />
+    <result column="default_charset" property="defaultCharset" jdbcType="VARCHAR" />
+    <result column="partner_id" property="partnerId" jdbcType="VARCHAR" />
+    <result column="seller_id" property="sellerId" jdbcType="VARCHAR" />
+    <result column="seller_name" property="sellerName" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="ysepay_getway_url" property="ysepayGetwayUrl" jdbcType="VARCHAR" />
+    <result column="ysepay_getway_url_df" property="ysepayGetwayUrlDf" jdbcType="VARCHAR" />
+    <result column="notify_url" property="notifyUrl" jdbcType="VARCHAR" />
+    <result column="retrun_url" property="retrunUrl" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="minquota" property="minquota" jdbcType="DOUBLE" />
+    <result column="maxquota" property="maxquota" jdbcType="DOUBLE" />
+    <result column="qrmaxquota" property="qrmaxquota" jdbcType="DOUBLE" />
+    <result column="qrminquota" property="qrminquota" jdbcType="DOUBLE" />
+    <result column="dayquota" property="dayquota" jdbcType="DOUBLE" />
+    <result column="dividend_rate" property="dividendRate" jdbcType="REAL" />
+    <result column="coding_rate" property="codingRate" jdbcType="REAL" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="pay_url" property="payUrl" jdbcType="VARCHAR" />
+    <result column="payment_name" property="paymentName" jdbcType="VARCHAR" />
+    <result column="payment_config" property="paymentConfig" jdbcType="VARCHAR" />
+    <result column="ali_minquota" property="aliMinquota" jdbcType="DOUBLE" />
+    <result column="ali_maxquota" property="aliMaxquota" jdbcType="DOUBLE" />
+    <result column="wx_minquota" property="wxMinquota" jdbcType="DOUBLE" />
+    <result column="wx_maxquota" property="wxMaxquota" jdbcType="DOUBLE" />
+    <result column="ca_index" property="caIndex" jdbcType="INTEGER" />
+    <result column="is_issued" property="isIssued" jdbcType="INTEGER" />
+    <result column="yl_maxquota" property="ylMaxquota" jdbcType="DOUBLE" />
+    <result column="yl_minquota" property="ylMinquota" jdbcType="DOUBLE" />
+    <result column="jd_maxquota" property="jdMaxquota" jdbcType="DOUBLE" />
+    <result column="jd_minquota" property="jdMinquota" jdbcType="DOUBLE" />
+    <result column="kj_maxquota" property="kjMaxquota" jdbcType="DOUBLE" />
+    <result column="kj_minquota" property="kjMinquota" jdbcType="DOUBLE" />
+    <result column="ish5_ali" property="ish5Ali" jdbcType="INTEGER" />
+    <result column="ish5_wx" property="ish5Wx" jdbcType="INTEGER" />
+    <result column="ish5_cft" property="ish5Cft" jdbcType="INTEGER" />
+    <result column="ish5_jd" property="ish5Jd" jdbcType="INTEGER" />
+    <result column="ish5_yl" property="ish5Yl" jdbcType="INTEGER" />
+    <result column="wxtm_minquota" property="wxtmMinquota" jdbcType="DOUBLE" />
+    <result column="wxtm_maxquota" property="wxtmMaxquota" jdbcType="DOUBLE" />
+    <result column="alitm_minquota" property="alitmMinquota" jdbcType="DOUBLE" />
+    <result column="alitm_maxquota" property="alitmMaxquota" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cid, path_parter_pkcs12, password_parter_pkcs12, path_ysepay_public_cert, rsa_algorithm, 
+    sign_algorithm, default_charset, partner_id, seller_id, seller_name, version, ysepay_getway_url, 
+    ysepay_getway_url_df, notify_url, retrun_url, updatetime, uid, type, minquota, maxquota, 
+    qrmaxquota, qrminquota, dayquota, dividend_rate, coding_rate, status, rmk, channel, 
+    pay_url, payment_name, payment_config, ali_minquota, ali_maxquota, wx_minquota, wx_maxquota, 
+    ca_index, is_issued, yl_maxquota, yl_minquota, jd_maxquota, jd_minquota, kj_maxquota, 
+    kj_minquota, ish5_ali, ish5_wx, ish5_cft, ish5_jd, ish5_yl, wxtm_minquota, wxtm_maxquota, 
+    alitm_minquota, alitm_maxquota
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cagent_ysepay
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_cagent_ysepay
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.CagnetYsepayEntity" >
+    insert into t_cagent_ysepay (id, cid, path_parter_pkcs12, 
+      password_parter_pkcs12, path_ysepay_public_cert, 
+      rsa_algorithm, sign_algorithm, default_charset, 
+      partner_id, seller_id, seller_name, 
+      version, ysepay_getway_url, ysepay_getway_url_df, 
+      notify_url, retrun_url, updatetime, 
+      uid, type, minquota, 
+      maxquota, qrmaxquota, qrminquota, 
+      dayquota, dividend_rate, coding_rate, 
+      status, rmk, channel, pay_url, 
+      payment_name, payment_config, ali_minquota, 
+      ali_maxquota, wx_minquota, wx_maxquota, 
+      ca_index, is_issued, yl_maxquota, 
+      yl_minquota, jd_maxquota, jd_minquota, 
+      kj_maxquota, kj_minquota, ish5_ali, 
+      ish5_wx, ish5_cft, ish5_jd, 
+      ish5_yl, wxtm_minquota, wxtm_maxquota, 
+      alitm_minquota, alitm_maxquota)
+    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{pathParterPkcs12,jdbcType=VARCHAR}, 
+      #{passwordParterPkcs12,jdbcType=VARCHAR}, #{pathYsepayPublicCert,jdbcType=VARCHAR}, 
+      #{rsaAlgorithm,jdbcType=VARCHAR}, #{signAlgorithm,jdbcType=VARCHAR}, #{defaultCharset,jdbcType=VARCHAR}, 
+      #{partnerId,jdbcType=VARCHAR}, #{sellerId,jdbcType=VARCHAR}, #{sellerName,jdbcType=VARCHAR}, 
+      #{version,jdbcType=VARCHAR}, #{ysepayGetwayUrl,jdbcType=VARCHAR}, #{ysepayGetwayUrlDf,jdbcType=VARCHAR}, 
+      #{notifyUrl,jdbcType=VARCHAR}, #{retrunUrl,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{uid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{minquota,jdbcType=DOUBLE}, 
+      #{maxquota,jdbcType=DOUBLE}, #{qrmaxquota,jdbcType=DOUBLE}, #{qrminquota,jdbcType=DOUBLE}, 
+      #{dayquota,jdbcType=DOUBLE}, #{dividendRate,jdbcType=REAL}, #{codingRate,jdbcType=REAL}, 
+      #{status,jdbcType=BIT}, #{rmk,jdbcType=VARCHAR}, #{channel,jdbcType=VARCHAR}, #{payUrl,jdbcType=VARCHAR}, 
+      #{paymentName,jdbcType=VARCHAR}, #{paymentConfig,jdbcType=VARCHAR}, #{aliMinquota,jdbcType=DOUBLE}, 
+      #{aliMaxquota,jdbcType=DOUBLE}, #{wxMinquota,jdbcType=DOUBLE}, #{wxMaxquota,jdbcType=DOUBLE}, 
+      #{caIndex,jdbcType=INTEGER}, #{isIssued,jdbcType=INTEGER}, #{ylMaxquota,jdbcType=DOUBLE}, 
+      #{ylMinquota,jdbcType=DOUBLE}, #{jdMaxquota,jdbcType=DOUBLE}, #{jdMinquota,jdbcType=DOUBLE}, 
+      #{kjMaxquota,jdbcType=DOUBLE}, #{kjMinquota,jdbcType=DOUBLE}, #{ish5Ali,jdbcType=INTEGER}, 
+      #{ish5Wx,jdbcType=INTEGER}, #{ish5Cft,jdbcType=INTEGER}, #{ish5Jd,jdbcType=INTEGER}, 
+      #{ish5Yl,jdbcType=INTEGER}, #{wxtmMinquota,jdbcType=DOUBLE}, #{wxtmMaxquota,jdbcType=DOUBLE}, 
+      #{alitmMinquota,jdbcType=DOUBLE}, #{alitmMaxquota,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.CagnetYsepayEntity" >
+    insert into t_cagent_ysepay
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="pathParterPkcs12 != null" >
+        path_parter_pkcs12,
+      </if>
+      <if test="passwordParterPkcs12 != null" >
+        password_parter_pkcs12,
+      </if>
+      <if test="pathYsepayPublicCert != null" >
+        path_ysepay_public_cert,
+      </if>
+      <if test="rsaAlgorithm != null" >
+        rsa_algorithm,
+      </if>
+      <if test="signAlgorithm != null" >
+        sign_algorithm,
+      </if>
+      <if test="defaultCharset != null" >
+        default_charset,
+      </if>
+      <if test="partnerId != null" >
+        partner_id,
+      </if>
+      <if test="sellerId != null" >
+        seller_id,
+      </if>
+      <if test="sellerName != null" >
+        seller_name,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="ysepayGetwayUrl != null" >
+        ysepay_getway_url,
+      </if>
+      <if test="ysepayGetwayUrlDf != null" >
+        ysepay_getway_url_df,
+      </if>
+      <if test="notifyUrl != null" >
+        notify_url,
+      </if>
+      <if test="retrunUrl != null" >
+        retrun_url,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="minquota != null" >
+        minquota,
+      </if>
+      <if test="maxquota != null" >
+        maxquota,
+      </if>
+      <if test="qrmaxquota != null" >
+        qrmaxquota,
+      </if>
+      <if test="qrminquota != null" >
+        qrminquota,
+      </if>
+      <if test="dayquota != null" >
+        dayquota,
+      </if>
+      <if test="dividendRate != null" >
+        dividend_rate,
+      </if>
+      <if test="codingRate != null" >
+        coding_rate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="rmk != null" >
+        rmk,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="payUrl != null" >
+        pay_url,
+      </if>
+      <if test="paymentName != null" >
+        payment_name,
+      </if>
+      <if test="paymentConfig != null" >
+        payment_config,
+      </if>
+      <if test="aliMinquota != null" >
+        ali_minquota,
+      </if>
+      <if test="aliMaxquota != null" >
+        ali_maxquota,
+      </if>
+      <if test="wxMinquota != null" >
+        wx_minquota,
+      </if>
+      <if test="wxMaxquota != null" >
+        wx_maxquota,
+      </if>
+      <if test="caIndex != null" >
+        ca_index,
+      </if>
+      <if test="isIssued != null" >
+        is_issued,
+      </if>
+      <if test="ylMaxquota != null" >
+        yl_maxquota,
+      </if>
+      <if test="ylMinquota != null" >
+        yl_minquota,
+      </if>
+      <if test="jdMaxquota != null" >
+        jd_maxquota,
+      </if>
+      <if test="jdMinquota != null" >
+        jd_minquota,
+      </if>
+      <if test="kjMaxquota != null" >
+        kj_maxquota,
+      </if>
+      <if test="kjMinquota != null" >
+        kj_minquota,
+      </if>
+      <if test="ish5Ali != null" >
+        ish5_ali,
+      </if>
+      <if test="ish5Wx != null" >
+        ish5_wx,
+      </if>
+      <if test="ish5Cft != null" >
+        ish5_cft,
+      </if>
+      <if test="ish5Jd != null" >
+        ish5_jd,
+      </if>
+      <if test="ish5Yl != null" >
+        ish5_yl,
+      </if>
+      <if test="wxtmMinquota != null" >
+        wxtm_minquota,
+      </if>
+      <if test="wxtmMaxquota != null" >
+        wxtm_maxquota,
+      </if>
+      <if test="alitmMinquota != null" >
+        alitm_minquota,
+      </if>
+      <if test="alitmMaxquota != null" >
+        alitm_maxquota,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="pathParterPkcs12 != null" >
+        #{pathParterPkcs12,jdbcType=VARCHAR},
+      </if>
+      <if test="passwordParterPkcs12 != null" >
+        #{passwordParterPkcs12,jdbcType=VARCHAR},
+      </if>
+      <if test="pathYsepayPublicCert != null" >
+        #{pathYsepayPublicCert,jdbcType=VARCHAR},
+      </if>
+      <if test="rsaAlgorithm != null" >
+        #{rsaAlgorithm,jdbcType=VARCHAR},
+      </if>
+      <if test="signAlgorithm != null" >
+        #{signAlgorithm,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultCharset != null" >
+        #{defaultCharset,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerId != null" >
+        #{partnerId,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null" >
+        #{sellerId,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerName != null" >
+        #{sellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="ysepayGetwayUrl != null" >
+        #{ysepayGetwayUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="ysepayGetwayUrlDf != null" >
+        #{ysepayGetwayUrlDf,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyUrl != null" >
+        #{notifyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="retrunUrl != null" >
+        #{retrunUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="minquota != null" >
+        #{minquota,jdbcType=DOUBLE},
+      </if>
+      <if test="maxquota != null" >
+        #{maxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="qrmaxquota != null" >
+        #{qrmaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="qrminquota != null" >
+        #{qrminquota,jdbcType=DOUBLE},
+      </if>
+      <if test="dayquota != null" >
+        #{dayquota,jdbcType=DOUBLE},
+      </if>
+      <if test="dividendRate != null" >
+        #{dividendRate,jdbcType=REAL},
+      </if>
+      <if test="codingRate != null" >
+        #{codingRate,jdbcType=REAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="rmk != null" >
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="payUrl != null" >
+        #{payUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentName != null" >
+        #{paymentName,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentConfig != null" >
+        #{paymentConfig,jdbcType=VARCHAR},
+      </if>
+      <if test="aliMinquota != null" >
+        #{aliMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="aliMaxquota != null" >
+        #{aliMaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="wxMinquota != null" >
+        #{wxMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="wxMaxquota != null" >
+        #{wxMaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="caIndex != null" >
+        #{caIndex,jdbcType=INTEGER},
+      </if>
+      <if test="isIssued != null" >
+        #{isIssued,jdbcType=INTEGER},
+      </if>
+      <if test="ylMaxquota != null" >
+        #{ylMaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="ylMinquota != null" >
+        #{ylMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="jdMaxquota != null" >
+        #{jdMaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="jdMinquota != null" >
+        #{jdMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="kjMaxquota != null" >
+        #{kjMaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="kjMinquota != null" >
+        #{kjMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="ish5Ali != null" >
+        #{ish5Ali,jdbcType=INTEGER},
+      </if>
+      <if test="ish5Wx != null" >
+        #{ish5Wx,jdbcType=INTEGER},
+      </if>
+      <if test="ish5Cft != null" >
+        #{ish5Cft,jdbcType=INTEGER},
+      </if>
+      <if test="ish5Jd != null" >
+        #{ish5Jd,jdbcType=INTEGER},
+      </if>
+      <if test="ish5Yl != null" >
+        #{ish5Yl,jdbcType=INTEGER},
+      </if>
+      <if test="wxtmMinquota != null" >
+        #{wxtmMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="wxtmMaxquota != null" >
+        #{wxtmMaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="alitmMinquota != null" >
+        #{alitmMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="alitmMaxquota != null" >
+        #{alitmMaxquota,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.CagnetYsepayEntity" >
+    update t_cagent_ysepay
+    <set >
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="pathParterPkcs12 != null" >
+        path_parter_pkcs12 = #{pathParterPkcs12,jdbcType=VARCHAR},
+      </if>
+      <if test="passwordParterPkcs12 != null" >
+        password_parter_pkcs12 = #{passwordParterPkcs12,jdbcType=VARCHAR},
+      </if>
+      <if test="pathYsepayPublicCert != null" >
+        path_ysepay_public_cert = #{pathYsepayPublicCert,jdbcType=VARCHAR},
+      </if>
+      <if test="rsaAlgorithm != null" >
+        rsa_algorithm = #{rsaAlgorithm,jdbcType=VARCHAR},
+      </if>
+      <if test="signAlgorithm != null" >
+        sign_algorithm = #{signAlgorithm,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultCharset != null" >
+        default_charset = #{defaultCharset,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerId != null" >
+        partner_id = #{partnerId,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null" >
+        seller_id = #{sellerId,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerName != null" >
+        seller_name = #{sellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="ysepayGetwayUrl != null" >
+        ysepay_getway_url = #{ysepayGetwayUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="ysepayGetwayUrlDf != null" >
+        ysepay_getway_url_df = #{ysepayGetwayUrlDf,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyUrl != null" >
+        notify_url = #{notifyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="retrunUrl != null" >
+        retrun_url = #{retrunUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="minquota != null" >
+        minquota = #{minquota,jdbcType=DOUBLE},
+      </if>
+      <if test="maxquota != null" >
+        maxquota = #{maxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="qrmaxquota != null" >
+        qrmaxquota = #{qrmaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="qrminquota != null" >
+        qrminquota = #{qrminquota,jdbcType=DOUBLE},
+      </if>
+      <if test="dayquota != null" >
+        dayquota = #{dayquota,jdbcType=DOUBLE},
+      </if>
+      <if test="dividendRate != null" >
+        dividend_rate = #{dividendRate,jdbcType=REAL},
+      </if>
+      <if test="codingRate != null" >
+        coding_rate = #{codingRate,jdbcType=REAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="rmk != null" >
+        rmk = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="payUrl != null" >
+        pay_url = #{payUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentName != null" >
+        payment_name = #{paymentName,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentConfig != null" >
+        payment_config = #{paymentConfig,jdbcType=VARCHAR},
+      </if>
+      <if test="aliMinquota != null" >
+        ali_minquota = #{aliMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="aliMaxquota != null" >
+        ali_maxquota = #{aliMaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="wxMinquota != null" >
+        wx_minquota = #{wxMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="wxMaxquota != null" >
+        wx_maxquota = #{wxMaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="caIndex != null" >
+        ca_index = #{caIndex,jdbcType=INTEGER},
+      </if>
+      <if test="isIssued != null" >
+        is_issued = #{isIssued,jdbcType=INTEGER},
+      </if>
+      <if test="ylMaxquota != null" >
+        yl_maxquota = #{ylMaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="ylMinquota != null" >
+        yl_minquota = #{ylMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="jdMaxquota != null" >
+        jd_maxquota = #{jdMaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="jdMinquota != null" >
+        jd_minquota = #{jdMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="kjMaxquota != null" >
+        kj_maxquota = #{kjMaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="kjMinquota != null" >
+        kj_minquota = #{kjMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="ish5Ali != null" >
+        ish5_ali = #{ish5Ali,jdbcType=INTEGER},
+      </if>
+      <if test="ish5Wx != null" >
+        ish5_wx = #{ish5Wx,jdbcType=INTEGER},
+      </if>
+      <if test="ish5Cft != null" >
+        ish5_cft = #{ish5Cft,jdbcType=INTEGER},
+      </if>
+      <if test="ish5Jd != null" >
+        ish5_jd = #{ish5Jd,jdbcType=INTEGER},
+      </if>
+      <if test="ish5Yl != null" >
+        ish5_yl = #{ish5Yl,jdbcType=INTEGER},
+      </if>
+      <if test="wxtmMinquota != null" >
+        wxtm_minquota = #{wxtmMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="wxtmMaxquota != null" >
+        wxtm_maxquota = #{wxtmMaxquota,jdbcType=DOUBLE},
+      </if>
+      <if test="alitmMinquota != null" >
+        alitm_minquota = #{alitmMinquota,jdbcType=DOUBLE},
+      </if>
+      <if test="alitmMaxquota != null" >
+        alitm_maxquota = #{alitmMaxquota,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.CagnetYsepayEntity" >
+    update t_cagent_ysepay
+    set cid = #{cid,jdbcType=INTEGER},
+      path_parter_pkcs12 = #{pathParterPkcs12,jdbcType=VARCHAR},
+      password_parter_pkcs12 = #{passwordParterPkcs12,jdbcType=VARCHAR},
+      path_ysepay_public_cert = #{pathYsepayPublicCert,jdbcType=VARCHAR},
+      rsa_algorithm = #{rsaAlgorithm,jdbcType=VARCHAR},
+      sign_algorithm = #{signAlgorithm,jdbcType=VARCHAR},
+      default_charset = #{defaultCharset,jdbcType=VARCHAR},
+      partner_id = #{partnerId,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=VARCHAR},
+      seller_name = #{sellerName,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      ysepay_getway_url = #{ysepayGetwayUrl,jdbcType=VARCHAR},
+      ysepay_getway_url_df = #{ysepayGetwayUrlDf,jdbcType=VARCHAR},
+      notify_url = #{notifyUrl,jdbcType=VARCHAR},
+      retrun_url = #{retrunUrl,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      uid = #{uid,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      minquota = #{minquota,jdbcType=DOUBLE},
+      maxquota = #{maxquota,jdbcType=DOUBLE},
+      qrmaxquota = #{qrmaxquota,jdbcType=DOUBLE},
+      qrminquota = #{qrminquota,jdbcType=DOUBLE},
+      dayquota = #{dayquota,jdbcType=DOUBLE},
+      dividend_rate = #{dividendRate,jdbcType=REAL},
+      coding_rate = #{codingRate,jdbcType=REAL},
+      status = #{status,jdbcType=BIT},
+      rmk = #{rmk,jdbcType=VARCHAR},
+      channel = #{channel,jdbcType=VARCHAR},
+      pay_url = #{payUrl,jdbcType=VARCHAR},
+      payment_name = #{paymentName,jdbcType=VARCHAR},
+      payment_config = #{paymentConfig,jdbcType=VARCHAR},
+      ali_minquota = #{aliMinquota,jdbcType=DOUBLE},
+      ali_maxquota = #{aliMaxquota,jdbcType=DOUBLE},
+      wx_minquota = #{wxMinquota,jdbcType=DOUBLE},
+      wx_maxquota = #{wxMaxquota,jdbcType=DOUBLE},
+      ca_index = #{caIndex,jdbcType=INTEGER},
+      is_issued = #{isIssued,jdbcType=INTEGER},
+      yl_maxquota = #{ylMaxquota,jdbcType=DOUBLE},
+      yl_minquota = #{ylMinquota,jdbcType=DOUBLE},
+      jd_maxquota = #{jdMaxquota,jdbcType=DOUBLE},
+      jd_minquota = #{jdMinquota,jdbcType=DOUBLE},
+      kj_maxquota = #{kjMaxquota,jdbcType=DOUBLE},
+      kj_minquota = #{kjMinquota,jdbcType=DOUBLE},
+      ish5_ali = #{ish5Ali,jdbcType=INTEGER},
+      ish5_wx = #{ish5Wx,jdbcType=INTEGER},
+      ish5_cft = #{ish5Cft,jdbcType=INTEGER},
+      ish5_jd = #{ish5Jd,jdbcType=INTEGER},
+      ish5_yl = #{ish5Yl,jdbcType=INTEGER},
+      wxtm_minquota = #{wxtmMinquota,jdbcType=DOUBLE},
+      wxtm_maxquota = #{wxtmMaxquota,jdbcType=DOUBLE},
+      alitm_minquota = #{alitmMinquota,jdbcType=DOUBLE},
+      alitm_maxquota = #{alitmMaxquota,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectYsepayConfigByUsername" parameterType="java.lang.String"
+          resultMap="BaseResultMap">
+		select c.* from t_user a
+		join t_user_type b on a.type_id=b.id
+		join
+		t_cagent_ysepay c on
+		b.onlinepay_id=c.id
+		where c.status=0 and
+		a.username=#{username}
+	</select>
+</mapper>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.UserLuckrdrawLogDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.UserLuckrdrawLogEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="lid" property="lid" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="orderid" property="orderid" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="REAL" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="todaytimes" property="todaytimes" jdbcType="INTEGER" />
+    <result column="totaltimes" property="totaltimes" jdbcType="INTEGER" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="used_bet" property="usedBet" jdbcType="DOUBLE" />
+    <result column="typesof" property="typesof" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cid, lid, uid, orderid, amount, addtime, todaytimes, totaltimes, ip, address, 
+    used_bet, typesof
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_luckrdraw_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_luckrdraw_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.UserLuckrdrawLogEntity" >
+    insert into t_user_luckrdraw_log (id, cid, lid, 
+      uid, orderid, amount, 
+      addtime, todaytimes, totaltimes, 
+      ip, address, used_bet, 
+      typesof)
+    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{lid,jdbcType=INTEGER}, 
+      #{uid,jdbcType=INTEGER}, #{orderid,jdbcType=VARCHAR}, #{amount,jdbcType=REAL}, 
+      #{addtime,jdbcType=TIMESTAMP}, #{todaytimes,jdbcType=INTEGER}, #{totaltimes,jdbcType=INTEGER}, 
+      #{ip,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{usedBet,jdbcType=DOUBLE}, 
+      #{typesof,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.UserLuckrdrawLogEntity" >
+    insert into t_user_luckrdraw_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="lid != null" >
+        lid,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="todaytimes != null" >
+        todaytimes,
+      </if>
+      <if test="totaltimes != null" >
+        totaltimes,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="usedBet != null" >
+        used_bet,
+      </if>
+      <if test="typesof != null" >
+        typesof,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="lid != null" >
+        #{lid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=REAL},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="todaytimes != null" >
+        #{todaytimes,jdbcType=INTEGER},
+      </if>
+      <if test="totaltimes != null" >
+        #{totaltimes,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="usedBet != null" >
+        #{usedBet,jdbcType=DOUBLE},
+      </if>
+      <if test="typesof != null" >
+        #{typesof,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.UserLuckrdrawLogEntity" >
+    update t_user_luckrdraw_log
+    <set >
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="lid != null" >
+        lid = #{lid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        orderid = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=REAL},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="todaytimes != null" >
+        todaytimes = #{todaytimes,jdbcType=INTEGER},
+      </if>
+      <if test="totaltimes != null" >
+        totaltimes = #{totaltimes,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="usedBet != null" >
+        used_bet = #{usedBet,jdbcType=DOUBLE},
+      </if>
+      <if test="typesof != null" >
+        typesof = #{typesof,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.UserLuckrdrawLogEntity" >
+    update t_user_luckrdraw_log
+    set cid = #{cid,jdbcType=INTEGER},
+      lid = #{lid,jdbcType=INTEGER},
+      uid = #{uid,jdbcType=INTEGER},
+      orderid = #{orderid,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=REAL},
+      addtime = #{addtime,jdbcType=TIMESTAMP},
+      todaytimes = #{todaytimes,jdbcType=INTEGER},
+      totaltimes = #{totaltimes,jdbcType=INTEGER},
+      ip = #{ip,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      used_bet = #{usedBet,jdbcType=DOUBLE},
+      typesof = #{typesof,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByUidAndLid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_user_luckrdraw_log
+    where uid = #{uid,jdbcType=INTEGER} and lid = #{lid,jdbcType=INTEGER} and addtime BETWEEN #{bdate} AND #{edate} and typesof = #{typesOf}
+  </select>
+  <select id="selectAllRecords" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_luckrdraw_log
+    where uid = #{uid,jdbcType=INTEGER} and addtime BETWEEN #{bdate} AND #{edate}
+  </select>
+
+  <select id="selectRecentRecord" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_luckrdraw_log
+    where uid = #{uid,jdbcType=INTEGER} order by id desc limit 1
+  </select>
+</mapper>

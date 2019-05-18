@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.CagentMsgDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.CagentMsgEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+    <result column="mname" property="mname" jdbcType="VARCHAR" />
+    <result column="mobileno" property="mobileno" jdbcType="VARCHAR" />
+    <result column="msg" property="msg" jdbcType="VARCHAR" />
+    <result column="sendtime" property="sendtime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="domain" property="domain" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cagent, mname, mobileno, msg, sendtime, status, type, domain
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cagent_msg
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_cagent_msg
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.CagentMsgEntity" >
+    insert into t_cagent_msg (id, cagent, mname, 
+      mobileno, msg, sendtime, 
+      status, type, domain)
+    values (#{id,jdbcType=INTEGER}, #{cagent,jdbcType=VARCHAR}, #{mname,jdbcType=VARCHAR}, 
+      #{mobileno,jdbcType=VARCHAR}, #{msg,jdbcType=VARCHAR}, #{sendtime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=CHAR}, #{type,jdbcType=CHAR}, #{domain,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.CagentMsgEntity" >
+    insert into t_cagent_msg
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cagent != null" >
+        cagent,
+      </if>
+      <if test="mname != null" >
+        mname,
+      </if>
+      <if test="mobileno != null" >
+        mobileno,
+      </if>
+      <if test="msg != null" >
+        msg,
+      </if>
+      <if test="sendtime != null" >
+        sendtime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="domain != null" >
+        domain,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cagent != null" >
+        #{cagent,jdbcType=VARCHAR},
+      </if>
+      <if test="mname != null" >
+        #{mname,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileno != null" >
+        #{mobileno,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null" >
+        #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtime != null" >
+        #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="domain != null" >
+        #{domain,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.CagentMsgEntity" >
+    update t_cagent_msg
+    <set >
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+      <if test="mname != null" >
+        mname = #{mname,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileno != null" >
+        mobileno = #{mobileno,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null" >
+        msg = #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtime != null" >
+        sendtime = #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="domain != null" >
+        domain = #{domain,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.CagentMsgEntity" >
+    update t_cagent_msg
+    set cagent = #{cagent,jdbcType=VARCHAR},
+      mname = #{mname,jdbcType=VARCHAR},
+      mobileno = #{mobileno,jdbcType=VARCHAR},
+      msg = #{msg,jdbcType=VARCHAR},
+      sendtime = #{sendtime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=CHAR},
+      type = #{type,jdbcType=CHAR},
+      domain = #{domain,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectMsgLog" parameterType="java.lang.String"
+          resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+     from t_cagent_msg
+    where `status`=0
+    <if test="cagent != null and cagent !=''">
+      and  cagent = #{cagent}
+    </if>
+    <if test="mobileNo != null and mobileNo !=''">
+      and   mobileno = #{mobileNo}
+    </if>
+    <if test="type != null and type !=''">
+      and   type = #{type}
+    </if>
+    <if test="sendTime != null and sendTime !=''">
+      and   sendtime &gt; #{sendTime}
+    </if>
+    order by id desc limit 1
+  </select>
+</mapper>

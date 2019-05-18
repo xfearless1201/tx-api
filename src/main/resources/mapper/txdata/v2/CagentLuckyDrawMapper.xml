@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.CagentLuckyDrawDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.CagentLuckyDrawEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="luckyname" property="luckyname" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="amountlimit" property="amountlimit" jdbcType="REAL" />
+    <result column="amountused" property="amountused" jdbcType="REAL" />
+    <result column="minamount" property="minamount" jdbcType="REAL" />
+    <result column="maxamount" property="maxamount" jdbcType="REAL" />
+    <result column="begintime" property="begintime" jdbcType="TIME" />
+    <result column="endtime" property="endtime" jdbcType="TIME" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="updateuid" property="updateuid" jdbcType="INTEGER" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="adduid" property="adduid" jdbcType="INTEGER" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="typesof" property="typesof" jdbcType="VARCHAR" />
+    <result column="oldbegintime" property="oldbegintime" jdbcType="TIME" />
+    <result column="oldendtime" property="oldendtime" jdbcType="TIME" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cid, luckyname, status, amountlimit, amountused, minamount, maxamount, begintime, 
+    endtime, type, updateuid, updatetime, adduid, addtime, typesof, oldbegintime, oldendtime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cagent_luckydraw
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_cagent_luckydraw
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.CagentLuckyDrawEntity" >
+    insert into t_cagent_luckydraw (id, cid, luckyname, 
+      status, amountlimit, amountused, 
+      minamount, maxamount, begintime, 
+      endtime, type, updateuid, 
+      updatetime, adduid, addtime, 
+      typesof, oldbegintime, oldendtime
+      )
+    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{luckyname,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{amountlimit,jdbcType=REAL}, #{amountused,jdbcType=REAL}, 
+      #{minamount,jdbcType=REAL}, #{maxamount,jdbcType=REAL}, #{begintime,jdbcType=TIME}, 
+      #{endtime,jdbcType=TIME}, #{type,jdbcType=VARCHAR}, #{updateuid,jdbcType=INTEGER}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{adduid,jdbcType=INTEGER}, #{addtime,jdbcType=TIMESTAMP}, 
+      #{typesof,jdbcType=VARCHAR}, #{oldbegintime,jdbcType=TIME}, #{oldendtime,jdbcType=TIME}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.CagentLuckyDrawEntity" >
+    insert into t_cagent_luckydraw
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="luckyname != null" >
+        luckyname,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="amountlimit != null" >
+        amountlimit,
+      </if>
+      <if test="amountused != null" >
+        amountused,
+      </if>
+      <if test="minamount != null" >
+        minamount,
+      </if>
+      <if test="maxamount != null" >
+        maxamount,
+      </if>
+      <if test="begintime != null" >
+        begintime,
+      </if>
+      <if test="endtime != null" >
+        endtime,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="updateuid != null" >
+        updateuid,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="adduid != null" >
+        adduid,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="typesof != null" >
+        typesof,
+      </if>
+      <if test="oldbegintime != null" >
+        oldbegintime,
+      </if>
+      <if test="oldendtime != null" >
+        oldendtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="luckyname != null" >
+        #{luckyname,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="amountlimit != null" >
+        #{amountlimit,jdbcType=REAL},
+      </if>
+      <if test="amountused != null" >
+        #{amountused,jdbcType=REAL},
+      </if>
+      <if test="minamount != null" >
+        #{minamount,jdbcType=REAL},
+      </if>
+      <if test="maxamount != null" >
+        #{maxamount,jdbcType=REAL},
+      </if>
+      <if test="begintime != null" >
+        #{begintime,jdbcType=TIME},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIME},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuid != null" >
+        #{updateuid,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adduid != null" >
+        #{adduid,jdbcType=INTEGER},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="typesof != null" >
+        #{typesof,jdbcType=VARCHAR},
+      </if>
+      <if test="oldbegintime != null" >
+        #{oldbegintime,jdbcType=TIME},
+      </if>
+      <if test="oldendtime != null" >
+        #{oldendtime,jdbcType=TIME},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.CagentLuckyDrawEntity" >
+    update t_cagent_luckydraw
+    <set >
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="luckyname != null" >
+        luckyname = #{luckyname,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="amountlimit != null" >
+        amountlimit = #{amountlimit,jdbcType=REAL},
+      </if>
+      <if test="amountused != null" >
+        amountused = #{amountused,jdbcType=REAL},
+      </if>
+      <if test="minamount != null" >
+        minamount = #{minamount,jdbcType=REAL},
+      </if>
+      <if test="maxamount != null" >
+        maxamount = #{maxamount,jdbcType=REAL},
+      </if>
+      <if test="begintime != null" >
+        begintime = #{begintime,jdbcType=TIME},
+      </if>
+      <if test="endtime != null" >
+        endtime = #{endtime,jdbcType=TIME},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuid != null" >
+        updateuid = #{updateuid,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adduid != null" >
+        adduid = #{adduid,jdbcType=INTEGER},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="typesof != null" >
+        typesof = #{typesof,jdbcType=VARCHAR},
+      </if>
+      <if test="oldbegintime != null" >
+        oldbegintime = #{oldbegintime,jdbcType=TIME},
+      </if>
+      <if test="oldendtime != null" >
+        oldendtime = #{oldendtime,jdbcType=TIME},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.CagentLuckyDrawEntity" >
+    update t_cagent_luckydraw
+    set cid = #{cid,jdbcType=INTEGER},
+      luckyname = #{luckyname,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      amountlimit = #{amountlimit,jdbcType=REAL},
+      amountused = #{amountused,jdbcType=REAL},
+      minamount = #{minamount,jdbcType=REAL},
+      maxamount = #{maxamount,jdbcType=REAL},
+      begintime = #{begintime,jdbcType=TIME},
+      endtime = #{endtime,jdbcType=TIME},
+      type = #{type,jdbcType=VARCHAR},
+      updateuid = #{updateuid,jdbcType=INTEGER},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      adduid = #{adduid,jdbcType=INTEGER},
+      addtime = #{addtime,jdbcType=TIMESTAMP},
+      typesof = #{typesof,jdbcType=VARCHAR},
+      oldbegintime = #{oldbegintime,jdbcType=TIME},
+      oldendtime = #{oldendtime,jdbcType=TIME}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByCid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_cagent_luckydraw
+    where cid = #{cid,jdbcType=INTEGER} and status = 0
+  </select>
+  <update id="updateAmountUsedByPrimaryKey">
+    update t_cagent_luckydraw
+    set amountused = amountused + #{amount}
+    where id = #{lid}
+  </update>
+</mapper>

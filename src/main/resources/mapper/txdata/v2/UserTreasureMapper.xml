@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.UserTreasureDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.UserTreasureEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="old_money" property="oldMoney" jdbcType="DOUBLE" />
+    <result column="new_money" property="newMoney" jdbcType="DOUBLE" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="t_type" property="tType" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="platform_type" property="platformType" jdbcType="INTEGER" />
+    <result column="s_type" property="sType" jdbcType="CHAR" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+    <result column="is_first" property="isFirst" jdbcType="INTEGER" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, amount, old_money, new_money, number, t_type, type, addtime, platform_type, 
+    s_type, rmk, operator_id, cagent, is_first, ip
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_treasure
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_treasure
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.UserTreasureEntity" >
+    insert into t_user_treasure (id, uid, amount, 
+      old_money, new_money, number, 
+      t_type, type, addtime, 
+      platform_type, s_type, rmk, 
+      operator_id, cagent, is_first, 
+      ip)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{amount,jdbcType=DOUBLE}, 
+      #{oldMoney,jdbcType=DOUBLE}, #{newMoney,jdbcType=DOUBLE}, #{number,jdbcType=VARCHAR}, 
+      #{tType,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, 
+      #{platformType,jdbcType=INTEGER}, #{sType,jdbcType=CHAR}, #{rmk,jdbcType=VARCHAR}, 
+      #{operatorId,jdbcType=INTEGER}, #{cagent,jdbcType=VARCHAR}, #{isFirst,jdbcType=INTEGER}, 
+      #{ip,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.UserTreasureEntity" >
+    insert into t_user_treasure
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="oldMoney != null" >
+        old_money,
+      </if>
+      <if test="newMoney != null" >
+        new_money,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="tType != null" >
+        t_type,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="platformType != null" >
+        platform_type,
+      </if>
+      <if test="sType != null" >
+        s_type,
+      </if>
+      <if test="rmk != null" >
+        rmk,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="cagent != null" >
+        cagent,
+      </if>
+      <if test="isFirst != null" >
+        is_first,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="oldMoney != null" >
+        #{oldMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="newMoney != null" >
+        #{newMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="tType != null" >
+        #{tType,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformType != null" >
+        #{platformType,jdbcType=INTEGER},
+      </if>
+      <if test="sType != null" >
+        #{sType,jdbcType=CHAR},
+      </if>
+      <if test="rmk != null" >
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=INTEGER},
+      </if>
+      <if test="cagent != null" >
+        #{cagent,jdbcType=VARCHAR},
+      </if>
+      <if test="isFirst != null" >
+        #{isFirst,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.UserTreasureEntity" >
+    update t_user_treasure
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="oldMoney != null" >
+        old_money = #{oldMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="newMoney != null" >
+        new_money = #{newMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="tType != null" >
+        t_type = #{tType,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformType != null" >
+        platform_type = #{platformType,jdbcType=INTEGER},
+      </if>
+      <if test="sType != null" >
+        s_type = #{sType,jdbcType=CHAR},
+      </if>
+      <if test="rmk != null" >
+        rmk = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=INTEGER},
+      </if>
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+      <if test="isFirst != null" >
+        is_first = #{isFirst,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.UserTreasureEntity" >
+    update t_user_treasure
+    set uid = #{uid,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DOUBLE},
+      old_money = #{oldMoney,jdbcType=DOUBLE},
+      new_money = #{newMoney,jdbcType=DOUBLE},
+      number = #{number,jdbcType=VARCHAR},
+      t_type = #{tType,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=TIMESTAMP},
+      platform_type = #{platformType,jdbcType=INTEGER},
+      s_type = #{sType,jdbcType=CHAR},
+      rmk = #{rmk,jdbcType=VARCHAR},
+      operator_id = #{operatorId,jdbcType=INTEGER},
+      cagent = #{cagent,jdbcType=VARCHAR},
+      is_first = #{isFirst,jdbcType=INTEGER},
+      ip = #{ip,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <!-- 分页查询用户资金流水 -->
+  <select id="findAllByPage" resultMap="BaseResultMap">
+  	SELECT
+    	id, uid,old_money, new_money, number, t_type, type, addtime, platform_type,
+		(CASE WHEN type='OUT' THEN -amount ELSE amount END) as amount,
+    	s_type, rmk, operator_id, cagent, is_first, ip
+    FROM t_user_treasure WHERE uid=#{uid}
+    <if test="type != null">
+    	AND t_type=#{type}
+    </if>
+    <if test="bdate != null and edate != null">
+    	AND addtime BETWEEN #{bdate} AND #{edate}
+    </if>
+    ORDER BY addtime DESC
+    LIMIT ${(pageNo-1)*pageSize},#{pageSize}
+  </select>
+
+  <select id="findAllAmountByTime" resultType="java.lang.Double">
+  	SELECT
+    IFNULL(sum(amount),0)
+    FROM t_user_treasure WHERE uid=#{uid} AND t_type in('存款','加款')
+    AND addtime BETWEEN #{bdate} AND #{edate}
+
+  </select>
+
+  <!-- 统计总条数和总金额 -->
+  <select id="countTotalPages" resultType="Map">
+  	SELECT 
+  		count(1) as cnt,sum((case when type='OUT' then -amount else amount end)) as total
+  	FROM t_user_treasure
+  	WHERE uid=#{uid}
+  	<if test="bdate != null and edate != null">
+    	AND addtime BETWEEN #{bdate} AND #{edate}
+    </if>
+    <if test="type != null">
+    	AND t_type=#{type}
+    </if>
+  </select>	
+  
+  
+  <select id="countUserTreasureByOrderNo" resultType="Integer">
+    SELECT 
+    	count(1)
+    FROM t_user_treasure
+    WHERE uid=#{uid} AND number=#{orderNo} AND cagent=#{cagent} 
+		AND addtime BETWEEN DATE_FORMAT(NOW(),'%Y-%m-%d 00:00:00') AND NOW();
+  </select>
+  
+</mapper>

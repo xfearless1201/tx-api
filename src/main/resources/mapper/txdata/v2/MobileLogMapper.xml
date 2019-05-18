@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.MobileLogDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.MobileLogEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="old_mobile" property="oldMobile" jdbcType="VARCHAR" />
+    <result column="new_mobile" property="newMobile" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, old_mobile, new_mobile, update_time, ip, cagent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_mobile_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_mobile_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.MobileLogEntity" >
+    insert into t_mobile_log (id, uid, old_mobile, 
+      new_mobile, update_time, ip, 
+      cagent)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{oldMobile,jdbcType=VARCHAR}, 
+      #{newMobile,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{ip,jdbcType=VARCHAR}, 
+      #{cagent,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.MobileLogEntity" >
+    insert into t_mobile_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="oldMobile != null" >
+        old_mobile,
+      </if>
+      <if test="newMobile != null" >
+        new_mobile,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="cagent != null" >
+        cagent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="oldMobile != null" >
+        #{oldMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="newMobile != null" >
+        #{newMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="cagent != null" >
+        #{cagent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.MobileLogEntity" >
+    update t_mobile_log
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="oldMobile != null" >
+        old_mobile = #{oldMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="newMobile != null" >
+        new_mobile = #{newMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.MobileLogEntity" >
+    update t_mobile_log
+    set uid = #{uid,jdbcType=INTEGER},
+      old_mobile = #{oldMobile,jdbcType=VARCHAR},
+      new_mobile = #{newMobile,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      ip = #{ip,jdbcType=VARCHAR},
+      cagent = #{cagent,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectMobileLogByUid" parameterType="java.lang.String"
+          resultMap="BaseResultMap">
+		SELECT
+    <include refid="Base_Column_List" />
+		from t_mobile_log where DATE_FORMAT(update_time, '%Y-%m-%d')=DATE_FORMAT(NOW(), '%Y-%m-%d') and uid=#{uid};
+	</select>
+</mapper>

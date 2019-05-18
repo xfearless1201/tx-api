@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.UserAcitivityRecordDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.UserAcitivityRecordEntity" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="activity_id" property="activityId" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="activity_amount" property="activityAmount" jdbcType="BIGINT" />
+    <result column="activity_name" property="activityName" jdbcType="VARCHAR" />
+    <result column="activity_type" property="activityType" jdbcType="TINYINT" />
+    <result column="carete_time" property="careteTime" jdbcType="BIGINT" />
+    <result column="flag" property="flag" jdbcType="TINYINT" />
+    <result column="verifier" property="verifier" jdbcType="VARCHAR" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+    <result column="verify_time" property="verifyTime" jdbcType="BIGINT" />
+    <result column="activity_number" property="activityNumber" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, activity_id, uid, username, mobile, cid, cagent, type_id, activity_amount, activity_name,
+    activity_type, carete_time, flag, verifier, rmk, verify_time, activity_number
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from t_user_acitivity_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_user_acitivity_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.UserAcitivityRecordEntity" >
+    insert into t_user_acitivity_record (id, activity_id, uid,
+      username, mobile, cid,
+      cagent, type_id, activity_amount,
+      activity_name, activity_type, carete_time,
+      flag, verifier, rmk,
+      verify_time, activity_number)
+    values (#{id,jdbcType=BIGINT}, #{activityId,jdbcType=BIGINT}, #{uid,jdbcType=INTEGER},
+      #{username,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{cid,jdbcType=INTEGER},
+      #{cagent,jdbcType=VARCHAR}, #{typeId,jdbcType=INTEGER}, #{activityAmount,jdbcType=BIGINT},
+      #{activityName,jdbcType=VARCHAR}, #{activityType,jdbcType=TINYINT}, #{careteTime,jdbcType=BIGINT},
+      #{flag,jdbcType=TINYINT}, #{verifier,jdbcType=VARCHAR}, #{rmk,jdbcType=VARCHAR},
+      #{verifyTime,jdbcType=BIGINT}, #{activityNumber,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.UserAcitivityRecordEntity" >
+    insert into t_user_acitivity_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="activityId != null" >
+        activity_id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="cagent != null" >
+        cagent,
+      </if>
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="activityAmount != null" >
+        activity_amount,
+      </if>
+      <if test="activityName != null" >
+        activity_name,
+      </if>
+      <if test="activityType != null" >
+        activity_type,
+      </if>
+      <if test="careteTime != null" >
+        carete_time,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="verifier != null" >
+        verifier,
+      </if>
+      <if test="rmk != null" >
+        rmk,
+      </if>
+      <if test="verifyTime != null" >
+        verify_time,
+      </if>
+      <if test="activityNumber != null" >
+        activity_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="activityId != null" >
+        #{activityId,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="cagent != null" >
+        #{cagent,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="activityAmount != null" >
+        #{activityAmount,jdbcType=BIGINT},
+      </if>
+      <if test="activityName != null" >
+        #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityType != null" >
+        #{activityType,jdbcType=TINYINT},
+      </if>
+      <if test="careteTime != null" >
+        #{careteTime,jdbcType=BIGINT},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=TINYINT},
+      </if>
+      <if test="verifier != null" >
+        #{verifier,jdbcType=VARCHAR},
+      </if>
+      <if test="rmk != null" >
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyTime != null" >
+        #{verifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="activityNumber != null" >
+        #{activityNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.UserAcitivityRecordEntity" >
+    update t_user_acitivity_record
+    <set >
+      <if test="activityId != null" >
+        activity_id = #{activityId,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="activityAmount != null" >
+        activity_amount = #{activityAmount,jdbcType=BIGINT},
+      </if>
+      <if test="activityName != null" >
+        activity_name = #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityType != null" >
+        activity_type = #{activityType,jdbcType=TINYINT},
+      </if>
+      <if test="careteTime != null" >
+        carete_time = #{careteTime,jdbcType=BIGINT},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=TINYINT},
+      </if>
+      <if test="verifier != null" >
+        verifier = #{verifier,jdbcType=VARCHAR},
+      </if>
+      <if test="rmk != null" >
+        rmk = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyTime != null" >
+        verify_time = #{verifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="activityNumber != null" >
+        activity_number = #{activityNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.UserAcitivityRecordEntity" >
+    update t_user_acitivity_record
+    set activity_id = #{activityId,jdbcType=BIGINT},
+      uid = #{uid,jdbcType=INTEGER},
+      username = #{username,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      cid = #{cid,jdbcType=INTEGER},
+      cagent = #{cagent,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=INTEGER},
+      activity_amount = #{activityAmount,jdbcType=BIGINT},
+      activity_name = #{activityName,jdbcType=VARCHAR},
+      activity_type = #{activityType,jdbcType=TINYINT},
+      carete_time = #{careteTime,jdbcType=BIGINT},
+      flag = #{flag,jdbcType=TINYINT},
+      verifier = #{verifier,jdbcType=VARCHAR},
+      rmk = #{rmk,jdbcType=VARCHAR},
+      verify_time = #{verifyTime,jdbcType=BIGINT},
+      activity_number = #{activityNumber,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectRecordByAidAndUid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_acitivity_record
+    where activity_id = #{aid} and uid = #{uid}
+  </select>
+</mapper>

@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.AmountRecordDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.AmountRecordEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="ref_id" property="refId" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="usercode" property="usercode" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="REAL" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="bankname" property="bankname" jdbcType="VARCHAR" />
+    <result column="bankcode" property="bankcode" jdbcType="VARCHAR" />
+    <result column="bankusername" property="bankusername" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="REAL" />
+    <result column="handsel" property="handsel" jdbcType="REAL" />
+    <result column="quantity" property="quantity" jdbcType="REAL" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="transfertime" property="transfertime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="vuid" property="vuid" jdbcType="INTEGER" />
+    <result column="vtime" property="vtime" jdbcType="TIMESTAMP" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cid, uid, ref_id, username, usercode, amount, type, times, bankname, bankcode, 
+    bankusername, discount, handsel, quantity, addtime, transfertime, status, vuid, vtime, 
+    rmk, cagent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_amount_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_amount_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.AmountRecordEntity" keyProperty="ref_id" keyColumn="refId" useGeneratedKeys="true">
+    insert into t_amount_record (id, cid, uid, 
+      ref_id, username, usercode, 
+      amount, type, times, bankname, 
+      bankcode, bankusername, discount, 
+      handsel, quantity, addtime, 
+      transfertime, status, vuid, 
+      vtime, rmk, cagent
+      )
+    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, 
+      #{refId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{usercode,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=REAL}, #{type,jdbcType=CHAR}, #{times,jdbcType=INTEGER}, #{bankname,jdbcType=VARCHAR}, 
+      #{bankcode,jdbcType=VARCHAR}, #{bankusername,jdbcType=VARCHAR}, #{discount,jdbcType=REAL}, 
+      #{handsel,jdbcType=REAL}, #{quantity,jdbcType=REAL}, #{addtime,jdbcType=TIMESTAMP}, 
+      #{transfertime,jdbcType=TIMESTAMP}, #{status,jdbcType=CHAR}, #{vuid,jdbcType=INTEGER}, 
+      #{vtime,jdbcType=TIMESTAMP}, #{rmk,jdbcType=VARCHAR}, #{cagent,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.AmountRecordEntity" keyProperty="ref_id" keyColumn="refId" useGeneratedKeys="true">
+    insert into t_amount_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="refId != null" >
+        ref_id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="usercode != null" >
+        usercode,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="times != null" >
+        times,
+      </if>
+      <if test="bankname != null" >
+        bankname,
+      </if>
+      <if test="bankcode != null" >
+        bankcode,
+      </if>
+      <if test="bankusername != null" >
+        bankusername,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="handsel != null" >
+        handsel,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="transfertime != null" >
+        transfertime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="vuid != null" >
+        vuid,
+      </if>
+      <if test="vtime != null" >
+        vtime,
+      </if>
+      <if test="rmk != null" >
+        rmk,
+      </if>
+      <if test="cagent != null" >
+        cagent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="refId != null" >
+        #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="usercode != null" >
+        #{usercode,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=REAL},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=INTEGER},
+      </if>
+      <if test="bankname != null" >
+        #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcode != null" >
+        #{bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankusername != null" >
+        #{bankusername,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=REAL},
+      </if>
+      <if test="handsel != null" >
+        #{handsel,jdbcType=REAL},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=REAL},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transfertime != null" >
+        #{transfertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="vuid != null" >
+        #{vuid,jdbcType=INTEGER},
+      </if>
+      <if test="vtime != null" >
+        #{vtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rmk != null" >
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="cagent != null" >
+        #{cagent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.AmountRecordEntity" >
+    update t_amount_record
+    <set >
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="refId != null" >
+        ref_id = #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="usercode != null" >
+        usercode = #{usercode,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=REAL},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="times != null" >
+        times = #{times,jdbcType=INTEGER},
+      </if>
+      <if test="bankname != null" >
+        bankname = #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcode != null" >
+        bankcode = #{bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankusername != null" >
+        bankusername = #{bankusername,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount,jdbcType=REAL},
+      </if>
+      <if test="handsel != null" >
+        handsel = #{handsel,jdbcType=REAL},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=REAL},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transfertime != null" >
+        transfertime = #{transfertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="vuid != null" >
+        vuid = #{vuid,jdbcType=INTEGER},
+      </if>
+      <if test="vtime != null" >
+        vtime = #{vtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rmk != null" >
+        rmk = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.AmountRecordEntity" >
+    update t_amount_record
+    set cid = #{cid,jdbcType=INTEGER},
+      uid = #{uid,jdbcType=INTEGER},
+      ref_id = #{refId,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      usercode = #{usercode,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=REAL},
+      type = #{type,jdbcType=CHAR},
+      times = #{times,jdbcType=INTEGER},
+      bankname = #{bankname,jdbcType=VARCHAR},
+      bankcode = #{bankcode,jdbcType=VARCHAR},
+      bankusername = #{bankusername,jdbcType=VARCHAR},
+      discount = #{discount,jdbcType=REAL},
+      handsel = #{handsel,jdbcType=REAL},
+      quantity = #{quantity,jdbcType=REAL},
+      addtime = #{addtime,jdbcType=TIMESTAMP},
+      transfertime = #{transfertime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=CHAR},
+      vuid = #{vuid,jdbcType=INTEGER},
+      vtime = #{vtime,jdbcType=TIMESTAMP},
+      rmk = #{rmk,jdbcType=VARCHAR},
+      cagent = #{cagent,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 统计用户会通过审核的存款记录条数 -->
+  <select id="sumUnauditRemittance" resultType="Integer">
+    SELECT COUNT(uid) FROM t_amount_record 
+    WHERE status IN (0) AND uid=#{uid} 
+    AND addtime BETWEEN DATE_FORMAT(now(),'%Y-%m-%d 00:00:00') AND DATE_FORMAT(now(),'%Y-%m-%d 23:59:59') 
+  </select>
+  
+  <select id="sumUserRemittanceTimes" resultType="Integer">
+    SELECT COUNT(uid) FROM t_amount_record WHERE uid=#{uid}
+  </select>
+
+  <resultMap id="DepositResultMap" type="com.cn.tianxia.api.project.v2.DepositRecordEntity" >
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="order_time" property="orderTime" jdbcType="TIMESTAMP" />
+    <result column="pay_type" property="payType" jdbcType="VARCHAR" />
+    <result column="order_amount" property="orderAmount" jdbcType="REAL" />
+    <result column="trade_status" property="tradeStatus" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectDepositRecordLimit" parameterType="java.util.Map"
+          resultMap="DepositResultMap">
+    select * from ( select uid,order_time,
+    case
+    when pay_type=1 or pay_type=21 then '网银'
+    when pay_type=3 or pay_type=23 then '微信'
+    when pay_type=4 or pay_type=24 then '支付宝'
+    when pay_type=5 or pay_type=25 then '财付通'
+    when pay_type=7 or pay_type=27 then '银联扫码'
+    when pay_type=6 or pay_type=26 then '京东支付'
+    when pay_type=9 or pay_type=29 then '快捷支付'
+    when pay_type=10 or pay_type=30 then '微信条码'
+    when pay_type=11 or pay_type=31 then '支付宝条码'
+    when pay_type=10 or pay_type=30 then '扫码支付'
+    when pay_type=0 or pay_type=0 then '银行汇款'
+    when pay_type=12 or pay_type=32 then '百度钱包'
+    else '其他'
+    end
+    pay_type,order_amount,
+    case trade_status when 'paying' then '处理中' when
+    'success' then '交易成功' else
+    '交易失败' end trade_status,pay_type type,'无' As rmk
+    from
+    t_recharge where 1=1
+    <if test="uid != null and uid !=''">
+      AND uid = #{uid}
+    </if>
+    <if test="bdate != null and bdate !=''">
+      and DATE_FORMAT(order_time, '%Y-%m-%d') BETWEEN #{bdate}
+      and #{edate}
+    </if>
+    union all
+    select uid,addtime as order_time,'银行汇款' as pay_type,amount as
+    order_amount,case `status` when '0' then '处理中' when '1' then '交易成功'
+    else
+    '交易失败' end trade_status,'4' as type,rmk as rmk from t_amount_record where 1=1
+    <if test="uid != null and uid !=''">
+      AND uid = #{uid}
+    </if>
+    <if test="bdate != null and bdate !=''">
+      and DATE_FORMAT(addtime, '%Y-%m-%d') BETWEEN #{bdate} and
+      #{edate}
+    </if>
+    )a where 1=1
+
+    <if test="type != null and type !=''">
+      and pay_type = #{type}
+    </if>
+    <if test="status != null and status !=''">
+      and trade_status = #{status}
+    </if>
+    ORDER BY order_time DESC
+  </select>
+</mapper>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.PluOrderDao">
+	<resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.PluOrderEntity">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="uid" property="uid" jdbcType="INTEGER" />
+		<result column="cid" property="cid" jdbcType="INTEGER" />
+		<result column="plu_id" property="pluId" jdbcType="INTEGER" />
+		<result column="plu_number" property="pluNumber" jdbcType="INTEGER" />
+		<result column="order_time" property="orderTime" jdbcType="TIMESTAMP" />
+		<result column="deliver_address" property="deliverAddress" jdbcType="VARCHAR" />
+		<result column="deliver_phone" property="deliverPhone" jdbcType="VARCHAR" />
+		<result column="deliver_name" property="deliverName" jdbcType="VARCHAR" />
+		<result column="deliver_status" property="deliverStatus" jdbcType="TINYINT" />
+		<result column="audit_id" property="auditId" jdbcType="INTEGER" />
+		<result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
+		<result column="rmk" property="rmk" jdbcType="VARCHAR" />
+		<result column="order_state" property="orderState" jdbcType="TINYINT" />
+		<result column="deliver_rmk" property="deliverRmk" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, uid, cid, plu_id, plu_number, order_time, deliver_address,
+		deliver_phone, deliver_name,
+		deliver_status, audit_id, audit_time, rmk, order_state, deliver_rmk
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_plu_order
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_plu_order
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.cn.tianxia.api.project.v2.PluOrderEntity">
+		insert into t_plu_order (id, uid, cid,
+		plu_id, plu_number, order_time,
+		deliver_address, deliver_phone, deliver_name,
+		deliver_status, audit_id, audit_time,
+		rmk, order_state, deliver_rmk
+		)
+		values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER},
+		#{cid,jdbcType=INTEGER},
+		#{pluId,jdbcType=INTEGER}, #{pluNumber,jdbcType=INTEGER}, #{orderTime,jdbcType=TIMESTAMP},
+		#{deliverAddress,jdbcType=VARCHAR}, #{deliverPhone,jdbcType=VARCHAR},
+		#{deliverName,jdbcType=VARCHAR},
+		#{deliverStatus,jdbcType=TINYINT}, #{auditId,jdbcType=INTEGER}, #{auditTime,jdbcType=TIMESTAMP},
+		#{rmk,jdbcType=VARCHAR}, #{orderState,jdbcType=TINYINT},
+		#{deliverRmk,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.PluOrderEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into t_plu_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="cid != null">
+				cid,
+			</if>
+			<if test="pluId != null">
+				plu_id,
+			</if>
+			<if test="pluNumber != null">
+				plu_number,
+			</if>
+			<if test="orderTime != null">
+				order_time,
+			</if>
+			<if test="deliverAddress != null">
+				deliver_address,
+			</if>
+			<if test="deliverPhone != null">
+				deliver_phone,
+			</if>
+			<if test="deliverName != null">
+				deliver_name,
+			</if>
+			<if test="deliverStatus != null">
+				deliver_status,
+			</if>
+			<if test="auditId != null">
+				audit_id,
+			</if>
+			<if test="auditTime != null">
+				audit_time,
+			</if>
+			<if test="rmk != null">
+				rmk,
+			</if>
+			<if test="orderState != null">
+				order_state,
+			</if>
+			<if test="deliverRmk != null">
+				deliver_rmk,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="cid != null">
+				#{cid,jdbcType=INTEGER},
+			</if>
+			<if test="pluId != null">
+				#{pluId,jdbcType=INTEGER},
+			</if>
+			<if test="pluNumber != null">
+				#{pluNumber,jdbcType=INTEGER},
+			</if>
+			<if test="orderTime != null">
+				#{orderTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deliverAddress != null">
+				#{deliverAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="deliverPhone != null">
+				#{deliverPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="deliverName != null">
+				#{deliverName,jdbcType=VARCHAR},
+			</if>
+			<if test="deliverStatus != null">
+				#{deliverStatus,jdbcType=TINYINT},
+			</if>
+			<if test="auditId != null">
+				#{auditId,jdbcType=INTEGER},
+			</if>
+			<if test="auditTime != null">
+				#{auditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="rmk != null">
+				#{rmk,jdbcType=VARCHAR},
+			</if>
+			<if test="orderState != null">
+				#{orderState,jdbcType=TINYINT},
+			</if>
+			<if test="deliverRmk != null">
+				#{deliverRmk,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.PluOrderEntity">
+		update t_plu_order
+		<set>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=INTEGER},
+			</if>
+			<if test="cid != null">
+				cid = #{cid,jdbcType=INTEGER},
+			</if>
+			<if test="pluId != null">
+				plu_id = #{pluId,jdbcType=INTEGER},
+			</if>
+			<if test="pluNumber != null">
+				plu_number = #{pluNumber,jdbcType=INTEGER},
+			</if>
+			<if test="orderTime != null">
+				order_time = #{orderTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="deliverAddress != null">
+				deliver_address = #{deliverAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="deliverPhone != null">
+				deliver_phone = #{deliverPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="deliverName != null">
+				deliver_name = #{deliverName,jdbcType=VARCHAR},
+			</if>
+			<if test="deliverStatus != null">
+				deliver_status = #{deliverStatus,jdbcType=TINYINT},
+			</if>
+			<if test="auditId != null">
+				audit_id = #{auditId,jdbcType=INTEGER},
+			</if>
+			<if test="auditTime != null">
+				audit_time = #{auditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="rmk != null">
+				rmk = #{rmk,jdbcType=VARCHAR},
+			</if>
+			<if test="orderState != null">
+				order_state = #{orderState,jdbcType=TINYINT},
+			</if>
+			<if test="deliverRmk != null">
+				deliver_rmk = #{deliverRmk,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.PluOrderEntity">
+		update t_plu_order
+		set uid = #{uid,jdbcType=INTEGER},
+		cid = #{cid,jdbcType=INTEGER},
+		plu_id = #{pluId,jdbcType=INTEGER},
+		plu_number = #{pluNumber,jdbcType=INTEGER},
+		order_time = #{orderTime,jdbcType=TIMESTAMP},
+		deliver_address = #{deliverAddress,jdbcType=VARCHAR},
+		deliver_phone = #{deliverPhone,jdbcType=VARCHAR},
+		deliver_name = #{deliverName,jdbcType=VARCHAR},
+		deliver_status = #{deliverStatus,jdbcType=TINYINT},
+		audit_id = #{auditId,jdbcType=INTEGER},
+		audit_time = #{auditTime,jdbcType=TIMESTAMP},
+		rmk = #{rmk,jdbcType=VARCHAR},
+		order_state = #{orderState,jdbcType=TINYINT},
+		deliver_rmk = #{deliverRmk,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="getHistoryOrder" resultMap="BaseResultMap">
+		SELECT
+		o.id, o.uid, o.cid, o.plu_id as pluId, o.plu_number as pluNumber, o.order_time as orderTime, o.deliver_address as deliverAddress,
+		o.deliver_phone as deliverPhone, o.deliver_name as deliverName,o.deliver_status as deliverStatus, o.audit_id as auditId, 
+		o.audit_time as auditTime, o.rmk, o.order_state as orderState, o.deliver_rmk as deliverRmk,i.pluname,i.price
+		FROM t_plu_order o
+		LEFT JOIN t_plu_info i on i.id=o.plu_id
+		WHERE o.uid = #{uid}
+		<if test="bdate != null and edate != null">
+		 AND o.order_time BETWEEN #{bdate} AND #{edate}
+		</if>
+		ORDER BY o.order_time DESC
+		LIMIT ${(pageNo-1)*pageSize},#{pageSize}
+	</select>
+
+	<select id="countHistoryOrder" resultType="java.lang.Integer">
+		SELECT
+		 count(1)
+		FROM t_plu_order o
+		LEFT JOIN t_plu_info i on i.id=o.plu_id
+		WHERE o.uid = #{uid}
+		<if test="bdate != null and edate != null">
+		 AND o.order_time BETWEEN #{bdate} AND #{edate}
+		</if>
+		ORDER BY o.order_time DESC
+	</select>
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.ContactConfigDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.ContactConfigEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="wechat" property="wechat" jdbcType="VARCHAR" />
+    <result column="qqcode" property="qqcode" jdbcType="VARCHAR" />
+    <result column="wechatcode" property="wechatcode" jdbcType="VARCHAR" />
+    <result column="customer" property="customer" jdbcType="VARCHAR" />
+    <result column="website" property="website" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cagent, qq, wechat, qqcode, wechatcode, customer, website
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_contact_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_contact_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.ContactConfigEntity" >
+    insert into t_contact_config (id, cagent, qq, 
+      wechat, qqcode, wechatcode, 
+      customer, website)
+    values (#{id,jdbcType=INTEGER}, #{cagent,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, 
+      #{wechat,jdbcType=VARCHAR}, #{qqcode,jdbcType=VARCHAR}, #{wechatcode,jdbcType=VARCHAR}, 
+      #{customer,jdbcType=VARCHAR}, #{website,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.ContactConfigEntity" >
+    insert into t_contact_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cagent != null" >
+        cagent,
+      </if>
+      <if test="qq != null" >
+        qq,
+      </if>
+      <if test="wechat != null" >
+        wechat,
+      </if>
+      <if test="qqcode != null" >
+        qqcode,
+      </if>
+      <if test="wechatcode != null" >
+        wechatcode,
+      </if>
+      <if test="customer != null" >
+        customer,
+      </if>
+      <if test="website != null" >
+        website,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cagent != null" >
+        #{cagent,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null" >
+        #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="qqcode != null" >
+        #{qqcode,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatcode != null" >
+        #{wechatcode,jdbcType=VARCHAR},
+      </if>
+      <if test="customer != null" >
+        #{customer,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        #{website,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.ContactConfigEntity" >
+    update t_contact_config
+    <set >
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null" >
+        wechat = #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="qqcode != null" >
+        qqcode = #{qqcode,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatcode != null" >
+        wechatcode = #{wechatcode,jdbcType=VARCHAR},
+      </if>
+      <if test="customer != null" >
+        customer = #{customer,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        website = #{website,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.ContactConfigEntity" >
+    update t_contact_config
+    set cagent = #{cagent,jdbcType=VARCHAR},
+      qq = #{qq,jdbcType=VARCHAR},
+      wechat = #{wechat,jdbcType=VARCHAR},
+      qqcode = #{qqcode,jdbcType=VARCHAR},
+      wechatcode = #{wechatcode,jdbcType=VARCHAR},
+      customer = #{customer,jdbcType=VARCHAR},
+      website = #{website,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByCagent" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_contact_config
+    where cagent=#{cagent} group by cagent
+  </select>
+</mapper>

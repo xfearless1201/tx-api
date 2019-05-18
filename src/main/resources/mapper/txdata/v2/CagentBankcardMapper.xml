@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.CagentBankcardDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.CagentBankcardEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="cardno" property="cardno" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="bankname" property="bankname" jdbcType="VARCHAR" />
+    <result column="bankcode" property="bankcode" jdbcType="VARCHAR" />
+    <result column="bankaddress" property="bankaddress" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="minquota" property="minquota" jdbcType="REAL" />
+    <result column="maxquota" property="maxquota" jdbcType="REAL" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cid, cardno, realname, bankname, bankcode, bankaddress, type, status, minquota, 
+    maxquota, updatetime, uid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cagent_bankcard
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_cagent_bankcard
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.CagentBankcardEntity" >
+    insert into t_cagent_bankcard (id, cid, cardno, 
+      realname, bankname, bankcode, 
+      bankaddress, type, status, 
+      minquota, maxquota, updatetime, 
+      uid)
+    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{cardno,jdbcType=VARCHAR}, 
+      #{realname,jdbcType=VARCHAR}, #{bankname,jdbcType=VARCHAR}, #{bankcode,jdbcType=VARCHAR}, 
+      #{bankaddress,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{minquota,jdbcType=REAL}, #{maxquota,jdbcType=REAL}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{uid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.CagentBankcardEntity" >
+    insert into t_cagent_bankcard
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="cardno != null" >
+        cardno,
+      </if>
+      <if test="realname != null" >
+        realname,
+      </if>
+      <if test="bankname != null" >
+        bankname,
+      </if>
+      <if test="bankcode != null" >
+        bankcode,
+      </if>
+      <if test="bankaddress != null" >
+        bankaddress,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="minquota != null" >
+        minquota,
+      </if>
+      <if test="maxquota != null" >
+        maxquota,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="cardno != null" >
+        #{cardno,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="bankname != null" >
+        #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcode != null" >
+        #{bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankaddress != null" >
+        #{bankaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="minquota != null" >
+        #{minquota,jdbcType=REAL},
+      </if>
+      <if test="maxquota != null" >
+        #{maxquota,jdbcType=REAL},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.CagentBankcardEntity" >
+    update t_cagent_bankcard
+    <set >
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="cardno != null" >
+        cardno = #{cardno,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="bankname != null" >
+        bankname = #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcode != null" >
+        bankcode = #{bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankaddress != null" >
+        bankaddress = #{bankaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="minquota != null" >
+        minquota = #{minquota,jdbcType=REAL},
+      </if>
+      <if test="maxquota != null" >
+        maxquota = #{maxquota,jdbcType=REAL},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.CagentBankcardEntity" >
+    update t_cagent_bankcard
+    set cid = #{cid,jdbcType=INTEGER},
+      cardno = #{cardno,jdbcType=VARCHAR},
+      realname = #{realname,jdbcType=VARCHAR},
+      bankname = #{bankname,jdbcType=VARCHAR},
+      bankcode = #{bankcode,jdbcType=VARCHAR},
+      bankaddress = #{bankaddress,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      minquota = #{minquota,jdbcType=REAL},
+      maxquota = #{maxquota,jdbcType=REAL},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      uid = #{uid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 查询用户在平台上绑定的银行卡信息 -->
+  <select id="selectUserBankRemittanceInfo" resultMap="BaseResultMap">
+    SELECT
+    	c.id, c.cid, c.cardno, c.realname, c.bankname, c.bankcode, c.bankaddress, c.type,
+    	c.status, c.minquota, c.maxquota, c.updatetime, c.uid,u.cagent
+    FROM t_user u JOIN t_user_type ut ON u.type_id=ut.id
+	JOIN t_cagent_bankcard c ON ut.bankCard_id=c.id
+	WHERE c.type=0 and c.status=0 and u.uid=#{uid}
+  </select>
+  
+</mapper>

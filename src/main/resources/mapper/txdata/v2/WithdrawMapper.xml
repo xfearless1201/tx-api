@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.WithdrawDao">
+	<resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.WithdrawEntity">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="cid" property="cid" jdbcType="INTEGER" />
+		<result column="uid" property="uid" jdbcType="INTEGER" />
+		<result column="billNo" property="billno" jdbcType="VARCHAR" />
+		<result column="amount" property="amount" jdbcType="REAL" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="bankname" property="bankname" jdbcType="VARCHAR" />
+		<result column="cardNo" property="cardno" jdbcType="VARCHAR" />
+		<result column="totaltimes" property="totaltimes" jdbcType="INTEGER" />
+		<result column="todaytimes" property="todaytimes" jdbcType="INTEGER" />
+		<result column="poundage" property="poundage" jdbcType="REAL" />
+		<result column="administrative_fee" property="administrativeFee" jdbcType="REAL" />
+		<result column="amount_paid" property="amountPaid" jdbcType="REAL" />
+		<result column="vuid" property="vuid" jdbcType="INTEGER" />
+		<result column="vtime" property="vtime" jdbcType="TIMESTAMP" />
+		<result column="rmk" property="rmk" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="marking_quantity" property="markingQuantity" jdbcType="DOUBLE" />
+		<result column="user_quantity" property="userQuantity" jdbcType="DOUBLE" />
+		<result column="issued_name" property="issuedName" jdbcType="VARCHAR" />
+		<result column="issued_time" property="issuedTime" jdbcType="TIMESTAMP" />
+		<result column="issued_payer_id" property="issuedPayerId" jdbcType="VARCHAR" />
+		<result column="issued_status" property="issuedStatus" jdbcType="INTEGER" />
+		<result column="payer_result" property="payerResult" jdbcType="VARCHAR" />
+		<result column="issued_ip" property="issuedIp" jdbcType="VARCHAR" />
+		<result column="address" property="cardAddress" jdbcType="VARCHAR" />
+		<result column="cagent" property="cagent" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, cid, uid, billNo, amount, status, add_time, username, bankname,
+		cardNo, totaltimes,
+		todaytimes, poundage, administrative_fee, amount_paid, vuid, vtime, rmk, remark,
+		marking_quantity, user_quantity, issued_name, issued_time,
+		issued_payer_id, issued_status,
+		payer_result, issued_ip, address, cagent
+	</sql>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_withdraw
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_withdraw
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.cn.tianxia.api.project.v2.WithdrawEntity">
+		insert into t_withdraw (id, cid, uid,
+		billNo, amount, status,
+		add_time, username, bankname,
+		cardNo, totaltimes, todaytimes,
+		poundage, administrative_fee, amount_paid,
+		vuid, vtime, rmk,
+		remark, marking_quantity, user_quantity,
+		issued_name, issued_time, issued_payer_id,
+		issued_status, payer_result, issued_ip,
+		address, cagent)
+		values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER},
+		#{uid,jdbcType=INTEGER},
+		#{billno,jdbcType=VARCHAR}, #{amount,jdbcType=REAL}, #{status,jdbcType=VARCHAR},
+		#{addTime,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR},
+		#{bankname,jdbcType=VARCHAR},
+		#{cardno,jdbcType=VARCHAR}, #{totaltimes,jdbcType=INTEGER}, #{todaytimes,jdbcType=INTEGER},
+		#{poundage,jdbcType=REAL}, #{administrativeFee,jdbcType=REAL},
+		#{amountPaid,jdbcType=REAL},
+		#{vuid,jdbcType=INTEGER}, #{vtime,jdbcType=TIMESTAMP}, #{rmk,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR}, #{markingQuantity,jdbcType=DOUBLE},
+		#{userQuantity,jdbcType=DOUBLE},
+		#{issuedName,jdbcType=VARCHAR}, #{issuedTime,jdbcType=TIMESTAMP}, #{issuedPayerId,jdbcType=VARCHAR},
+		#{issuedStatus,jdbcType=INTEGER}, #{payerResult,jdbcType=VARCHAR},
+		#{issuedIp,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR}, #{cagent,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.WithdrawEntity">
+		insert into t_withdraw
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="cid != null">
+				cid,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="billno != null">
+				billNo,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="bankname != null">
+				bankname,
+			</if>
+			<if test="cardno != null">
+				cardNo,
+			</if>
+			<if test="totaltimes != null">
+				totaltimes,
+			</if>
+			<if test="todaytimes != null">
+				todaytimes,
+			</if>
+			<if test="poundage != null">
+				poundage,
+			</if>
+			<if test="administrativeFee != null">
+				administrative_fee,
+			</if>
+			<if test="amountPaid != null">
+				amount_paid,
+			</if>
+			<if test="vuid != null">
+				vuid,
+			</if>
+			<if test="vtime != null">
+				vtime,
+			</if>
+			<if test="rmk != null">
+				rmk,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="markingQuantity != null">
+				marking_quantity,
+			</if>
+			<if test="userQuantity != null">
+				user_quantity,
+			</if>
+			<if test="issuedName != null">
+				issued_name,
+			</if>
+			<if test="issuedTime != null">
+				issued_time,
+			</if>
+			<if test="issuedPayerId != null">
+				issued_payer_id,
+			</if>
+			<if test="issuedStatus != null">
+				issued_status,
+			</if>
+			<if test="payerResult != null">
+				payer_result,
+			</if>
+			<if test="issuedIp != null">
+				issued_ip,
+			</if>
+			<if test="cardAddress != null">
+				address,
+			</if>
+			<if test="cagent != null">
+				cagent,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="cid != null">
+				#{cid,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="billno != null">
+				#{billno,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=REAL},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="addTime != null">
+				#{addTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				#{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="cardno != null">
+				#{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="totaltimes != null">
+				#{totaltimes,jdbcType=INTEGER},
+			</if>
+			<if test="todaytimes != null">
+				#{todaytimes,jdbcType=INTEGER},
+			</if>
+			<if test="poundage != null">
+				#{poundage,jdbcType=REAL},
+			</if>
+			<if test="administrativeFee != null">
+				#{administrativeFee,jdbcType=REAL},
+			</if>
+			<if test="amountPaid != null">
+				#{amountPaid,jdbcType=REAL},
+			</if>
+			<if test="vuid != null">
+				#{vuid,jdbcType=INTEGER},
+			</if>
+			<if test="vtime != null">
+				#{vtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="rmk != null">
+				#{rmk,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="markingQuantity != null">
+				#{markingQuantity,jdbcType=DOUBLE},
+			</if>
+			<if test="userQuantity != null">
+				#{userQuantity,jdbcType=DOUBLE},
+			</if>
+			<if test="issuedName != null">
+				#{issuedName,jdbcType=VARCHAR},
+			</if>
+			<if test="issuedTime != null">
+				#{issuedTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="issuedPayerId != null">
+				#{issuedPayerId,jdbcType=VARCHAR},
+			</if>
+			<if test="issuedStatus != null">
+				#{issuedStatus,jdbcType=INTEGER},
+			</if>
+			<if test="payerResult != null">
+				#{payerResult,jdbcType=VARCHAR},
+			</if>
+			<if test="issuedIp != null">
+				#{issuedIp,jdbcType=VARCHAR},
+			</if>
+			<if test="cardAddress != null">
+				#{cardAddress},
+			</if>
+			<if test="cagent != null">
+				#{cagent,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.WithdrawEntity">
+		update t_withdraw
+		<set>
+			<if test="cid != null">
+				cid = #{cid,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=INTEGER},
+			</if>
+			<if test="billno != null">
+				billNo = #{billno,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=REAL},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="username != null">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="bankname != null">
+				bankname = #{bankname,jdbcType=VARCHAR},
+			</if>
+			<if test="cardno != null">
+				cardNo = #{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="totaltimes != null">
+				totaltimes = #{totaltimes,jdbcType=INTEGER},
+			</if>
+			<if test="todaytimes != null">
+				todaytimes = #{todaytimes,jdbcType=INTEGER},
+			</if>
+			<if test="poundage != null">
+				poundage = #{poundage,jdbcType=REAL},
+			</if>
+			<if test="administrativeFee != null">
+				administrative_fee = #{administrativeFee,jdbcType=REAL},
+			</if>
+			<if test="amountPaid != null">
+				amount_paid = #{amountPaid,jdbcType=REAL},
+			</if>
+			<if test="vuid != null">
+				vuid = #{vuid,jdbcType=INTEGER},
+			</if>
+			<if test="vtime != null">
+				vtime = #{vtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="rmk != null">
+				rmk = #{rmk,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="markingQuantity != null">
+				marking_quantity = #{markingQuantity,jdbcType=DOUBLE},
+			</if>
+			<if test="userQuantity != null">
+				user_quantity = #{userQuantity,jdbcType=DOUBLE},
+			</if>
+			<if test="issuedName != null">
+				issued_name = #{issuedName,jdbcType=VARCHAR},
+			</if>
+			<if test="issuedTime != null">
+				issued_time = #{issuedTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="issuedPayerId != null">
+				issued_payer_id = #{issuedPayerId,jdbcType=VARCHAR},
+			</if>
+			<if test="issuedStatus != null">
+				issued_status = #{issuedStatus,jdbcType=INTEGER},
+			</if>
+			<if test="payerResult != null">
+				payer_result = #{payerResult,jdbcType=VARCHAR},
+			</if>
+			<if test="issuedIp != null">
+				issued_ip = #{issuedIp,jdbcType=VARCHAR},
+			</if>
+			<if test="cardAddress != null">
+				address = #{cardAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="cagent != null">
+				cagent = #{cagent,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.WithdrawEntity">
+		update t_withdraw
+		set cid = #{cid,jdbcType=INTEGER},
+		uid = #{uid,jdbcType=INTEGER},
+		billNo = #{billno,jdbcType=VARCHAR},
+		amount = #{amount,jdbcType=REAL},
+		status = #{status,jdbcType=VARCHAR},
+		add_time = #{addTime,jdbcType=TIMESTAMP},
+		username = #{username,jdbcType=VARCHAR},
+		bankname = #{bankname,jdbcType=VARCHAR},
+		cardNo = #{cardno,jdbcType=VARCHAR},
+		totaltimes = #{totaltimes,jdbcType=INTEGER},
+		todaytimes = #{todaytimes,jdbcType=INTEGER},
+		poundage = #{poundage,jdbcType=REAL},
+		administrative_fee = #{administrativeFee,jdbcType=REAL},
+		amount_paid = #{amountPaid,jdbcType=REAL},
+		vuid = #{vuid,jdbcType=INTEGER},
+		vtime = #{vtime,jdbcType=TIMESTAMP},
+		rmk = #{rmk,jdbcType=VARCHAR},
+		remark = #{remark,jdbcType=VARCHAR},
+		marking_quantity = #{markingQuantity,jdbcType=DOUBLE},
+		user_quantity = #{userQuantity,jdbcType=DOUBLE},
+		issued_name = #{issuedName,jdbcType=VARCHAR},
+		issued_time = #{issuedTime,jdbcType=TIMESTAMP},
+		issued_payer_id = #{issuedPayerId,jdbcType=VARCHAR},
+		issued_status = #{issuedStatus,jdbcType=INTEGER},
+		payer_result = #{payerResult,jdbcType=VARCHAR},
+		issued_ip = #{issuedIp,jdbcType=VARCHAR},
+		address = #{cardAddress,jdbcType=VARCHAR},
+		cagent = #{cagent,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getUserUnwithDrawCounts" resultType="Integer">
+		SELECT COUNT(1) FROM t_withdraw WHERE status=0 AND uid=#{uid}
+	</select>
+
+	<!-- 查询用户打码量 -->
+	<select id="selectUserQuantityByid" resultType="java.util.Map">
+		SELECT marking_quantity,user_quantity FROM t_user_quantity WHERE uid=#{uid}
+	</select>
+
+	
+	<!-- 查询用户提现次数 -->
+	<select id="selectWithDrawTotaltimes" resultType="java.util.Map">
+		SELECT
+		(SELECT COUNT(1) FROM t_withdraw WHERE uid=#{uid}) as totalCounts,
+		(SELECT COUNT(1) FROM t_withdraw 
+			WHERE uid=#{uid}
+			AND add_time BETWEEN date_format(NOW(),'%y-%m-%d 00:00:00') 
+			AND DATE_FORMAT(NOW(),'%y-%m-%d 23:59:59')
+		) AS todayCounts
+	</select>
+	
+	<!--  分页查询用户提现订单记录 -->
+	<select id="findAllByPage" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM t_withdraw 
+		WHERE uid=#{uid} AND add_time BETWEEN #{bdate} AND #{edate}
+		<if test="status != null and status !=''">
+			AND status = #{status}
+		</if>
+		ORDER BY add_time DESC
+		LIMIT ${(pageNo-1)*pageSize},#{pageSize}
+	</select>
+	
+	<select id="selectWithDrawCount" resultType="java.util.Map">
+		SELECT
+			count(1) cnt,ifnull(sum(amount),0) total
+		FROM t_withdraw
+		WHERE uid=#{uid} AND add_time BETWEEN #{bdate} AND #{edate}
+		<if test="status != null and status !=''">
+			AND status = #{status}
+		</if>
+	</select>
+
+	<select id="selectWithdrawConfig" parameterType="java.lang.String"
+			resultType="java.util.Map">
+		SELECT
+		marking_quantity,
+		user_quantity,
+		winAmount,
+		user_winAmount,
+		t.compulsory_withdrawal_fee AS withdrawConfig,
+		t.withdraw_fee,
+		t.withdraw_manage_fee,
+		free_withdraw_time,
+		(SELECT COUNT(1) FROM t_withdraw WHERE uid=#{uid} AND add_time &gt;
+		date_format(NOW(),'%y-%m-%d 0') AND  status =1  ) as todaytimes
+		FROM
+		t_user_quantity tp
+		LEFT JOIN t_pay_withdraw_config t
+		ON t.cid = tp.cid
+		WHERE tp.uid = #{uid}
+	</select>
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.PluInventoryDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.PluInventoryEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pluid" property="pluid" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="freeze_num" property="freezeNum" jdbcType="INTEGER" />
+    <result column="uptime" property="uptime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pluid, cid, num, freeze_num, uptime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_plu_inventory
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_plu_inventory
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.PluInventoryEntity" >
+    insert into t_plu_inventory (id, pluid, cid, 
+      num, freeze_num, uptime
+      )
+    values (#{id,jdbcType=INTEGER}, #{pluid,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, 
+      #{num,jdbcType=INTEGER}, #{freezeNum,jdbcType=INTEGER}, #{uptime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.PluInventoryEntity" >
+    insert into t_plu_inventory
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pluid != null" >
+        pluid,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="freezeNum != null" >
+        freeze_num,
+      </if>
+      <if test="uptime != null" >
+        uptime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pluid != null" >
+        #{pluid,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="freezeNum != null" >
+        #{freezeNum,jdbcType=INTEGER},
+      </if>
+      <if test="uptime != null" >
+        #{uptime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.PluInventoryEntity" >
+    update t_plu_inventory
+    <set >
+      <if test="pluid != null" >
+        pluid = #{pluid,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="freezeNum != null" >
+        freeze_num = #{freezeNum,jdbcType=INTEGER},
+      </if>
+      <if test="uptime != null" >
+        uptime = #{uptime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.PluInventoryEntity" >
+    update t_plu_inventory
+    set pluid = #{pluid,jdbcType=INTEGER},
+      cid = #{cid,jdbcType=INTEGER},
+      num = #{num,jdbcType=INTEGER},
+      freeze_num = #{freezeNum,jdbcType=INTEGER},
+      uptime = #{uptime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPluid" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_plu_inventory
+    where pluid = #{pluid} and cid=#{cid} 
+  </select>
+  
+</mapper>

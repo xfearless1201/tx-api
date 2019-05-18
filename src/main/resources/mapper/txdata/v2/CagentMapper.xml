@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.CagentDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.CagentEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="line_cost" property="lineCost" jdbcType="REAL" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="up_line_time" property="upLineTime" jdbcType="TIMESTAMP" />
+    <result column="expiration_time" property="expirationTime" jdbcType="TIMESTAMP" />
+    <result column="domain" property="domain" jdbcType="VARCHAR" />
+    <result column="mobile_domain" property="mobileDomain" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="storedvalue" property="storedvalue" jdbcType="REAL" />
+    <result column="storedratio" property="storedratio" jdbcType="REAL" />
+    <result column="announcement" property="announcement" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, line_cost, cagent, name, type, rmk, addtime, up_line_time, expiration_time, 
+    domain, mobile_domain, status, storedvalue, storedratio, announcement
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cagent
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_cagent
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.CagentEntity" >
+    insert into t_cagent (id, code, line_cost, 
+      cagent, name, type, 
+      rmk, addtime, up_line_time, 
+      expiration_time, domain, mobile_domain, 
+      status, storedvalue, storedratio, 
+      announcement)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{lineCost,jdbcType=REAL}, 
+      #{cagent,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{rmk,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, #{upLineTime,jdbcType=TIMESTAMP}, 
+      #{expirationTime,jdbcType=TIMESTAMP}, #{domain,jdbcType=VARCHAR}, #{mobileDomain,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{storedvalue,jdbcType=REAL}, #{storedratio,jdbcType=REAL}, 
+      #{announcement,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.CagentEntity" >
+    insert into t_cagent
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="lineCost != null" >
+        line_cost,
+      </if>
+      <if test="cagent != null" >
+        cagent,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="rmk != null" >
+        rmk,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="upLineTime != null" >
+        up_line_time,
+      </if>
+      <if test="expirationTime != null" >
+        expiration_time,
+      </if>
+      <if test="domain != null" >
+        domain,
+      </if>
+      <if test="mobileDomain != null" >
+        mobile_domain,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="storedvalue != null" >
+        storedvalue,
+      </if>
+      <if test="storedratio != null" >
+        storedratio,
+      </if>
+      <if test="announcement != null" >
+        announcement,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="lineCost != null" >
+        #{lineCost,jdbcType=REAL},
+      </if>
+      <if test="cagent != null" >
+        #{cagent,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="rmk != null" >
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upLineTime != null" >
+        #{upLineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expirationTime != null" >
+        #{expirationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="domain != null" >
+        #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileDomain != null" >
+        #{mobileDomain,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="storedvalue != null" >
+        #{storedvalue,jdbcType=REAL},
+      </if>
+      <if test="storedratio != null" >
+        #{storedratio,jdbcType=REAL},
+      </if>
+      <if test="announcement != null" >
+        #{announcement,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.CagentEntity" >
+    update t_cagent
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="lineCost != null" >
+        line_cost = #{lineCost,jdbcType=REAL},
+      </if>
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="rmk != null" >
+        rmk = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upLineTime != null" >
+        up_line_time = #{upLineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expirationTime != null" >
+        expiration_time = #{expirationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="domain != null" >
+        domain = #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileDomain != null" >
+        mobile_domain = #{mobileDomain,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="storedvalue != null" >
+        storedvalue = #{storedvalue,jdbcType=REAL},
+      </if>
+      <if test="storedratio != null" >
+        storedratio = #{storedratio,jdbcType=REAL},
+      </if>
+      <if test="announcement != null" >
+        announcement = #{announcement,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.CagentEntity" >
+    update t_cagent
+    set code = #{code,jdbcType=VARCHAR},
+      line_cost = #{lineCost,jdbcType=REAL},
+      cagent = #{cagent,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      rmk = #{rmk,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=TIMESTAMP},
+      up_line_time = #{upLineTime,jdbcType=TIMESTAMP},
+      expiration_time = #{expirationTime,jdbcType=TIMESTAMP},
+      domain = #{domain,jdbcType=VARCHAR},
+      mobile_domain = #{mobileDomain,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      storedvalue = #{storedvalue,jdbcType=REAL},
+      storedratio = #{storedratio,jdbcType=REAL},
+      announcement = #{announcement,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByCagent" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_cagent
+    where cagent=#{cagent}
+  </select>
+
+  <select id="selectByRefererUrl" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_cagent
+    where cagent in (select name from t_referer_url where domain = #{refererUrl})
+  </select>
+</mapper>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.tianxia.api.domain.txdata.PlatFormConfigDao">
+	<!--根据key获取配置-->
+	<select id="getConfigByKey" resultType="com.cn.tianxia.api.project.PlatFormConfig">
+		select id,platform_key,platform_name,platform_config,platform_status from t_platform_config where platform_key = #{key}
+	</select>
+</mapper>

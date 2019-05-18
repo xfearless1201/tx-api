@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.GuagualeActivityDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.GuagualeActivityEntity" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="activity_id" property="activityId" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="minquota" property="minquota" jdbcType="BIGINT" />
+    <result column="maxquota" property="maxquota" jdbcType="BIGINT" />
+    <result column="user_money" property="userMoney" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, activity_id, title, description, minquota, maxquota,user_money,type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_guaguale_activity
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_guaguale_activity
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.GuagualeActivityEntity" >
+    insert into t_guaguale_activity (id, activity_id, title, 
+      description, minquota, maxquota,user_money,type
+      )
+    values (#{id,jdbcType=BIGINT}, #{activityId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{minquota,jdbcType=BIGINT}, #{maxquota,jdbcType=BIGINT}
+      #{userMoney,jdbcType=BIGINT},#{type,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.GuagualeActivityEntity" >
+    insert into t_guaguale_activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="activityId != null" >
+        activity_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="minquota != null" >
+        minquota,
+      </if>
+      <if test="maxquota != null" >
+        maxquota,
+      </if>
+      <if test="userMoney != null" >
+        user_money,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="activityId != null" >
+        #{activityId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="minquota != null" >
+        #{minquota,jdbcType=BIGINT},
+      </if>
+      <if test="maxquota != null" >
+        #{maxquota,jdbcType=BIGINT},
+      </if>
+      <if test="userMoney != null" >
+        #{userMoney,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.GuagualeActivityEntity" >
+    update t_guaguale_activity
+    <set >
+      <if test="activityId != null" >
+        activity_id = #{activityId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="minquota != null" >
+        minquota = #{minquota,jdbcType=BIGINT},
+      </if>
+      <if test="maxquota != null" >
+        maxquota = #{maxquota,jdbcType=BIGINT},
+      </if>
+      <if test="userMoney != null" >
+        user_money = #{userMoney,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.GuagualeActivityEntity" >
+    update t_guaguale_activity
+    set activity_id = #{activityId,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      minquota = #{minquota,jdbcType=BIGINT},
+      maxquota = #{maxquota,jdbcType=BIGINT},
+      user_money = #{userMoney,jdbcType=BIGINT},
+      type = #{type},
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="findOneByActivityId" resultMap="BaseResultMap">
+    select 
+    	<include refid="Base_Column_List" />
+    from t_guaguale_activity
+    where activity_id = #{activityId}
+  </select>
+  
+  <!-- 增加活动使用金额 -->
+  <update id="subtractActicityUserMoney">
+  	update t_guaguale_activity set user_money = user_money+#{userMoney} where activity_id=#{activityId}
+  </update>
+</mapper>

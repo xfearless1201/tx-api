@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.OnlineUserDao">
+	<resultMap id="BaseResultMap"
+		type="com.cn.tianxia.api.project.v2.OnlineUserEntity">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="uid" property="uid" jdbcType="BIGINT" />
+		<result column="cagent" property="cagent" jdbcType="VARCHAR" />
+		<result column="cid" property="cid" jdbcType="INTEGER" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="ip" property="ip" jdbcType="VARCHAR" />
+		<result column="login_time" property="loginTime" jdbcType="BIGINT" />
+		<result column="token" property="token" jdbcType="VARCHAR" />
+		<result column="refurl" property="refurl" jdbcType="VARCHAR" />
+		<result column="is_mobile" property="isMobile" jdbcType="TINYINT" />
+		<result column="logout_time" property="logoutTime" jdbcType="BIGINT" />
+		<result column="off_status" property="offStatus" jdbcType="TINYINT" />
+		<result column="is_off" property="isOff" jdbcType="TINYINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, uid, cagent, cid, address, ip,login_time, token, refurl, is_mobile,
+		logout_time,
+		off_status, is_off
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from t_online_user
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	
+	<select id="selectByUid" resultMap="BaseResultMap">
+		select
+			<include refid="Base_Column_List" />
+		from t_online_user
+		where uid = #{uid}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from t_online_user
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.cn.tianxia.api.project.v2.OnlineUserEntity">
+		insert into t_online_user (id, uid, cagent,
+		cid, address, ip, login_time,
+		token, refurl, is_mobile,
+		logout_time, off_status, is_off
+		)
+		values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT},
+		#{cagent,jdbcType=VARCHAR},
+		#{cid,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR},
+		#{loginTime,jdbcType=BIGINT},
+		#{token,jdbcType=VARCHAR}, #{refurl,jdbcType=VARCHAR}, #{isMobile,jdbcType=TINYINT},
+		#{logoutTime,jdbcType=BIGINT}, #{offStatus,jdbcType=TINYINT},
+		#{isOff,jdbcType=TINYINT}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.OnlineUserEntity">
+		insert into t_online_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="cagent != null">
+				cagent,
+			</if>
+			<if test="cid != null">
+				cid,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="ip != null">
+				ip,
+			</if>
+			<if test="loginTime != null">
+				login_time,
+			</if>
+			<if test="token != null">
+				token,
+			</if>
+			<if test="refurl != null">
+				refurl,
+			</if>
+			<if test="isMobile != null">
+				is_mobile,
+			</if>
+			<if test="logoutTime != null">
+				logout_time,
+			</if>
+			<if test="offStatus != null">
+				off_status,
+			</if>
+			<if test="isOff != null">
+				is_off,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=BIGINT},
+			</if>
+			<if test="cagent != null">
+				#{cagent,jdbcType=VARCHAR},
+			</if>
+			<if test="cid != null">
+				#{cid,jdbcType=INTEGER},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				#{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="loginTime != null">
+				#{loginTime,jdbcType=BIGINT},
+			</if>
+			<if test="token != null">
+				#{token,jdbcType=VARCHAR},
+			</if>
+			<if test="refurl != null">
+				#{refurl,jdbcType=VARCHAR},
+			</if>
+			<if test="isMobile != null">
+				#{isMobile,jdbcType=TINYINT},
+			</if>
+			<if test="logoutTime != null">
+				#{logoutTime,jdbcType=BIGINT},
+			</if>
+			<if test="offStatus != null">
+				#{offStatus,jdbcType=TINYINT},
+			</if>
+			<if test="isOff != null">
+				#{isOff,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.OnlineUserEntity">
+		update t_online_user
+		<set>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=BIGINT},
+			</if>
+			<if test="cagent != null">
+				cagent = #{cagent,jdbcType=VARCHAR},
+			</if>
+			<if test="cid != null">
+				cid = #{cid,jdbcType=INTEGER},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				ip = #{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="loginTime != null">
+				login_time = #{loginTime,jdbcType=BIGINT},
+			</if>
+			<if test="token != null">
+				token = #{token,jdbcType=VARCHAR},
+			</if>
+			<if test="refurl != null">
+				refurl = #{refurl,jdbcType=VARCHAR},
+			</if>
+			<if test="isMobile != null">
+				is_mobile = #{isMobile,jdbcType=TINYINT},
+			</if>
+			<if test="logoutTime != null">
+				logout_time = #{logoutTime,jdbcType=BIGINT},
+			</if>
+			<if test="offStatus != null">
+				off_status = #{offStatus,jdbcType=TINYINT},
+			</if>
+			<if test="isOff != null">
+				is_off = #{isOff,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.OnlineUserEntity">
+		update t_online_user
+		set uid = #{uid,jdbcType=BIGINT},
+		cagent = #{cagent,jdbcType=VARCHAR},
+		cid = #{cid,jdbcType=INTEGER},
+		address = #{address,jdbcType=VARCHAR},
+		ip = #{ip,jdbcType=VARCHAR},
+		login_time = #{loginTime,jdbcType=BIGINT},
+		token = #{token,jdbcType=VARCHAR},
+		refurl = #{refurl,jdbcType=VARCHAR},
+		is_mobile = #{isMobile,jdbcType=TINYINT},
+		logout_time = #{logoutTime,jdbcType=BIGINT},
+		off_status = #{offStatus,jdbcType=TINYINT},
+		is_off = #{isOff,jdbcType=TINYINT}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<insert id="insertOrUpdateOnlineUser" parameterType="com.cn.tianxia.api.project.v2.OnlineUserEntity">
+		insert into t_online_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="cagent != null">
+				cagent,
+			</if>
+			<if test="cid != null">
+				cid,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="ip != null">
+				ip,
+			</if>
+			<if test="loginTime != null">
+				login_time,
+			</if>
+			<if test="token != null">
+				token,
+			</if>
+			<if test="refurl != null">
+				refurl,
+			</if>
+			<if test="isMobile != null">
+				is_mobile,
+			</if>
+			<if test="logoutTime != null">
+				logout_time,
+			</if>
+			<if test="offStatus != null">
+				off_status,
+			</if>
+			<if test="isOff != null">
+				is_off
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null">
+				#{uid,jdbcType=BIGINT},
+			</if>
+			<if test="cagent != null">
+				#{cagent,jdbcType=VARCHAR},
+			</if>
+			<if test="cid != null">
+				#{cid,jdbcType=INTEGER},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				#{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="loginTime != null">
+				#{loginTime,jdbcType=BIGINT},
+			</if>
+			<if test="token != null">
+				#{token,jdbcType=VARCHAR},
+			</if>
+			<if test="refurl != null">
+				#{refurl,jdbcType=VARCHAR},
+			</if>
+			<if test="isMobile != null">
+				#{isMobile,jdbcType=TINYINT},
+			</if>
+			<if test="logoutTime != null">
+				#{logoutTime,jdbcType=BIGINT},
+			</if>
+			<if test="offStatus != null">
+				#{offStatus,jdbcType=TINYINT},
+			</if>
+			<if test="isOff != null">
+				#{isOff,jdbcType=TINYINT},
+			</if>
+		</trim>
+		ON DUPLICATE KEY UPDATE
+		<trim suffixOverrides=",">
+			<if test="uid != null">
+				uid = values(uid),
+			</if>
+			<if test="cagent != null">
+				cagent = values(cagent),
+			</if>
+			<if test="cid != null">
+				cid = values(cid),
+			</if>
+			<if test="address != null">
+				address = values(address),
+			</if>
+			<if test="ip != null">
+				ip = values(ip),
+			</if>
+			<if test="loginTime != null">
+				login_time = values(login_time),
+			</if>
+			<if test="token != null">
+				token = values(token),
+			</if>
+			<if test="refurl != null">
+				refurl = values(refurl),
+			</if>
+			<if test="isMobile != null">
+				is_mobile = values(is_mobile),
+			</if>
+			<if test="logoutTime != null">
+				logout_time = values(logout_time),
+			</if>
+			<if test="offStatus != null">
+				off_status = values(off_status),
+			</if>
+			<if test="isOff != null">
+				is_off = values(is_off),
+			</if>
+		</trim>
+
+	</insert>
+
+
+	<select id="findAllByCagent" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_online_user
+		where is_off=0
+		<if test="cagent != null">
+			and cagent = #{cagent}
+		</if>
+	</select>
+</mapper>

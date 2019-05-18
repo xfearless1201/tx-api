@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.TransferDao">
+	<resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.Transfer">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="uid" property="uid" jdbcType="INTEGER" />
+		<result column="billno" property="billno" jdbcType="VARCHAR" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="t_type" property="tType" jdbcType="VARCHAR" />
+		<result column="t_money" property="tMoney" jdbcType="REAL" />
+		<result column="old_money" property="oldMoney" jdbcType="REAL" />
+		<result column="new_money" property="newMoney" jdbcType="REAL" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="t_time" property="tTime" jdbcType="TIMESTAMP" />
+		<result column="ip" property="ip" jdbcType="VARCHAR" />
+		<result column="result" property="result" jdbcType="VARCHAR" />
+		<result column="cagent" property="cagent" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, uid, billno, username, t_type, t_money, old_money, new_money, type,
+		t_time, ip,
+		result, cagent
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_transfer
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_transfer
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.cn.tianxia.api.project.Transfer">
+		insert into t_transfer (id, uid, billno,
+		username, t_type, t_money,
+		old_money, new_money, type,
+		t_time, ip, result,
+		cagent)
+		values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER},
+		#{billno,jdbcType=VARCHAR},
+		#{username,jdbcType=VARCHAR}, #{tType,jdbcType=VARCHAR}, #{tMoney,jdbcType=REAL},
+		#{oldMoney,jdbcType=REAL}, #{newMoney,jdbcType=REAL},
+		#{type,jdbcType=VARCHAR},
+		now(),
+		#{cagent,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.cn.tianxia.api.project.Transfer">
+		insert into t_transfer
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="billno != null">
+				billno,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="tType != null">
+				t_type,
+			</if>
+			<if test="tMoney != null">
+				t_money,
+			</if>
+			<if test="oldMoney != null">
+				old_money,
+			</if>
+			<if test="newMoney != null">
+				new_money,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+
+			<if test="tTime != null">
+				t_time,
+			</if>
+
+			<if test="ip != null">
+				ip,
+			</if>
+			<if test="result != null">
+				result,
+			</if>
+			<if test="cagent != null">
+				cagent,
+			</if>
+			<!-- <if test="status != null">
+				status,
+			</if>
+			<if test="cid != null">
+				cid,
+			</if>
+			<if test="description != null">
+				description,
+			</if> -->
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="billno != null">
+				#{billno,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="tType != null">
+				#{tType,jdbcType=VARCHAR},
+			</if>
+			<if test="tMoney != null">
+				#{tMoney,jdbcType=REAL},
+			</if>
+			<if test="oldMoney != null">
+				#{oldMoney,jdbcType=REAL},
+			</if>
+			<if test="newMoney != null">
+				#{newMoney,jdbcType=REAL},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="tTime != null">
+				#{tTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ip != null">
+				INET_ATON(#{ip,jdbcType=VARCHAR}),
+			</if>
+			<if test="result != null">
+				#{result,jdbcType=VARCHAR},
+			</if>
+			<if test="cagent != null">
+				#{cagent,jdbcType=VARCHAR},
+			</if>
+			<!-- <if test="status != null">
+				#{status},
+			</if>
+			<if test="cid != null">
+				#{cid},
+			</if>
+			<if test="description != null">
+				#{description},
+			</if> -->
+		</trim>
+	</insert>
+	
+	<insert id="insertAll" parameterType="com.cn.tianxia.api.project.Transfer">
+		insert into t_transfer
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="billno != null">
+				billno,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="tType != null">
+				t_type,
+			</if>
+			<if test="tMoney != null">
+				t_money,
+			</if>
+			<if test="oldMoney != null">
+				old_money,
+			</if>
+			<if test="newMoney != null">
+				new_money,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			t_time,
+			<if test="ip != null">
+				ip,
+			</if>
+			<if test="result != null">
+				result,
+			</if>
+			<if test="cagent != null">
+				cagent,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="cid != null">
+				cid,
+			</if>
+			<if test="description != null">
+				description,
+			</if> 
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="billno != null">
+				#{billno,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="tType != null">
+				#{tType,jdbcType=VARCHAR},
+			</if>
+			<if test="tMoney != null">
+				#{tMoney,jdbcType=REAL},
+			</if>
+			<if test="oldMoney != null">
+				#{oldMoney,jdbcType=REAL},
+			</if>
+			<if test="newMoney != null">
+				#{newMoney,jdbcType=REAL},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			now(),
+			<if test="ip != null">
+				INET_ATON(#{ip,jdbcType=VARCHAR}),
+			</if>
+			<if test="result != null">
+				#{result,jdbcType=VARCHAR},
+			</if>
+			<if test="cagent != null">
+				#{cagent,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="cid != null">
+				#{cid},
+			</if>
+			<if test="description != null">
+				#{description},
+			</if>
+		</trim>
+	</insert>
+	
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.Transfer">
+		update t_transfer
+		<set>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=INTEGER},
+			</if>
+			<if test="billno != null">
+				billno = #{billno,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="tType != null">
+				t_type = #{tType,jdbcType=VARCHAR},
+			</if>
+			<if test="tMoney != null">
+				t_money = #{tMoney,jdbcType=REAL},
+			</if>
+			<if test="oldMoney != null">
+				old_money = #{oldMoney,jdbcType=REAL},
+			</if>
+			<if test="newMoney != null">
+				new_money = #{newMoney,jdbcType=REAL},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			t_time = now(),
+			<if test="ip != null">
+				ip = #{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="result != null">
+				result = #{result,jdbcType=VARCHAR},
+			</if>
+			<if test="cagent != null">
+				cagent = #{cagent,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.Transfer">
+		update t_transfer
+		set uid = #{uid,jdbcType=INTEGER},
+		billno = #{billno,jdbcType=VARCHAR},
+		username = #{username,jdbcType=VARCHAR},
+		t_type = #{tType,jdbcType=VARCHAR},
+		t_money = #{tMoney,jdbcType=REAL},
+		old_money = #{oldMoney,jdbcType=REAL},
+		new_money = #{newMoney,jdbcType=REAL},
+		type = #{type,jdbcType=VARCHAR},
+		t_time = now(),
+		ip = #{ip,jdbcType=VARCHAR},
+		result = #{result,jdbcType=VARCHAR},
+		cagent = #{cagent,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getUserCagentByUid" resultType="com.cn.tianxia.api.po.v2.TransferInOutUnionPO">
+		SELECT u.wallet,u.cagent,c.id cagentId,h.Handicap handicap
+		FROM t_user u
+		JOIN t_cagent c ON u.cagent=c.cagent
+		LEFT JOIN t_user_type_handicap h ON h.type_id = u.type_id AND game=#{platCode}
+		WHERE u.uid=#{uid}
+	</select>
+
+	<select id="getUserWalletBalance" resultType="Double">
+		SELECT
+		IFNULL(wallet,0.00) AS balance
+		FROM t_user WHERE uid=#{uid} 
+	</select>
+	
+	<select id="getBalance" resultType="Double">
+		SELECT
+		IFNULL(wallet,0.00) AS balance
+		FROM t_user WHERE uid=#{uid} 
+	</select>
+
+	<!-- 查询用户所在平台的所有游戏开关状态 -->
+	<select id="selectPlatGameStatus" resultType="java.util.Map">
+	  SELECT ${column} FROM t_platform_status WHERE cid=#{cid}
+    </select>
+
+	<select id="selectUserGameStatus" resultType="Integer">
+		SELECT status FROM t_user_gamestatus WHERE uid=#{uid} AND gametype=#{gametype}
+	</select>
+
+	<insert id="insertUserGameStatus">
+		INSERT INTO t_user_gamestatus
+		(uid,gametype,status)values(#{uid},#{gametype},'1')
+		ON DUPLICATE KEY UPDATE
+		uid = values(uid),
+		gametype = values(gametype),
+		status = values(status)
+	</insert>
+
+	<update id="updateWelletTransferIn">
+		UPDATE t_user SET wallet = wallet+#{money} WHERE uid=#{uid}
+	</update>
+
+	<update id="updateWelletTransferOut">
+		UPDATE t_user SET wallet = wallet-#{money} WHERE uid=#{uid} and wallet>=#{money}
+	</update>
+
+	<!-- 插入转账失败订单 -->
+	<insert id="insertTransferFaild" parameterType="com.cn.tianxia.api.project.Transfer">
+		insert into t_transfer_faild
+		(uid,billno,username,t_type,t_money,status,type,t_time,ip,result)
+		values(#{uid},#{billno},#{username},#{tType},#{tMoney},#{status},#{type},#{tTime},INET_ATON(#{ip}),#{result})
+	</insert>
+	
+	<select id="selectUserTypeHandicap" resultType="java.lang.String">
+		SELECT Handicap as handicap FROM t_user_type_handicap  WHERE game=#{game} AND type_id=#{typeId}
+	</select>
+	
+	<select id="selectWaitIng" resultType="int">
+		SELECT count(id) FROM t_transfer  WHERE uid=#{uid} AND STATUS=3
+	</select>
+	
+	<!-- 将资金流水标记为成功状态  -->
+	<update id="updateStatusByBillNo">
+		UPDATE t_transfer SET STATUS = #{status},result = #{result} WHERE billno = #{billNo} AND STATUS = 3;
+	</update>
+	
+	<update id="updateStatusByBillNoCount">
+		UPDATE t_transfer SET STATUS = #{status},result = #{result},task_counts = 1 WHERE billno = #{billNo} AND STATUS = 3 and task_counts = 0;
+	</update>
+	
+	<select id="selectPlatformGameStatusByCagent" resultType="java.util.Map">
+		SELECT
+		ag AS AG,
+		ag AS AGIN,
+		bbin AS BBIN,
+		bbin AS BBIN1,
+		bbinGame AS BBIN2,
+		cg AS CG,
+		ds AS DS,
+		ggby AS GGBY,
+		haba AS HABA,
+		hg AS HG,
+		ig AS IG,
+		ig AS IGLOTTERY,
+		ig AS IGLOTTO,
+		igpj AS IGPJ,
+		igpj AS IGPJLOTTERY,
+		igpj AS IGPJLOTTO,
+		mgGame AS MG,
+		aghsr AS AGBY,
+		ob AS OB,
+		og AS OG,
+		pt AS PT,
+		shenbo AS SB1,
+		shenboGame AS SB2,
+		bgVideo AS BG,
+		<!--bgLottery AS BG2,-->
+		IF((shenbo=0 )OR(shenboGame=0) ,"0","1") AS SB,
+		<!--IF((bgVideo=0)OR(bgLottery=0) ,"0","1") AS BG,-->
+		VR as VR,
+		yoplay as YOPLAY,
+		tasspta as TASSPTA,
+		vgqp as VG,
+		gy as GY,
+		nb as NB,
+		ps as PS,
+		kyqp as KYQP,
+		lyqp as LYQP,
+		jdb AS JDB,
+		sw AS SW,
+		ibc AS IBC,
+		esw AS ESW,
+		cqj AS CQJ
+		FROM t_platform_status p WHERE p.cid = #{cid}
+	</select>
+	
+	<!--  分页查询转账订单记录 -->
+	<select id="findAllByPage" resultType="com.cn.tianxia.api.project.v2.TransferEntity">
+		<!-- SELECT
+			id,uid,billno,username,t_type as tType,t_money as tMoney,old_money as oldMoney,
+			new_money as newMoney,type,t_time as tTime,result
+		FROM (
+			
+		UNION ALL
+			SELECT
+				id,uid,billno,username,t_type,t_money,0 AS old_money,0 AS new_money,type,t_time,result,
+				(CASE WHEN status = 0 THEN 2 ELSE 3 END) AS status
+			FROM t_transfer_faild
+			WHERE uid=#{uid}
+			<if test="type != null">
+			AND type=#{type}
+			</if>
+			<if test="tType != null">
+			AND t_type=#{tType}
+			</if>
+			AND t_time BETWEEN #{bdate} AND #{edate}
+		) c  -->
+		SELECT
+			id, uid, billno, username, t_type as tType, t_money as tMoney, old_money as oldMoney,
+			new_money as newMoney, type,t_time as tTime, ip,
+		result, cagent
+		FROM t_transfer 
+		WHERE uid=#{uid} 
+		<if test="type != null">
+		AND type=#{type}
+		</if>
+		<if test="tType != null">
+		AND t_type=#{tType}
+		</if>
+		AND t_time BETWEEN #{bdate} AND #{edate}
+		ORDER BY t_time DESC LIMIT ${(pageNo-1)*pageSize},#{pageSize}
+	</select>
+	
+	<!-- 统计用户总条数 -->
+	<select id="sumTransferTotalCounts" resultType="Map">
+		<!-- SELECT
+			count(1) cnt,
+			SUM(CASE WHEN t_type='IN' THEN t_money ELSE -1*t_money END) total
+		FROM (
+			
+		UNION ALL
+			SELECT
+				id,t_money,t_time,t_type
+			FROM t_transfer_faild
+			WHERE uid=#{uid}
+			<if test="type != null">
+			AND type=#{type}
+			</if>
+			<if test="tType != null">
+			AND t_type=#{tType}
+			</if>
+			AND t_time BETWEEN #{bdate} AND #{edate}
+		) c -->
+		SELECT
+			COUNT(1) cnt,
+			SUM(CASE WHEN t_type='IN' THEN t_money ELSE -1*t_money END) total
+		FROM t_transfer 
+		WHERE uid=#{uid} 
+		<if test="type != null">
+		AND type=#{type}
+		</if>
+		<if test="tType != null">
+		AND t_type=#{tType}
+		</if>
+		AND t_time BETWEEN #{bdate} AND #{edate}
+	</select>
+</mapper>

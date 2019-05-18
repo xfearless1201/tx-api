@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.InternalMessageDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.InternalMessageEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="message" property="message" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="adduserid" property="adduserid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, message, status, addtime, adduserid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_internal_message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_internal_message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.InternalMessageEntity" >
+    insert into t_internal_message (id, uid, message, 
+      status, addtime, adduserid
+      )
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{message,jdbcType=VARCHAR}, 
+      #{status,jdbcType=CHAR}, #{addtime,jdbcType=TIMESTAMP}, #{adduserid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.InternalMessageEntity" >
+    insert into t_internal_message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="message != null" >
+        message,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.InternalMessageEntity" >
+    update t_internal_message
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="message != null" >
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.InternalMessageEntity" >
+    update t_internal_message
+    set uid = #{uid,jdbcType=INTEGER},
+      message = #{message,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      addtime = #{addtime,jdbcType=TIMESTAMP},
+      adduserid = #{adduserid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 查询用户站内信条数 -->
+  <select id="sumInternalMessagesByUid" resultType="Map">
+  	SELECT
+  		IFNULL(sum(case when `status`=1 then 1 else 0 end),0) AS isread,
+		IFNULL(sum(case when `status`=0 then 1 else 0 end),0) AS noread
+	FROM
+		t_internal_message
+	WHERE uid=#{uid}
+	<if test="bdate != null and edate !=null ">
+	AND DATE_FORMAT(addtime, '%Y-%m-%d') BETWEEN #{bdate} and #{edate}
+	</if>
+	ORDER BY addtime DESC
+  </select>
+  
+  <!-- 查询用户站内信列表-->
+  <select id="findAllByUid" resultMap="BaseResultMap">
+  	SELECT
+  		id, uid,CONCAT(LEFT(message,20),'...') as message, status, addtime, adduserid
+	FROM
+		t_internal_message
+	WHERE uid=#{uid}
+	<if test="status != null">
+		AND status=#{status}
+	</if>
+	<if test="bdate != null and edate !=null ">
+	AND DATE_FORMAT(addtime, '%Y-%m-%d') BETWEEN #{bdate} and #{edate}
+	</if>
+	ORDER BY addtime DESC
+  </select>
+  
+  <delete id="batchDelInternalMessage">
+  	DELETE FROM t_internal_message
+    WHERE id IN
+    <foreach collection="ids" item="ids" open="(" separator="," close=")">
+    	#{ids}
+    </foreach>
+  </delete>
+</mapper>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.CagentMsgconfigDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.CagentMsgconfigEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="mname" property="mname" jdbcType="VARCHAR" />
+    <result column="sign" property="sign" jdbcType="VARCHAR" />
+    <result column="config" property="config" jdbcType="VARCHAR" />
+    <result column="udat" property="udat" jdbcType="TIMESTAMP" />
+    <result column="upsn" property="upsn" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cid, mname, sign, config, udat, upsn, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cagent_msgconfig
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_cagent_msgconfig
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.CagentMsgconfigEntity" >
+    insert into t_cagent_msgconfig (id, cid, mname, 
+      sign, config, udat, 
+      upsn, status)
+    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{mname,jdbcType=VARCHAR}, 
+      #{sign,jdbcType=VARCHAR}, #{config,jdbcType=VARCHAR}, #{udat,jdbcType=TIMESTAMP}, 
+      #{upsn,jdbcType=VARCHAR}, #{status,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.CagentMsgconfigEntity" >
+    insert into t_cagent_msgconfig
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="mname != null" >
+        mname,
+      </if>
+      <if test="sign != null" >
+        sign,
+      </if>
+      <if test="config != null" >
+        config,
+      </if>
+      <if test="udat != null" >
+        udat,
+      </if>
+      <if test="upsn != null" >
+        upsn,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="mname != null" >
+        #{mname,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null" >
+        #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="config != null" >
+        #{config,jdbcType=VARCHAR},
+      </if>
+      <if test="udat != null" >
+        #{udat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upsn != null" >
+        #{upsn,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.CagentMsgconfigEntity" >
+    update t_cagent_msgconfig
+    <set >
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="mname != null" >
+        mname = #{mname,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null" >
+        sign = #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="config != null" >
+        config = #{config,jdbcType=VARCHAR},
+      </if>
+      <if test="udat != null" >
+        udat = #{udat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upsn != null" >
+        upsn = #{upsn,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.CagentMsgconfigEntity" >
+    update t_cagent_msgconfig
+    set cid = #{cid,jdbcType=INTEGER},
+      mname = #{mname,jdbcType=VARCHAR},
+      sign = #{sign,jdbcType=VARCHAR},
+      config = #{config,jdbcType=VARCHAR},
+      udat = #{udat,jdbcType=TIMESTAMP},
+      upsn = #{upsn,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByCagent" parameterType="java.lang.String"
+          resultMap="BaseResultMap">
+		SELECT
+    <include refid="Base_Column_List" />
+		from t_cagent_msgconfig where `status`=0 and cid = (select id from t_cagent where cagent = #{cagent})
+	</select>
+</mapper>

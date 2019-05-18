@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.PlatformStatusDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.PlatformStatusEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="domain" property="domain" jdbcType="VARCHAR" />
+    <result column="ag" property="ag" jdbcType="TINYINT" />
+    <result column="aghsr" property="aghsr" jdbcType="TINYINT" />
+    <result column="bbin" property="bbin" jdbcType="TINYINT" />
+    <result column="bbinGame" property="bbingame" jdbcType="TINYINT" />
+    <result column="cg" property="cg" jdbcType="TINYINT" />
+    <result column="ds" property="ds" jdbcType="TINYINT" />
+    <result column="ggby" property="ggby" jdbcType="TINYINT" />
+    <result column="haba" property="haba" jdbcType="TINYINT" />
+    <result column="hg" property="hg" jdbcType="TINYINT" />
+    <result column="ig" property="ig" jdbcType="TINYINT" />
+    <result column="mgGame" property="mggame" jdbcType="TINYINT" />
+    <result column="ob" property="ob" jdbcType="TINYINT" />
+    <result column="og" property="og" jdbcType="TINYINT" />
+    <result column="pt" property="pt" jdbcType="TINYINT" />
+    <result column="shenbo" property="shenbo" jdbcType="TINYINT" />
+    <result column="shenboGame" property="shenbogame" jdbcType="TINYINT" />
+    <result column="shenbo_md" property="shenboMd" jdbcType="TINYINT" />
+    <result column="shenboGame_md" property="shenbogameMd" jdbcType="TINYINT" />
+    <result column="bgVideo" property="bgvideo" jdbcType="TINYINT" />
+    <result column="bgLottery" property="bglottery" jdbcType="TINYINT" />
+    <result column="igpj" property="igpj" jdbcType="TINYINT" />
+    <result column="vr" property="vr" jdbcType="TINYINT" />
+    <result column="jf" property="jf" jdbcType="TINYINT" />
+    <result column="yoplay" property="yoplay" jdbcType="TINYINT" />
+    <result column="kyqp" property="kyqp" jdbcType="TINYINT" />
+    <result column="tasspta" property="tasspta" jdbcType="TINYINT" />
+    <result column="vgqp" property="vgqp" jdbcType="TINYINT" />
+    <result column="vg" property="vg" jdbcType="TINYINT" />
+    <result column="gy" property="gy" jdbcType="TINYINT" />
+    <result column="ps" property="ps" jdbcType="TINYINT" />
+    <result column="nb" property="nb" jdbcType="TINYINT" />
+    <result column="lyqp" property="lyqp" jdbcType="TINYINT" />
+    <result column="jdb" property="jdb" jdbcType="TINYINT" />
+    <result column="sw" property="sw" jdbcType="TINYINT" />
+    <result column="ibc" property="ibc" jdbcType="TINYINT" />
+    <result column="esw" property="esw" jdbcType="TINYINT" />
+    <result column="cqj" property="cqj" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cid, domain, ag, aghsr, bbin, bbinGame, cg, ds, ggby, haba, hg, ig, mgGame, ob, 
+    og, pt, shenbo, shenboGame, shenbo_md, shenboGame_md, bgVideo, bgLottery, igpj, vr, 
+    jf, yoplay, kyqp, tasspta, vgqp, vg, gy, ps, nb, lyqp, jdb, sw, ibc, esw, cqj
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_platform_status
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_platform_status
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.PlatformStatusEntity" >
+    insert into t_platform_status (id, cid, domain, 
+      ag, aghsr, bbin, bbinGame, 
+      cg, ds, ggby, haba, 
+      hg, ig, mgGame, ob, 
+      og, pt, shenbo, shenboGame, 
+      shenbo_md, shenboGame_md, bgVideo, 
+      bgLottery, igpj, vr, 
+      jf, yoplay, kyqp, tasspta, 
+      vgqp, vg, gy, ps, 
+      nb, lyqp, jdb, sw, 
+      ibc, esw, cqj)
+    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{domain,jdbcType=VARCHAR}, 
+      #{ag,jdbcType=TINYINT}, #{aghsr,jdbcType=TINYINT}, #{bbin,jdbcType=TINYINT}, #{bbingame,jdbcType=TINYINT}, 
+      #{cg,jdbcType=TINYINT}, #{ds,jdbcType=TINYINT}, #{ggby,jdbcType=TINYINT}, #{haba,jdbcType=TINYINT}, 
+      #{hg,jdbcType=TINYINT}, #{ig,jdbcType=TINYINT}, #{mggame,jdbcType=TINYINT}, #{ob,jdbcType=TINYINT}, 
+      #{og,jdbcType=TINYINT}, #{pt,jdbcType=TINYINT}, #{shenbo,jdbcType=TINYINT}, #{shenbogame,jdbcType=TINYINT}, 
+      #{shenboMd,jdbcType=TINYINT}, #{shenbogameMd,jdbcType=TINYINT}, #{bgvideo,jdbcType=TINYINT}, 
+      #{bglottery,jdbcType=TINYINT}, #{igpj,jdbcType=TINYINT}, #{vr,jdbcType=TINYINT}, 
+      #{jf,jdbcType=TINYINT}, #{yoplay,jdbcType=TINYINT}, #{kyqp,jdbcType=TINYINT}, #{tasspta,jdbcType=TINYINT}, 
+      #{vgqp,jdbcType=TINYINT}, #{vg,jdbcType=TINYINT}, #{gy,jdbcType=TINYINT}, #{ps,jdbcType=TINYINT}, 
+      #{nb,jdbcType=TINYINT}, #{lyqp,jdbcType=TINYINT}, #{jdb,jdbcType=TINYINT}, #{sw,jdbcType=TINYINT}, 
+      #{ibc,jdbcType=TINYINT}, #{esw,jdbcType=TINYINT}, #{cqj,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.PlatformStatusEntity" >
+    insert into t_platform_status
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="domain != null" >
+        domain,
+      </if>
+      <if test="ag != null" >
+        ag,
+      </if>
+      <if test="aghsr != null" >
+        aghsr,
+      </if>
+      <if test="bbin != null" >
+        bbin,
+      </if>
+      <if test="bbingame != null" >
+        bbinGame,
+      </if>
+      <if test="cg != null" >
+        cg,
+      </if>
+      <if test="ds != null" >
+        ds,
+      </if>
+      <if test="ggby != null" >
+        ggby,
+      </if>
+      <if test="haba != null" >
+        haba,
+      </if>
+      <if test="hg != null" >
+        hg,
+      </if>
+      <if test="ig != null" >
+        ig,
+      </if>
+      <if test="mggame != null" >
+        mgGame,
+      </if>
+      <if test="ob != null" >
+        ob,
+      </if>
+      <if test="og != null" >
+        og,
+      </if>
+      <if test="pt != null" >
+        pt,
+      </if>
+      <if test="shenbo != null" >
+        shenbo,
+      </if>
+      <if test="shenbogame != null" >
+        shenboGame,
+      </if>
+      <if test="shenboMd != null" >
+        shenbo_md,
+      </if>
+      <if test="shenbogameMd != null" >
+        shenboGame_md,
+      </if>
+      <if test="bgvideo != null" >
+        bgVideo,
+      </if>
+      <if test="bglottery != null" >
+        bgLottery,
+      </if>
+      <if test="igpj != null" >
+        igpj,
+      </if>
+      <if test="vr != null" >
+        vr,
+      </if>
+      <if test="jf != null" >
+        jf,
+      </if>
+      <if test="yoplay != null" >
+        yoplay,
+      </if>
+      <if test="kyqp != null" >
+        kyqp,
+      </if>
+      <if test="tasspta != null" >
+        tasspta,
+      </if>
+      <if test="vgqp != null" >
+        vgqp,
+      </if>
+      <if test="vg != null" >
+        vg,
+      </if>
+      <if test="gy != null" >
+        gy,
+      </if>
+      <if test="ps != null" >
+        ps,
+      </if>
+      <if test="nb != null" >
+        nb,
+      </if>
+      <if test="lyqp != null" >
+        lyqp,
+      </if>
+      <if test="jdb != null" >
+        jdb,
+      </if>
+      <if test="sw != null" >
+        sw,
+      </if>
+      <if test="ibc != null" >
+        ibc,
+      </if>
+      <if test="esw != null" >
+        esw,
+      </if>
+      <if test="cqj != null" >
+        cqj,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="domain != null" >
+        #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="ag != null" >
+        #{ag,jdbcType=TINYINT},
+      </if>
+      <if test="aghsr != null" >
+        #{aghsr,jdbcType=TINYINT},
+      </if>
+      <if test="bbin != null" >
+        #{bbin,jdbcType=TINYINT},
+      </if>
+      <if test="bbingame != null" >
+        #{bbingame,jdbcType=TINYINT},
+      </if>
+      <if test="cg != null" >
+        #{cg,jdbcType=TINYINT},
+      </if>
+      <if test="ds != null" >
+        #{ds,jdbcType=TINYINT},
+      </if>
+      <if test="ggby != null" >
+        #{ggby,jdbcType=TINYINT},
+      </if>
+      <if test="haba != null" >
+        #{haba,jdbcType=TINYINT},
+      </if>
+      <if test="hg != null" >
+        #{hg,jdbcType=TINYINT},
+      </if>
+      <if test="ig != null" >
+        #{ig,jdbcType=TINYINT},
+      </if>
+      <if test="mggame != null" >
+        #{mggame,jdbcType=TINYINT},
+      </if>
+      <if test="ob != null" >
+        #{ob,jdbcType=TINYINT},
+      </if>
+      <if test="og != null" >
+        #{og,jdbcType=TINYINT},
+      </if>
+      <if test="pt != null" >
+        #{pt,jdbcType=TINYINT},
+      </if>
+      <if test="shenbo != null" >
+        #{shenbo,jdbcType=TINYINT},
+      </if>
+      <if test="shenbogame != null" >
+        #{shenbogame,jdbcType=TINYINT},
+      </if>
+      <if test="shenboMd != null" >
+        #{shenboMd,jdbcType=TINYINT},
+      </if>
+      <if test="shenbogameMd != null" >
+        #{shenbogameMd,jdbcType=TINYINT},
+      </if>
+      <if test="bgvideo != null" >
+        #{bgvideo,jdbcType=TINYINT},
+      </if>
+      <if test="bglottery != null" >
+        #{bglottery,jdbcType=TINYINT},
+      </if>
+      <if test="igpj != null" >
+        #{igpj,jdbcType=TINYINT},
+      </if>
+      <if test="vr != null" >
+        #{vr,jdbcType=TINYINT},
+      </if>
+      <if test="jf != null" >
+        #{jf,jdbcType=TINYINT},
+      </if>
+      <if test="yoplay != null" >
+        #{yoplay,jdbcType=TINYINT},
+      </if>
+      <if test="kyqp != null" >
+        #{kyqp,jdbcType=TINYINT},
+      </if>
+      <if test="tasspta != null" >
+        #{tasspta,jdbcType=TINYINT},
+      </if>
+      <if test="vgqp != null" >
+        #{vgqp,jdbcType=TINYINT},
+      </if>
+      <if test="vg != null" >
+        #{vg,jdbcType=TINYINT},
+      </if>
+      <if test="gy != null" >
+        #{gy,jdbcType=TINYINT},
+      </if>
+      <if test="ps != null" >
+        #{ps,jdbcType=TINYINT},
+      </if>
+      <if test="nb != null" >
+        #{nb,jdbcType=TINYINT},
+      </if>
+      <if test="lyqp != null" >
+        #{lyqp,jdbcType=TINYINT},
+      </if>
+      <if test="jdb != null" >
+        #{jdb,jdbcType=TINYINT},
+      </if>
+      <if test="sw != null" >
+        #{sw,jdbcType=TINYINT},
+      </if>
+      <if test="ibc != null" >
+        #{ibc,jdbcType=TINYINT},
+      </if>
+      <if test="esw != null" >
+        #{esw,jdbcType=TINYINT},
+      </if>
+      <if test="cqj != null" >
+        #{cqj,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.PlatformStatusEntity" >
+    update t_platform_status
+    <set >
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="domain != null" >
+        domain = #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="ag != null" >
+        ag = #{ag,jdbcType=TINYINT},
+      </if>
+      <if test="aghsr != null" >
+        aghsr = #{aghsr,jdbcType=TINYINT},
+      </if>
+      <if test="bbin != null" >
+        bbin = #{bbin,jdbcType=TINYINT},
+      </if>
+      <if test="bbingame != null" >
+        bbinGame = #{bbingame,jdbcType=TINYINT},
+      </if>
+      <if test="cg != null" >
+        cg = #{cg,jdbcType=TINYINT},
+      </if>
+      <if test="ds != null" >
+        ds = #{ds,jdbcType=TINYINT},
+      </if>
+      <if test="ggby != null" >
+        ggby = #{ggby,jdbcType=TINYINT},
+      </if>
+      <if test="haba != null" >
+        haba = #{haba,jdbcType=TINYINT},
+      </if>
+      <if test="hg != null" >
+        hg = #{hg,jdbcType=TINYINT},
+      </if>
+      <if test="ig != null" >
+        ig = #{ig,jdbcType=TINYINT},
+      </if>
+      <if test="mggame != null" >
+        mgGame = #{mggame,jdbcType=TINYINT},
+      </if>
+      <if test="ob != null" >
+        ob = #{ob,jdbcType=TINYINT},
+      </if>
+      <if test="og != null" >
+        og = #{og,jdbcType=TINYINT},
+      </if>
+      <if test="pt != null" >
+        pt = #{pt,jdbcType=TINYINT},
+      </if>
+      <if test="shenbo != null" >
+        shenbo = #{shenbo,jdbcType=TINYINT},
+      </if>
+      <if test="shenbogame != null" >
+        shenboGame = #{shenbogame,jdbcType=TINYINT},
+      </if>
+      <if test="shenboMd != null" >
+        shenbo_md = #{shenboMd,jdbcType=TINYINT},
+      </if>
+      <if test="shenbogameMd != null" >
+        shenboGame_md = #{shenbogameMd,jdbcType=TINYINT},
+      </if>
+      <if test="bgvideo != null" >
+        bgVideo = #{bgvideo,jdbcType=TINYINT},
+      </if>
+      <if test="bglottery != null" >
+        bgLottery = #{bglottery,jdbcType=TINYINT},
+      </if>
+      <if test="igpj != null" >
+        igpj = #{igpj,jdbcType=TINYINT},
+      </if>
+      <if test="vr != null" >
+        vr = #{vr,jdbcType=TINYINT},
+      </if>
+      <if test="jf != null" >
+        jf = #{jf,jdbcType=TINYINT},
+      </if>
+      <if test="yoplay != null" >
+        yoplay = #{yoplay,jdbcType=TINYINT},
+      </if>
+      <if test="kyqp != null" >
+        kyqp = #{kyqp,jdbcType=TINYINT},
+      </if>
+      <if test="tasspta != null" >
+        tasspta = #{tasspta,jdbcType=TINYINT},
+      </if>
+      <if test="vgqp != null" >
+        vgqp = #{vgqp,jdbcType=TINYINT},
+      </if>
+      <if test="vg != null" >
+        vg = #{vg,jdbcType=TINYINT},
+      </if>
+      <if test="gy != null" >
+        gy = #{gy,jdbcType=TINYINT},
+      </if>
+      <if test="ps != null" >
+        ps = #{ps,jdbcType=TINYINT},
+      </if>
+      <if test="nb != null" >
+        nb = #{nb,jdbcType=TINYINT},
+      </if>
+      <if test="lyqp != null" >
+        lyqp = #{lyqp,jdbcType=TINYINT},
+      </if>
+      <if test="jdb != null" >
+        jdb = #{jdb,jdbcType=TINYINT},
+      </if>
+      <if test="sw != null" >
+        sw = #{sw,jdbcType=TINYINT},
+      </if>
+      <if test="ibc != null" >
+        ibc = #{ibc,jdbcType=TINYINT},
+      </if>
+      <if test="esw != null" >
+        esw = #{esw,jdbcType=TINYINT},
+      </if>
+      <if test="cqj != null" >
+        cqj = #{cqj,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.PlatformStatusEntity" >
+    update t_platform_status
+    set cid = #{cid,jdbcType=INTEGER},
+      domain = #{domain,jdbcType=VARCHAR},
+      ag = #{ag,jdbcType=TINYINT},
+      aghsr = #{aghsr,jdbcType=TINYINT},
+      bbin = #{bbin,jdbcType=TINYINT},
+      bbinGame = #{bbingame,jdbcType=TINYINT},
+      cg = #{cg,jdbcType=TINYINT},
+      ds = #{ds,jdbcType=TINYINT},
+      ggby = #{ggby,jdbcType=TINYINT},
+      haba = #{haba,jdbcType=TINYINT},
+      hg = #{hg,jdbcType=TINYINT},
+      ig = #{ig,jdbcType=TINYINT},
+      mgGame = #{mggame,jdbcType=TINYINT},
+      ob = #{ob,jdbcType=TINYINT},
+      og = #{og,jdbcType=TINYINT},
+      pt = #{pt,jdbcType=TINYINT},
+      shenbo = #{shenbo,jdbcType=TINYINT},
+      shenboGame = #{shenbogame,jdbcType=TINYINT},
+      shenbo_md = #{shenboMd,jdbcType=TINYINT},
+      shenboGame_md = #{shenbogameMd,jdbcType=TINYINT},
+      bgVideo = #{bgvideo,jdbcType=TINYINT},
+      bgLottery = #{bglottery,jdbcType=TINYINT},
+      igpj = #{igpj,jdbcType=TINYINT},
+      vr = #{vr,jdbcType=TINYINT},
+      jf = #{jf,jdbcType=TINYINT},
+      yoplay = #{yoplay,jdbcType=TINYINT},
+      kyqp = #{kyqp,jdbcType=TINYINT},
+      tasspta = #{tasspta,jdbcType=TINYINT},
+      vgqp = #{vgqp,jdbcType=TINYINT},
+      vg = #{vg,jdbcType=TINYINT},
+      gy = #{gy,jdbcType=TINYINT},
+      ps = #{ps,jdbcType=TINYINT},
+      nb = #{nb,jdbcType=TINYINT},
+      lyqp = #{lyqp,jdbcType=TINYINT},
+      jdb = #{jdb,jdbcType=TINYINT},
+      sw = #{sw,jdbcType=TINYINT},
+      ibc = #{ibc,jdbcType=TINYINT},
+      esw = #{esw,jdbcType=TINYINT},
+      cqj = #{cqj,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByCid" resultType="java.util.Map">
+    SELECT
+		ag AS AG,
+		ag AS AGIN,
+		bbin AS BBIN,
+		bbin AS BBIN1,
+		bbinGame AS BBIN2,
+		cg AS CG,
+		ds AS DS,
+		ggby AS GGBY,
+		haba AS HABA,
+		hg AS HG,
+		ig AS IG,
+		ig AS IGLOTTERY,
+		ig AS IGLOTTO,
+		igpj AS IGPJ,
+		igpj AS IGPJLOTTERY,
+		igpj AS IGPJLOTTO,
+		mgGame AS MG,
+		aghsr AS AGBY,
+		ob AS OB,
+		og AS OG,
+		pt AS PT,
+		shenbo AS SB1,
+		shenboGame AS SB2,
+		bgVideo AS BG,
+		<!--bgLottery AS BG2,-->
+		IF((shenbo=0 )OR(shenboGame=0) ,"0","1") AS SB,
+		<!--IF((bgVideo=0)OR(bgLottery=0) ,"0","1") AS BG,-->
+		VR as VR,
+		yoplay as YOPLAY,
+		tasspta as TASSPTA,
+		vgqp as VG,
+		gy as GY,
+		nb as NB,
+		ps as PS,
+		kyqp as KYQP,
+		lyqp as LYQP,
+		jdb AS JDB,
+		sw AS SW,
+		ibc AS IBC,
+		esw AS ESW,
+		cqj AS CQJ,
+        im  AS  IM,
+        nwg AS  NWG
+		FROM t_platform_status WHERE cid=#{cid}
+  </select>
+  <select id="selectGameStatusByCidAndType" resultType="java.lang.Short" parameterType="java.lang.String">
+    SELECT ${type}
+    FROM t_platform_status
+    WHERE cid = #{cid}
+  </select>
+</mapper>

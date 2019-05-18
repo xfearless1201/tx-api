@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.NewUserDao">
+	<resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.UserEntity">
+		<id column="uid" property="uid" jdbcType="INTEGER" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="realname" property="realname" jdbcType="VARCHAR" />
+		<result column="login_ip" property="loginIp" jdbcType="VARCHAR" />
+		<result column="reg_ip" property="regIp" jdbcType="VARCHAR" />
+		<result column="ag_username" property="agUsername" jdbcType="VARCHAR" />
+		<result column="ag_password" property="agPassword" jdbcType="VARCHAR" />
+		<result column="hg_username" property="hgUsername" jdbcType="VARCHAR" />
+		<result column="mg_username" property="mgUsername" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="vip_level" property="vipLevel" jdbcType="CHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="cagent" property="cagent" jdbcType="VARCHAR" />
+		<result column="is_daili" property="isDaili" jdbcType="CHAR" />
+		<result column="is_delete" property="isDelete" jdbcType="CHAR" />
+		<result column="qk_pwd" property="qkPwd" jdbcType="VARCHAR" />
+		<result column="reg_date" property="regDate" jdbcType="TIMESTAMP" />
+		<result column="login_time" property="loginTime" jdbcType="TIMESTAMP" />
+		<result column="wallet" property="wallet" jdbcType="DOUBLE" />
+		<result column="top_uid" property="topUid" jdbcType="INTEGER" />
+		<result column="is_stop" property="isStop" jdbcType="CHAR" />
+		<result column="is_mobile" property="isMobile" jdbcType="CHAR" />
+		<result column="rmk" property="rmk" jdbcType="VARCHAR" />
+		<result column="type_id" property="typeId" jdbcType="INTEGER" />
+		<result column="junior_uid" property="juniorUid" jdbcType="INTEGER" />
+		<result column="regurl" property="regurl" jdbcType="VARCHAR" />
+		<result column="loginmobile" property="loginmobile" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		uid, password, username, realname, login_ip, reg_ip,
+		ag_username,
+		ag_password, hg_username,
+		mg_username, email, vip_level,
+		mobile, cagent, is_daili, is_delete, qk_pwd,
+		reg_date,
+		login_time,
+		wallet, top_uid, is_stop, is_mobile, rmk, type_id, junior_uid,
+		regurl,
+		loginmobile
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_user
+		where uid = #{uid,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_user
+		where uid = #{uid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.cn.tianxia.api.project.v2.UserEntity">
+		insert into t_user (uid,
+		password, username,
+		realname, login_ip, reg_ip,
+		ag_username,
+		ag_password, hg_username,
+		mg_username, email, vip_level,
+		mobile, cagent,
+		is_daili,
+		is_delete, qk_pwd, reg_date,
+		login_time, wallet, top_uid,
+		is_stop, is_mobile, rmk, type_id,
+		junior_uid, regurl, loginmobile
+		)
+		values (#{uid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR},
+		#{username,jdbcType=VARCHAR},
+		#{realname,jdbcType=VARCHAR},
+		INET_ATON(#{loginIp,jdbcType=VARCHAR}),
+		INET_ATON(#{regIp,jdbcType=VARCHAR}),
+		#{agUsername,jdbcType=VARCHAR},
+		#{agPassword,jdbcType=VARCHAR}, #{hgUsername,jdbcType=VARCHAR},
+		#{mgUsername,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+		#{vipLevel,jdbcType=CHAR},
+		#{mobile,jdbcType=VARCHAR},
+		#{cagent,jdbcType=VARCHAR}, #{isDaili,jdbcType=CHAR},
+		#{isDelete,jdbcType=CHAR}, #{qkPwd,jdbcType=VARCHAR},
+		#{regDate,jdbcType=TIMESTAMP},
+		#{loginTime,jdbcType=TIMESTAMP},
+		#{wallet,jdbcType=DOUBLE}, #{topUid,jdbcType=INTEGER},
+		#{isStop,jdbcType=CHAR}, #{isMobile,jdbcType=CHAR},
+		#{rmk,jdbcType=VARCHAR}, #{typeId,jdbcType=INTEGER},
+		#{juniorUid,jdbcType=INTEGER}, #{regurl,jdbcType=VARCHAR},
+		#{loginmobile,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.UserEntity"
+		keyProperty="uid" keyColumn="uid" useGeneratedKeys="true">
+		insert into t_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="realname != null">
+				realname,
+			</if>
+			<if test="loginIp != null">
+				login_ip,
+			</if>
+			<if test="regIp != null">
+				reg_ip,
+			</if>
+			<if test="agUsername != null">
+				ag_username,
+			</if>
+			<if test="agPassword != null">
+				ag_password,
+			</if>
+			<if test="hgUsername != null">
+				hg_username,
+			</if>
+			<if test="mgUsername != null">
+				mg_username,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="vipLevel != null">
+				vip_level,
+			</if>
+			<if test="mobile != null">
+				mobile,
+			</if>
+			<if test="cagent != null">
+				cagent,
+			</if>
+			<if test="isDaili != null">
+				is_daili,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+			<if test="qkPwd != null">
+				qk_pwd,
+			</if>
+			<if test="regDate != null">
+				reg_date,
+			</if>
+			<if test="loginTime != null">
+				login_time,
+			</if>
+			<if test="wallet != null">
+				wallet,
+			</if>
+			<if test="topUid != null">
+				top_uid,
+			</if>
+			<if test="isStop != null">
+				is_stop,
+			</if>
+			<if test="isMobile != null">
+				is_mobile,
+			</if>
+			<if test="rmk != null">
+				rmk,
+			</if>
+			<if test="typeId != null">
+				type_id,
+			</if>
+			<if test="juniorUid != null">
+				junior_uid,
+			</if>
+			<if test="regurl != null">
+				regurl,
+			</if>
+			<if test="loginmobile != null">
+				loginmobile,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="realname != null">
+				#{realname,jdbcType=VARCHAR},
+			</if>
+			<if test="loginIp != null">
+				INET_ATON(#{loginIp,jdbcType=VARCHAR}),
+			</if>
+			<if test="regIp != null">
+				INET_ATON(#{regIp,jdbcType=VARCHAR}),
+			</if>
+			<if test="agUsername != null">
+				#{agUsername,jdbcType=VARCHAR},
+			</if>
+			<if test="agPassword != null">
+				#{agPassword,jdbcType=VARCHAR},
+			</if>
+			<if test="hgUsername != null">
+				#{hgUsername,jdbcType=VARCHAR},
+			</if>
+			<if test="mgUsername != null">
+				#{mgUsername,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="vipLevel != null">
+				#{vipLevel,jdbcType=CHAR},
+			</if>
+			<if test="mobile != null">
+				#{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="cagent != null">
+				#{cagent,jdbcType=VARCHAR},
+			</if>
+			<if test="isDaili != null">
+				#{isDaili,jdbcType=CHAR},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete,jdbcType=CHAR},
+			</if>
+			<if test="qkPwd != null">
+				#{qkPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="regDate != null">
+				#{regDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="loginTime != null">
+				#{loginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="wallet != null">
+				#{wallet,jdbcType=DOUBLE},
+			</if>
+			<if test="topUid != null">
+				#{topUid,jdbcType=INTEGER},
+			</if>
+			<if test="isStop != null">
+				#{isStop,jdbcType=CHAR},
+			</if>
+			<if test="isMobile != null">
+				#{isMobile,jdbcType=CHAR},
+			</if>
+			<if test="rmk != null">
+				#{rmk,jdbcType=VARCHAR},
+			</if>
+			<if test="typeId != null">
+				#{typeId,jdbcType=INTEGER},
+			</if>
+			<if test="juniorUid != null">
+				#{juniorUid,jdbcType=INTEGER},
+			</if>
+			<if test="regurl != null">
+				#{regurl,jdbcType=VARCHAR},
+			</if>
+			<if test="loginmobile != null">
+				#{loginmobile,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.UserEntity">
+		update t_user
+		<set>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="realname != null">
+				realname = #{realname,jdbcType=VARCHAR},
+			</if>
+			<if test="loginIp != null">
+				login_ip = INET_ATON(#{loginIp,jdbcType=VARCHAR}),
+			</if>
+			<if test="agUsername != null">
+				ag_username = #{agUsername,jdbcType=VARCHAR},
+			</if>
+			<if test="agPassword != null">
+				ag_password = #{agPassword,jdbcType=VARCHAR},
+			</if>
+			<if test="hgUsername != null">
+				hg_username = #{hgUsername,jdbcType=VARCHAR},
+			</if>
+			<if test="mgUsername != null">
+				mg_username = #{mgUsername,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="vipLevel != null">
+				vip_level = #{vipLevel,jdbcType=CHAR},
+			</if>
+			<if test="mobile != null">
+				mobile = #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="cagent != null">
+				cagent = #{cagent,jdbcType=VARCHAR},
+			</if>
+			<if test="isDaili != null">
+				is_daili = #{isDaili,jdbcType=CHAR},
+			</if>
+			<if test="isDelete != null">
+				is_delete = #{isDelete,jdbcType=CHAR},
+			</if>
+			<if test="qkPwd != null">
+				qk_pwd = #{qkPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="regDate != null">
+				reg_date = #{regDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="loginTime != null">
+				login_time = #{loginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="wallet != null">
+				wallet = #{wallet,jdbcType=DOUBLE},
+			</if>
+			<if test="topUid != null">
+				top_uid = #{topUid,jdbcType=INTEGER},
+			</if>
+			<if test="isStop != null">
+				is_stop = #{isStop,jdbcType=CHAR},
+			</if>
+			<if test="isMobile != null">
+				is_mobile = #{isMobile,jdbcType=CHAR},
+			</if>
+			<if test="rmk != null">
+				rmk = #{rmk,jdbcType=VARCHAR},
+			</if>
+			<if test="typeId != null">
+				type_id = #{typeId,jdbcType=INTEGER},
+			</if>
+			<if test="juniorUid != null">
+				junior_uid = #{juniorUid,jdbcType=INTEGER},
+			</if>
+			<if test="regurl != null">
+				regurl = #{regurl,jdbcType=VARCHAR},
+			</if>
+			<if test="loginmobile != null">
+				loginmobile = #{loginmobile,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where uid = #{uid,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.UserEntity">
+		update t_user
+		set
+		password = #{password,jdbcType=VARCHAR},
+		username =
+		#{username,jdbcType=VARCHAR},
+		realname = #{realname,jdbcType=VARCHAR},
+		login_ip = INET_ATON(#{loginIp,jdbcType=VARCHAR}),
+		ag_username =
+		#{agUsername,jdbcType=VARCHAR},
+		ag_password =
+		#{agPassword,jdbcType=VARCHAR},
+		hg_username =
+		#{hgUsername,jdbcType=VARCHAR},
+		mg_username =
+		#{mgUsername,jdbcType=VARCHAR},
+		email = #{email,jdbcType=VARCHAR},
+		vip_level = #{vipLevel,jdbcType=CHAR},
+		mobile =
+		#{mobile,jdbcType=VARCHAR},
+		cagent = #{cagent,jdbcType=VARCHAR},
+		is_daili = #{isDaili,jdbcType=CHAR},
+		is_delete =
+		#{isDelete,jdbcType=CHAR},
+		qk_pwd = #{qkPwd,jdbcType=VARCHAR},
+		reg_date
+		= #{regDate,jdbcType=TIMESTAMP},
+		login_time =
+		#{loginTime,jdbcType=TIMESTAMP},
+		wallet = #{wallet,jdbcType=DOUBLE},
+		top_uid = #{topUid,jdbcType=INTEGER},
+		is_stop =
+		#{isStop,jdbcType=CHAR},
+		is_mobile = #{isMobile,jdbcType=CHAR},
+		rmk =
+		#{rmk,jdbcType=VARCHAR},
+		type_id = #{typeId,jdbcType=INTEGER},
+		junior_uid = #{juniorUid,jdbcType=INTEGER},
+		regurl =
+		#{regurl,jdbcType=VARCHAR},
+		loginmobile =
+		#{loginmobile,jdbcType=VARCHAR}
+		where uid = #{uid,jdbcType=INTEGER}
+	</update>
+	<select id="selectAgentRechargeQuotaByUid" resultType="java.lang.Double" parameterType="java.lang.String">
+		SELECT
+			s.remainvalue
+		FROM t_user u
+		LEFT JOIN t_cagent c ON c.cagent = u.cagent
+		LEFT JOIN t_cagent_storedvalue s ON s.cid = c.id
+		WHERE uid = #{uid}
+	</select>
+	
+	<!-- 查询用户当前余额 -->
+	<select id="queryUserBalance" resultType="java.lang.Double">
+		SELECT
+		IFNULL(wallet,0.00) AS balance
+		FROM t_user WHERE uid=#{uid} 
+	</select>
+	
+	<!-- 扣除用户金额 -->
+	<update id="subtractUserBalance">
+		UPDATE t_user SET wallet = wallet-#{money} WHERE uid=#{uid} AND wallet>=#{money}
+	</update>
+	
+	<!-- 增加用户金额 -->
+	<update id="plusUserBalance">
+		UPDATE t_user SET wallet = wallet+#{money} WHERE and uid=#{uid}
+	</update>
+	
+	<!-- 通过用户登录账号查询用户信息 -->
+	<select id="getUserInfoByUsername" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_user
+		where is_delete=0
+		<if test="flag ==0">
+		   and username=#{username}
+		</if>
+		<if test="flag ==1">
+		   and loginmobile=#{username} and cagent=#{cagent}
+		</if>
+	</select>
+
+	<!-- 查询用户信息 -->
+	<select id="getUserByUsername" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_user
+		WHERE is_delete=0
+		<if test="flag ==0">
+			AND username = #{username}
+		</if>
+		<if test="flag ==1">
+			AND loginmobile = #{username} AND cagent=#{cagent}
+		</if>
+	</select>
+
+	<select id="selectByUsername" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_user
+		WHERE is_delete=0 AND username = #{username}
+	</select>
+
+	<select id="selectDisUserByUserName" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM t_user_dissociate WHERE 1 = 1
+		<if test="userName != null and userName !=''">
+			AND lower(username) = lower(#{userName})
+		</if>
+	</select>
+
+	<select id="selectUserByMobile" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM t_user WHERE cagent=#{cagent} and loginmobile=#{mobile}
+	</select>
+
+	<select id="selectProxyByCagent" resultType="java.util.Map">
+		SELECT user_name,domain
+		FROM  t_proxy_user
+		    WHERE cid = #{cid}
+		UNION ALL
+		SELECT user_name, domain
+		    FROM t_junior_proxy_user
+		        WHERE proxy_user_id IN (
+		            SELECT id
+		                FROM t_proxy_user
+		                    WHERE cid = #{cid}
+		            )
+	</select>
+	
+	<select id="findAllByPage" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM t_user WHERE uid > 0 ORDER BY reg_date DESC LIMIT ${(pageNo-1)*pageSize},#{pageSize}
+	</select>
+	
+	<!-- 修改用户手机号 -->
+	<update id="updateUserPhoneNo">
+		UPDATE t_user SET mobile = #{phoneNo} , loginmobile = #{phoneNo} WHERE uid=#{uid}
+	</update>
+	
+	<select id="findAllUserId" resultType="Integer">
+		select uid from t_user 
+	</select>
+</mapper>

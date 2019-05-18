@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.ProxyUserDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.ProxyUserEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="up_id" property="upId" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="up_time" property="upTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="domain" property="domain" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="QQ" property="qq" jdbcType="VARCHAR" />
+    <result column="bankname" property="bankname" jdbcType="VARCHAR" />
+    <result column="bankcode" property="bankcode" jdbcType="VARCHAR" />
+    <result column="bankaddress" property="bankaddress" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+    <result column="d_user_type" property="dUserType" jdbcType="INTEGER" />
+    <result column="referral_code" property="referralCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_name, name, up_id, type, up_time, status, domain, email, QQ, bankname, bankcode, 
+    bankaddress, mobile, cid, rmk, d_user_type, referral_code
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_proxy_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_proxy_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.ProxyUserEntity" >
+    insert into t_proxy_user (id, user_name, name, 
+      up_id, type, up_time, 
+      status, domain, email, 
+      QQ, bankname, bankcode, 
+      bankaddress, mobile, cid, 
+      rmk, d_user_type, referral_code
+      )
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{upId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{upTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=VARCHAR}, #{domain,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{qq,jdbcType=VARCHAR}, #{bankname,jdbcType=VARCHAR}, #{bankcode,jdbcType=VARCHAR}, 
+      #{bankaddress,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{cid,jdbcType=INTEGER}, 
+      #{rmk,jdbcType=VARCHAR}, #{dUserType,jdbcType=INTEGER}, #{referralCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.ProxyUserEntity" >
+    insert into t_proxy_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="upId != null" >
+        up_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="upTime != null" >
+        up_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="domain != null" >
+        domain,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="qq != null" >
+        QQ,
+      </if>
+      <if test="bankname != null" >
+        bankname,
+      </if>
+      <if test="bankcode != null" >
+        bankcode,
+      </if>
+      <if test="bankaddress != null" >
+        bankaddress,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="rmk != null" >
+        rmk,
+      </if>
+      <if test="dUserType != null" >
+        d_user_type,
+      </if>
+      <if test="referralCode != null" >
+        referral_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="upId != null" >
+        #{upId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null" >
+        #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="bankname != null" >
+        #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcode != null" >
+        #{bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankaddress != null" >
+        #{bankaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="rmk != null" >
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="dUserType != null" >
+        #{dUserType,jdbcType=INTEGER},
+      </if>
+      <if test="referralCode != null" >
+        #{referralCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.ProxyUserEntity" >
+    update t_proxy_user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="upId != null" >
+        up_id = #{upId,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="upTime != null" >
+        up_time = #{upTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null" >
+        domain = #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        QQ = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="bankname != null" >
+        bankname = #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcode != null" >
+        bankcode = #{bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankaddress != null" >
+        bankaddress = #{bankaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="rmk != null" >
+        rmk = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="dUserType != null" >
+        d_user_type = #{dUserType,jdbcType=INTEGER},
+      </if>
+      <if test="referralCode != null" >
+        referral_code = #{referralCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.ProxyUserEntity" >
+    update t_proxy_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      up_id = #{upId,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      up_time = #{upTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      domain = #{domain,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      QQ = #{qq,jdbcType=VARCHAR},
+      bankname = #{bankname,jdbcType=VARCHAR},
+      bankcode = #{bankcode,jdbcType=VARCHAR},
+      bankaddress = #{bankaddress,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      cid = #{cid,jdbcType=INTEGER},
+      rmk = #{rmk,jdbcType=VARCHAR},
+      d_user_type = #{dUserType,jdbcType=INTEGER},
+      referral_code = #{referralCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectAllProxyUserByCagent" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from t_proxy_user
+    where cid = #{cid}
+  </select>
+
+  <resultMap id="ProxyResultMap" type="com.cn.tianxia.api.vo.v2.ProxyUserVO" >
+    <result column="d_user_type" property="dUserType" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="BIGINT" />
+  </resultMap>
+
+  <select id="getProxyUserByrefererCode" resultMap="ProxyResultMap">
+		SELECT a.d_user_type AS d_user_type, b.id AS pid
+		FROM t_proxy_user a
+		INNER JOIN user b ON
+		a.user_name=b.login_name
+		WHERE
+		a.referral_code = #{referralCode}
+        AND
+        a.cid = (SELECT id FROM  t_cagent WHERE cagent=#{cagent})
+</select>
+
+   <select id="findProxyUserByrefererCode" resultMap="ProxyResultMap">
+		SELECT a.d_user_type AS d_user_type, b.id AS pid
+		FROM t_proxy_user a
+		INNER JOIN user b ON
+		a.user_name=b.login_name
+		WHERE
+		a.referral_code = #{referralCode}
+  </select>
+
+  <select id="getProxyUser" resultMap="ProxyResultMap">
+		SELECT a.d_user_type AS d_user_type, b.id AS pid
+		FROM t_proxy_user a LEFT JOIN user b ON a.user_name=b.login_name
+		where a.cid=#{cid} and a.user_name =#{proxyname}  and b.type='1'
+	</select>
+</mapper>

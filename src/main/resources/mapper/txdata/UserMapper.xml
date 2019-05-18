@@ -1,0 +1,1356 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.tianxia.api.domain.txdata.UserDao">
+	<!-- 查询单条记录 -->
+	<select id="selectUserById" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT t_user.*,IFNULL((select balance from t_user_wallet where
+		uid=t_user.uid and t_user_wallet.type=1),0) as integral FROM t_user
+		WHERE uid = #{uid}
+	</select>
+
+	<select id="selectUserInfo" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		select
+		username,realname,email,vip_level,mobile,reg_date,login_time,wallet,IFNULL((select
+		balance from t_user_wallet where uid=t_user.uid and
+		t_user_wallet.type=1),0) as integral
+		from t_user WHERE uid = #{uid}
+	</select>
+
+	<select id="checkkpwd" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT *
+		FROM t_user WHERE uid = #{uid} and qk_pwd =#{pwd}
+	</select>
+
+	<select id="selectUserByUserName" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT * FROM t_user WHERE 1 = 1
+		<if test="userName != null and userName !=''">
+			AND lower(username) = lower(#{userName})
+		</if>
+		<if test="passWord != null and passWord !=''">
+			AND password = #{passWord}
+		</if>
+	</select>
+
+    <select id="selectDisUserByUserName" parameterType="java.lang.String"
+            resultType="java.util.Map">
+        SELECT * FROM t_user_dissociate WHERE 1 = 1
+        <if test="userName != null and userName !=''">
+            AND lower(username) = lower(#{userName})
+        </if>
+        <if test="passWord != null and passWord !=''">
+            AND password = #{passWord}
+        </if>
+    </select>
+
+
+	<select id="selectReserveAccount" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT * FROM t_reserve_account WHERE 1 = 1
+		<if test="userName != null and userName !=''">
+			AND lower(username) = lower(#{userName})
+		</if>
+		<if test="cagent != null and cagent !=''">
+			AND cagent = #{cagent}
+		</if>
+	</select>
+
+	<insert id="insertUser" parameterType="java.util.Map">
+		insert into
+		t_user(username,password,login_ip,reg_ip,ag_username,ag_password,email,vip_level,mobile,
+		cagent,is_daili,is_delete,qk_pwd,reg_date,login_time,wallet,top_uid,is_stop,is_mobile,realname,hg_username,mg_username,type_id,junior_uid,regurl,loginmobile,rmk)
+		values(#{username},#{password},INET_ATON(#{reg_ip}),INET_ATON(#{reg_ip}),#{ag_username},#{ag_password},#{email},#{vip_level},#{mobile},#{cagent},#{is_daili},'0',#{qkpwd},now(),now(),
+		'0',#{top_uid},'0',#{is_mobile},#{realName},
+		<!-- (select * from (select CONCAT(#{cagent},SUBSTR(10000001+MAX(uid),2 , 7))  from t_user) a) -->
+		#{hg_username},''
+		,
+		<if test="usertype != null and usertype !=''">
+			#{usertype}
+		</if>
+		<if test="usertype == null or usertype ==''">
+			IFNULL((select a.id
+			typeid from t_user_type a left join t_cagent b on
+			a.cid=b.id where
+			b.cagent=#{cagent} and a.isDefault=0 LIMIT 0,1),0)
+		</if> 
+		,#{junior_uid},#{regurl},#{loginmobile},#{remark}); 
+	</insert> 
+	<insert id="insertLogin" parameterType="java.util.Map">
+		insert into
+		t_user_login(uid,login_time,login_ip,is_login,login_num,`status`,is_mobile,address,refurl)
+		values(#{uid},now(),INET_ATON(#{ip}),'1','1','1',#{is_mobile},#{address}
+		,#{refurl}); 
+	</insert>
+
+	<insert id="insertTransfer" parameterType="java.util.Map">
+		insert into t_transfer(uid,
+		billno,username,t_type,t_money,old_money,new_money,type,t_time,ip,result)
+		values(#{uid},#{billno},#{username},#{t_type},#{t_money},#{old_money},#{new_money},#{type},now(),INET_ATON(#{ip}),#{result})
+	</insert>
+
+	<insert id="insertRechange" parameterType="java.util.Map">
+		insert into
+		t_recharge(uid,pay_type,bank_code,order_no,order_amount,order_time,trade_status,trade_no,ip,merchant,pay_id)
+		VALUES(#{uid},#{payType},#{bankCode},#{billNo},#{amount},NOW(),'paying','',INET_ATON(#{ip}),#{merchant},#{payid});
+	</insert>
+	
+	<insert id="insertErrorRechange" parameterType="java.util.Map">
+		insert into
+		t_recharge(uid,pay_type,bank_code,order_no,order_amount,order_time,trade_status,trade_no,ip,merchant,pay_id)
+		VALUES(#{uid},#{payType},#{bankCode},#{billNo},#{amount},NOW(),'faild','',INET_ATON(#{ip}),#{merchant},#{payid});
+		
+	</insert>
+
+	<update id="UpdateRechange" parameterType="java.util.Map">
+		update t_recharge set trade_status = #{tradestatus} ,trade_no=#{tradeno}
+		where order_no=#{orderno}; 
+	</update>
+	
+	<update id="UpdateRechangeMoney" parameterType="java.lang.String">
+		update t_recharge set order_amount = #{amount}  where order_no=#{orderNo} and trade_status='paying'; 
+		commit;
+	</update>
+
+
+	<update id="updateMoney" parameterType="java.util.Map">
+		update t_user set wallet = wallet + #{wallet} where uid=#{uid}; 
+	</update>
+
+	<update id="updateMgUserName" parameterType="java.util.Map">
+
+		INSERT INTO t_user (username,password, uid, mg_username)
+		(SELECT
+		  username,
+		  password,
+		  uid,
+		  mg_username
+		FROM
+		  t_user
+		WHERE uid = #{uid})
+		ON DUPLICATE KEY
+		UPDATE
+		mg_username = #{mg_username};
+
+
+	</update>
+
+	<update id="updateGame" parameterType="java.util.Map">
+		update t_user
+
+		<if test="is_stop != null and is_stop !=''">
+			set is_stop = #{is_stop}
+		</if>
+		<if test="hg_username != null and hg_username !=''">
+			set hg_username = #{hg_username}
+		</if>
+		<if test="password != null and password !=''">
+			set password = #{password}
+		</if>
+		<if test="qkpwd != null and qkpwd !=''">
+			set qk_pwd = #{qkpwd}
+		</if>
+		<if test="login != null and login !=''">
+			set login_time = NOW() ,login_ip=INET_ATON(#{ip})
+		</if>
+        where username = #{userName} ;
+	</update>
+
+	<select id="selectTransferCount" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT count(1) cnt,sum(case WHEN t_type='IN' then t_money else
+		-1*t_money end) total FROM t_transfer where
+		DATE_FORMAT(t_time,
+		'%Y-%m-%d') BETWEEN #{bdate} and #{edate}
+		<if test="userName != null and userName !=''">
+			AND username = #{userName}
+		</if>
+		<if test="type != null and type !=''">
+			and type = #{type}
+		</if>
+		<if test="t_type != null and t_type !=''">
+			and t_type = #{t_type}
+		</if>
+	</select>
+
+	<select id="selectTransferInfo" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		select t_time,(case when t_type ='IN' then '转入平台' else '转入游戏' end)
+		t_type,type,old_money,t_money,new_money
+		from t_transfer where
+		DATE_FORMAT(t_time, '%Y-%m-%d') BETWEEN #{bdate} and
+		#{edate}
+		<if test="userName != null and userName !=''">
+			AND username = #{userName}
+		</if>
+		<if test="type != null and type !=''">
+			and type = #{type}
+		</if>
+		<if test="t_type != null and t_type !=''">
+			and t_type = #{t_type}
+		</if>
+		ORDER BY t_time DESC
+		LIMIT #{starLimit},#{pageSize}
+	</select>
+
+	<select id="selectReChargeCount" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT count(1) cnt,sum(order_amount) total,trade_status FROM (
+		select uid,order_time,case pay_type when '1' then '网银' when '2' then
+		'微信'
+		else '支付宝' end pay_type,order_amount,
+		case trade_status when 'paying'
+		then '处理中' when 'success' then '交易成功' else
+		'交易失败' end
+		trade_status,pay_type type
+		from t_recharge where 1=1
+		<if test="uid != null and uid !=''">
+			AND uid = #{uid}
+		</if>
+		<if test="bdate != null and bdate !=''">
+			and DATE_FORMAT(order_time, '%Y-%m-%d') BETWEEN #{bdate}
+			and #{edate}
+		</if>
+		union all
+		select uid,addtime as order_time,'银行汇款' as pay_type,amount as
+		order_amount,case `status` when '0' then '处理中' when '1' then '交易成功'
+		else
+		'交易失败' end trade_status,'4' as type from t_amount_record  where 1=1
+		<if test="uid != null and uid !=''">
+			AND uid = #{uid}
+		</if>
+		<if test="bdate != null and bdate !=''">
+			and DATE_FORMAT(addtime, '%Y-%m-%d') BETWEEN #{bdate} and
+			#{edate}
+		</if> )a where
+		DATE_FORMAT(order_time, '%Y-%m-%d') BETWEEN #{bdate} and #{edate}
+		<if test="uid != null and uid !=''">
+			AND uid = #{uid}
+		</if>
+		<if test="type != null and type !=''">
+			and pay_type = #{type}
+		</if>
+		<if test="status != null and status !=''">
+			and trade_status = #{status}
+		</if>
+	</select>
+
+	<select id="selectReChargeInfo" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		select * from ( select uid,order_time,
+		case
+		when pay_type=1 or pay_type=21 then '网银'
+		when pay_type=2 or pay_type=22 then '微信'
+		when pay_type=3 or pay_type=23 then '支付宝'
+		when pay_type=4 or pay_type=24 then '财付通'
+		when pay_type=5 or pay_type=25 then '银联扫码'
+		when pay_type=6 or pay_type=26 then '京东支付'
+		when pay_type=7 or pay_type=27 then '快捷支付'
+		when pay_type=8 or pay_type=28 then '微信条码'
+		when pay_type=9 or pay_type=29 then '支付宝条码'
+		when pay_type=10 or pay_type=30 then '扫码支付'
+		when pay_type=11 or pay_type=31 then '银行汇款'
+		when pay_type=12 or pay_type=32 then '百度钱包'
+		else '其他'
+		end
+		pay_type,order_amount,
+		case trade_status when 'paying' then '处理中' when
+		'success' then '交易成功' else
+		'交易失败' end trade_status,pay_type type,'无' As rmk
+		from
+		t_recharge where 1=1
+		<if test="uid != null and uid !=''">
+			AND uid = #{uid}
+		</if>
+		<if test="bdate != null and bdate !=''">
+			and DATE_FORMAT(order_time, '%Y-%m-%d') BETWEEN #{bdate}
+			and #{edate}
+		</if>
+		union all
+		select uid,addtime as order_time,'银行汇款' as pay_type,amount as
+		order_amount,case `status` when '0' then '处理中' when '1' then '交易成功'
+		else
+		'交易失败' end trade_status,'4' as type,rmk as rmk from t_amount_record where 1=1
+		<if test="uid != null and uid !=''">
+			AND uid = #{uid}
+		</if>
+		<if test="bdate != null and bdate !=''">
+			and DATE_FORMAT(addtime, '%Y-%m-%d') BETWEEN #{bdate} and
+			#{edate}
+		</if>
+		)a where 1=1
+
+		<if test="type != null and type !=''">
+			and pay_type = #{type}
+		</if>
+		<if test="status != null and status !=''">
+			and trade_status = #{status}
+		</if>
+		ORDER BY order_time DESC
+		<if test="pageSize != null and pageSize !=''">
+			LIMIT #{starLimit},#{pageSize}
+		</if>
+
+	</select>
+
+	<select id="selectWithDrawCount" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT count(1) cnt,sum(amount) total FROM t_withdraw where
+		DATE_FORMAT(add_time, '%Y-%m-%d') BETWEEN #{bdate} and #{edate}
+		<if test="uid != null and uid !=''">
+			AND uid = #{uid}
+		</if>
+		<if test="status != null and status !=''">
+			AND `status` = #{status}
+		</if>
+	</select>
+
+	<select id="selectWithDrawInfo" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		select a.add_time,a.cardNo as card_num,a.amount,a.remark,a.rmk,poundage,administrative_fee,amount_paid,
+		case
+		a.`status` when '0' then
+		'处理中' when '1' then '已通过' when '2' then '未通过'
+		else '未知' end status
+		from t_withdraw a
+		left join t_user_card b on
+		a.cardNo=b.id where
+		DATE_FORMAT(a.add_time, '%Y-%m-%d') BETWEEN
+		#{bdate} and #{edate}
+		<if test="uid != null and uid !=''">
+			AND a.uid = #{uid}
+		</if>
+		<if test="status != null and status !=''">
+			AND a.`status` = #{status}
+		</if>
+		ORDER BY a.add_time DESC
+		LIMIT #{starLimit},#{pageSize}
+	</select>
+
+	<insert id="insertUserCard" parameterType="java.util.Map">
+		insert into t_user_card
+		(uid,card_username,bank_id,card_num,card_address,add_time,is_delete)
+		VALUES(#{uid},#{cardusername},#{bankid},#{cardnum},#{cardaddress},NOW(),'0')
+		; 
+	</insert>
+
+	<delete id="deleteUserCard" parameterType="java.util.Map">
+		delete from t_user_card where id=#{id} ; 
+	</delete>
+
+	<select id="selectUserCard" resultType="java.util.Map">
+		select SQL_NO_CACHE a.id,a.card_username,b.bank_name,CONCAT(
+		LEFT(a.card_num,4),'***********',RIGHT(a.card_num,4),'')
+		card_num,a.card_address from t_user_card a
+		left join t_card_type b on
+		a.bank_id=b.bank_id where a.uid = #{uid}
+		<if test="id != null and id !=''">
+			AND a.`id` = #{id}
+		</if>
+		<if test="Ttime != null and Ttime !=''">
+			and #{Ttime} =#{Ttime}
+		</if>
+	</select>
+
+	<insert id="insertUserTreasure" parameterType="java.util.Map">
+		insert into
+		t_user_treasure(uid,amount,old_money,new_money,number,type,t_type,addtime)
+		VALUES(#{uid},#{amount},#{oldmoney},#{newmoney},#{number},#{type},#{ttype},NOW())
+		; 
+	</insert>
+
+	<select id="selectPlatFromInfo" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select platform_key,platform_name,platform_config,platform_status
+		from
+		t_platform_config where platform_status=1
+		<if test="KEY != null and KEY !=''">
+			AND platform_key=#{KEY}
+		</if>
+
+	</select>
+
+	<select id="selectWebCom" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		Select type,title,img1,img2,img3,src1,weight,rmk,date_format(updatetime,'%Y-%m-%d') updatetime from t_webcom_config where
+		`status`=1 and type=#{type}
+		<if test="cagent != null and cagent !=''">
+			AND userid=#{cagent}
+		</if>
+		ORDER BY type,weight desc
+	</select>
+
+	<select id="selectRefererUrl" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		Select domain from t_referer_url where 1=1
+		<if test="domain != null and domain !=''">
+			AND domain=#{domain}
+		</if>
+		<if test="cagent != null and cagent !=''">
+			AND LOWER(name)=LOWER(#{cagent})
+		</if>
+	</select>
+
+	<insert id="insertLoginMap">
+		<selectKey keyProperty="count" resultType="java.util.Map"
+			order="BEFORE">
+			select count(1) from t_loginmap where uid = #{uid}
+		</selectKey>
+		<if test="count > 0">
+			update t_loginmap
+			set sessionid = #{sessionid},
+			ip=#{ip},
+			address=#{address},
+			refurl=#{refurl}
+			where uid = #{uid} ; 
+		</if>
+		<if test="count==0">
+			insert into t_loginmap(uid,sessionid,ip,address,refurl) VALUES
+			(#{uid},#{sessionid},#{ip},#{address} ,#{refurl}) ; 
+		</if>
+	</insert>
+
+	<select id="selectLoginMap" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		Select 1 from t_loginmap where uid = #{uid} and sessionid =
+		#{sessionid} and
+		ip=#{ip}
+	</select>
+
+	<delete id="deleteLoginMap" parameterType="java.lang.String">
+		delete from t_loginmap where sessionid = #{sessionid} ; 
+	</delete>
+
+	<insert id="insertLoginErrorMap">
+		<selectKey keyProperty="count" resultType="java.lang.Integer"
+			order="BEFORE">
+			select count(1) count from t_loginerrormap where username = #{username}
+		</selectKey>
+		<if test="count > 0">
+			update t_loginerrormap
+			set times = times+1,logintime=NOW()
+			where username = #{username} ;
+			
+		</if>
+		<if test="count==0">
+			insert into t_loginerrormap(username,times,logintime) VALUES
+			(#{username},1,now()) ; 
+		</if>
+	</insert>
+
+	<select id="selectLoginErrorMap" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		Select * from t_loginerrormap where username = #{username}
+	</select>
+
+	<update id="deleteLoginErrorMap" parameterType="java.lang.String">
+		update t_loginerrormap set times='0' where username = #{username} ;
+		
+	</update>
+
+
+	<select id="selectMessageRead" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select IFNULL(sum(case when `status`=1 then 1 else 0 end),0)
+		as isread,
+		IFNULL(sum(case when `status`=0 then 1 else 0 end),0) as
+		noread from
+		t_internal_message
+		where uid=#{uid}
+		<if test="bdate != null and bdate !=''">
+			and DATE_FORMAT(addtime, '%Y-%m-%d') BETWEEN #{bdate} and
+			#{edate}
+		</if>
+		order by addtime desc
+	</select>
+
+	<select id="selectMessageByStatus" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select id,CONCAT(LEFT(message,20),'...') as message,`status`,addtime
+		from t_internal_message
+		where uid=#{uid}
+		<if test="status != null and status !=''">
+			AND `status`=#{status}
+		</if>
+		<if test="bdate != null and bdate !=''">
+			and DATE_FORMAT(addtime, '%Y-%m-%d') BETWEEN #{bdate} and
+			#{edate}
+		</if>
+	</select>
+
+	<select id="selectMessageInfo" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select id,message,`status` from t_internal_message
+		where uid=#{uid} and
+		id=#{id}
+	</select>
+
+	<update id="updateMessageInfo" parameterType="java.lang.String">
+		update t_internal_message set `status` = 1 where uid=#{uid} and
+		id=#{id} ; 
+	</update>
+
+	<select id="deleteMessage" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		delete from t_internal_message where id = #{id} and
+		uid=#{uid}
+	</select>
+
+	<select id="getProxyUser" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select b.id as pid,a.d_user_type FROM t_proxy_user a
+		inner join user b on
+		a.user_name=b.login_name
+		left join t_cagent c on a.cid=c.id
+		where
+		a.user_name = #{proxyname} and c.cagent=#{cagent} and b.type='1'
+	</select>
+
+	<select id="getJuniorProxyUser" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select a.up_id as pid,c.id as up_id,b.d_user_type from t_junior_proxy_user a
+		left join
+		t_proxy_user b on a.proxy_user_id=b.id
+		left join `user` c on
+		b.user_name=c.login_name
+		LEFT JOIN t_cagent d on c.cid=d.id
+		where
+		a.user_name = #{proxyname} and d.cagent=#{cagent}
+	</select>
+
+	<select id="getYsepayConfig" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select c.* from t_user a
+		join t_user_type b on a.type_id=b.id
+		join
+		t_cagent_ysepay c on
+		b.onlinepay_id=c.id
+		where c.status=0 and
+		a.username=#{username}
+	</select>
+
+	<select id="getBankPayConfig" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select c.* from t_user a
+		join t_user_type b on a.type_id=b.id
+		join
+		t_cagent_bankcard c on
+		b.bankCard_id=c.id
+		where a.uid=#{uid} and
+		c.type=0 and c.`status`=0
+		<if test="bid != null and bid !=''">
+			and c.id=#{bid}
+		</if>
+	</select>
+
+	<!-- 插入用户存款记录 -->
+	<insert id="userOnlineDeposit" parameterType="java.util.Map">
+		INSERT INTO
+		`t_amount_record` (
+		`cid`,
+		`uid`,
+		`ref_id`,
+		`username`,
+		`usercode`,
+		`amount`,
+		`type`,
+		`times`,
+		`bankname`,
+		`bankcode`,
+		`bankusername`,
+		`discount`,
+		`handsel`,
+		`quantity`,
+		`addtime`,
+		`transfertime`,
+		`status`,
+		`vuid`,
+		`vtime`,
+		`rmk`
+		)
+		VALUES
+		(
+		(SELECT id FROM
+		t_cagent WHERE cagent=#{cagent} LIMIT 0,1),
+		#{uid},
+		#{ref_id},
+		#{username},
+		#{usercode},
+		#{amount},
+		#{type},
+		#{times},
+		#{bankname},
+		#{bankcode},
+		#{bankusername},
+		#{discount},
+		#{handsel},
+		#{quantity},
+		#{addtime},
+		#{transfertime},
+		#{status},
+		#{vuid},
+		#{vtime},
+		#{rmk}
+		) ;
+		
+	</insert>
+	<!-- 修改用户储值额度 -->
+	<update id="updateCagentStoredvalue" parameterType="java.util.Map">
+		UPDATE `t_cagent_storedvalue` SET
+		usedvaue=usedvaue+#{amount},
+		remainvalue=remainvalue-#{amount}
+		WHERE cid=(SELECT id FROM t_cagent
+		WHERE t_cagent.cagent=#{cagent});
+	</update>
+	<!-- 插入储值日志记录 -->
+	<insert id="insertStoredvalueLog" parameterType="java.util.Map">
+		INSERT INTO
+		`t_cagent_storedvalue_log`
+		(
+		`cid`,
+		`t_type`,
+		`type`,
+		`value`,
+		`addtime`
+		)
+		VALUES
+		(
+		(SELECT id FROM t_cagent WHERE
+		t_cagent.cagent=#{cagent}),
+		#{t_type},
+		#{type},
+		#{amount},
+		NOW()
+		) ;
+		
+	</insert>
+	<!-- 插入用户提款申请订单 -->
+	<insert id="insertWithdraw" parameterType="java.util.Map">
+		INSERT INTO t_withdraw (
+		`cid`,
+		`uid`,
+		`billNo`,
+		`amount`,
+		`status`,
+		`add_time`,
+		`username`,
+		`bankname`,
+		`cardNo`,
+		`totaltimes`,
+		`todaytimes`,
+		`poundage`,
+		`administrative_fee`,
+		`amount_paid`,
+		`vuid`,
+		`vtime`,
+		`rmk`,
+		`remark`,
+		`marking_quantity`,
+		`user_quantity`
+		)
+		VALUES
+		(
+		(SELECT id FROM t_cagent WHERE t_cagent.cagent=#{cagent}),
+		#{uid},
+		#{billNo},
+		#{amount},
+		#{status},
+		NOW(),
+		#{username},
+		#{bankname},
+		#{cardNo},
+		#{totaltimes},
+		#{todaytimes},
+		#{poundage},
+		#{administrative_fee},
+		#{amount_paid},
+		#{vuid},
+		NOW(),
+		#{rmk},
+		#{remark},
+		#{marking_quantity},
+		#{user_quantity}
+		) ; 
+	</insert>
+	<select id="selectUserCardNum" parameterType="java.lang.Integer"
+		resultType="java.util.Map">
+		SELECT
+		a.id,
+		a.card_username,
+		b.bank_name,
+		card_num,
+		a.card_address
+		FROM
+		t_user_card a
+		LEFT JOIN t_card_type b ON a.bank_id = b.bank_id
+		WHERE
+		a.is_delete = '0'
+		AND a.uid = #{uid}
+		LIMIT 0,1
+	</select>
+
+	<select id="queryTotaltimes" parameterType="java.lang.Integer"
+		resultType="java.util.Map">
+		SELECT
+		(SELECT COUNT(1)+1 FROM t_withdraw WHERE uid=#{uid}) as totaltimes,
+		(SELECT COUNT(1)+1 FROM t_withdraw WHERE uid=#{uid} AND add_time &gt;
+		date_format(NOW(),'%y-%m-%d 0')) as todaytimes
+	</select>
+	<select id="queryDeposittimes" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		SELECT
+		(SELECT IF(COUNT(1)=0,0,COUNT(1)) FROM t_amount_record WHERE uid=#{uid}) as
+		times
+	</select>
+
+	<select id="queryWithdrawConfig" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT * from t_pay_withdraw_config WHERE cid=(SELECT id FROM t_cagent
+		WHERE=#{cagent})
+	</select>
+
+	<select id="sumTodayWithdraw" parameterType="java.util.Map"
+		resultType="java.lang.String">
+		SELECT SUM(r.order_amount) as sumAmount FROM t_recharge r,t_user u WHERE
+		u.uid=r.uid AND r.trade_status='success' AND r.order_time &gt;=#{data}
+		AND u.cagent=#{cagent} AND r.merchant = #{paymentName}
+	</select>
+
+	<insert id="insertORUpdate" parameterType="java.util.Map">
+		insert into t_user_quantity (cid, uid,
+		marking_quantity, user_quantity,
+		winAmount,user_winAmount)
+		values (
+		(SELECT id FROM t_cagent WHERE t_cagent.cagent=#{cagent}),
+		#{uid,jdbcType=INTEGER},
+		#{markingQuantity,jdbcType=REAL},
+		#{userQuantity,jdbcType=REAL},
+		#{winamount,jdbcType=REAL},
+		0
+		)
+		ON DUPLICATE KEY UPDATE
+		marking_quantity
+		=VALUES(marking_quantity)+marking_quantity,
+		user_quantity
+		=VALUES(user_quantity)+user_quantity,
+		winAmount
+		=VALUES(winAmount)+winAmount ; 
+	</insert>
+
+	<select id="selectWithdrawConfig" parameterType="java.util.Map"
+		resultType="java.util.Map">
+	<!-- 	SELECT marking_quantity, user_quantity, winAmount,user_winAmount,(select
+		compulsory_withdrawal_fee from t_pay_withdraw_config where cid =
+		t_user_quantity.cid LIMIT 0,1) as withdrawConfig FROM t_user_quantity
+		WHERE uid=#{uid} -->
+				SELECT
+		  marking_quantity,
+		  user_quantity,
+		  winAmount,
+		  user_winAmount,
+		  t.compulsory_withdrawal_fee AS withdrawConfig,
+		  t.withdraw_fee,
+		  t.withdraw_manage_fee,
+		  free_withdraw_time,
+		  (SELECT COUNT(1) FROM t_withdraw WHERE uid=#{uid} AND add_time &gt;
+		date_format(NOW(),'%y-%m-%d 0') AND  status =1  ) as todaytimes
+		FROM
+		  t_user_quantity tp
+		  LEFT JOIN t_pay_withdraw_config t
+		    ON t.cid = tp.cid
+		WHERE tp.uid = #{uid}
+	</select>
+
+	<!-- 查询网址配置 -->
+	<select id="selectWebComConfig" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT * FROM t_webcom_config WHERE `status`=1
+		<if test="type != null and type !=''">
+			AND type = #{type}
+		</if>
+		<if test="id != null and id !=''">
+			AND id = #{id}
+		</if>
+		<if test="userid != null and userid !=''">
+			AND userid = #{userid}
+		</if>
+		ORDER BY type,weight desc
+	</select>
+	<!-- 网站文本设置 -->
+	<select id="selectWebTexttMap" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT * FROM t_cagent_webcode WHERE type = #{type}
+		AND cid = (select id from t_cagent where t_cagent.cagent=#{cagent} LIMIT
+		0,1)
+	</select>
+
+	<select id="selectUserGameStatus" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		select SQL_NO_CACHE count(1) cnt from t_user_gamestatus where uid=#{uid} and
+		gametype=#{gametype}
+	</select>
+
+	<insert id="insertUserGameStatus" parameterType="java.util.Map">
+		INSERT into t_user_gamestatus (uid,gametype,`status`)
+		values(#{uid},#{gametype},'1') ; 
+	</insert>
+
+	<!-- 用户资金流水分页查询 -->
+	<select id="queryByTreasurePage" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT SQL_NO_CACHE IF(type='OUT',-amount,amount) AS amount
+		,new_money,t_type,addtime,rmk FROM t_user_treasure b,
+		(SELECT id FROM
+		t_user_treasure
+		<where>
+			<if test="uid!=null">
+				uid=#{uid}
+			</if>
+			<if test="startTime!=null and endTime!=null">
+				AND addtime BETWEEN #{startTime} AND #{endTime}
+			</if>
+			<if test="type!=null and type!=null">
+				AND t_type=#{type}
+			</if>
+			<if test="startPage!=null and pageSize!=null">
+				LIMIT #{startPage},#{pageSize}
+			</if>
+		</where>
+		) a
+		WHERE a.id=b.id
+	</select>
+
+	<!-- 分页总数 -->
+	<select id="queryByTreasurePageCount" parameterType="java.util.Map"
+		resultType="java.lang.Double">
+		SELECT SQL_NO_CACHE sum(if('IN' = type,amount,-amount)) as total FROM t_user_treasure
+		<where>
+			<if test="uid!=null">
+				uid=#{uid}
+			</if>
+			<if test="type!=null and type!=null">
+				AND t_type=#{type}
+			</if>
+			<if test="startTime!=null and endTime!=null">
+				AND addtime BETWEEN #{startTime} AND #{endTime}
+			</if>
+		</where>
+	</select>
+
+	<insert id="updateTransferPro" parameterMap="getupdateTransfet"
+		statementType="CALLABLE">
+   		 <![CDATA[  CALL updateTransfer(?,?,?,?,?,?,?,?,?,?,?)]]>
+	</insert>
+	<parameterMap type="java.util.Map" id="getupdateTransfet">
+		<parameter property="wallet" mode="IN" jdbcType="FLOAT" />
+		<parameter property="uid" mode="IN" jdbcType="INTEGER" />
+		<parameter property="billno" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="username" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="t_type" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="t_money" mode="IN" jdbcType="FLOAT" />
+		<parameter property="old_money" mode="IN" jdbcType="FLOAT" />
+		<parameter property="new_money" mode="IN" jdbcType="FLOAT" />
+		<parameter property="type" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="ip" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="result" mode="IN" jdbcType="VARCHAR" />
+	</parameterMap>
+
+	<select id="selectReChargeStatus" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT
+		uid,
+		order_time,
+		CASE pay_type
+		WHEN '1' THEN
+		'网银'
+		WHEN '2' THEN
+		'微信'
+		WHEN '3' THEN
+		'支付宝'
+		ELSE
+		'财付通'
+		END pay_type,
+		order_amount,
+		CASE trade_status
+		WHEN 'paying' THEN
+		'处理中'
+		WHEN 'success' THEN
+		'交易成功'
+		ELSE
+		'交易失败'
+		END trade_status,
+		pay_type type
+		FROM
+		t_recharge
+		<if test="orderno != null and orderno !='' ">
+			where
+			order_no=#{orderno}
+		</if>
+	</select>
+
+
+
+	<select id="selectDemoAccount" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT * FROM t_demo_account
+		<where>
+			<if test="accountcode!=null and accountcode !='' ">
+				accountcode=#{accountcode}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertDemoAccount" parameterType="java.util.Map">
+		INSERT into t_demo_account (username,password,addtime,ip,cagent,accountcode)
+		values(#{username},#{password},NOW(),#{ip},#{cagent},#{accountcode})
+	</insert>
+
+	<select id="selectBGRecord" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT
+		*
+		FROM
+		t_bg_record
+	</select>
+
+	<insert id="InserterBGRecord" parameterType="java.util.Map">
+		insert
+		into `t_bg_record` (`sn`, `loginId`, `amount`, `moduleId`, `tranId`,
+		`orderId`, `gameId`, `orderAmount`, `issueId`, `playId`, `orderFrom`,
+		`gameResult`, `recalc`, `orderStatus`, `createdate`)
+		values(#{sn},#{loginId},#{amount},#{moduleId},#{tranId},#{orderId},#{gameId},#{orderAmount},#{issueId},
+		#{playId},#{orderFrom},#{gameResult},#{recalc},#{orderStatus},#{createdate});
+	</insert>
+
+	<select id="selectUserByAgUserName" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT count(1) cnt, uid,ag_username FROM t_user WHERE
+		ag_username = #{ag_username}
+	</select>
+
+	<!--验证单号是否存在 -->
+	<select id="selectChickReCharge" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		select pay_id,uid,order_time,case pay_type 
+		when '1' then '网银' 
+		when '2' then'微信' 
+		when '3' then'支付宝' 
+		when '5' then '银联'
+		when '6' then '京东'
+		when '7' then '快捷'
+		when '8' then '微信条码'
+		when '9' then '支付宝条码'
+		else '财付通' end pay_type,order_amount,
+		case trade_status when 'paying' then '处理中' when 'success' then '交易成功' else
+		'交易失败' end trade_status,pay_type type
+		from t_recharge where order_no = #{orderno}
+	</select>
+
+
+	<insert id="InsertCallbacklog" parameterType="java.util.Map">
+		insert into
+		t_onlinepay_callback_log(params,ip,status,uptime)
+		VALUES(#{params},#{ip},#{status},NOW())
+	</insert>
+
+	<select id="ysePayCallBack" parameterMap="getCallBack"
+		statementType="CALLABLE" resultType="java.lang.Integer">
+   		 <![CDATA[  CALL ysePayCallBack(?,?,?,?,?,?,?,?,?,?,?)]]>
+	</select>
+	<parameterMap type="java.util.Map" id="getCallBack">
+		<parameter property="uid" mode="IN" jdbcType="INTEGER" />
+		<parameter property="amt" mode="IN" jdbcType="FLOAT" />
+		<parameter property="wallet" mode="IN" jdbcType="FLOAT" />
+		<parameter property="number" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="cj" mode="IN" jdbcType="FLOAT" />
+		<parameter property="tradeNo" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="outTradeNo" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="cagent" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="dml" mode="IN" jdbcType="FLOAT" />
+		<parameter property="number2" mode="IN" jdbcType="VARCHAR" />
+		<parameter property="_err" mode="OUT" jdbcType="VARCHAR" />
+	</parameterMap>
+
+
+	<insert id="insertTransferFaild" parameterType="java.lang.String">
+		insert into t_transfer_faild(uid,
+		billno,username,t_type,t_money,`status`,type,t_time,ip,result)
+		VALUES(#{uid},#{billno},#{username},#{t_type},#{t_money},'1',#{type},NOW(),INET_ATON(#{ip}),#{result})
+	</insert>
+
+	<insert id="updateTransferFaild" parameterType="java.util.Map">
+		update t_transfer_faild set status = '2',t_time = NOW(),result = 'success'
+		where uid = #{uid} and billno = #{billno};
+	</insert>
+
+	<select id="selectCagentOnlineMem" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		select * from t_cagent_onlinemem where cagent=#{cagent}
+	</select>
+
+	<select id="selectPlatformCagent" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT
+		ag AS AG,
+		ag AS AGIN,
+		bbin AS BBIN,
+		bbin AS BBIN1,
+		bbinGame AS BBIN2,
+		cg AS CG,
+		ds AS DS,
+		ggby AS GGBY,
+		haba AS HABA,
+		hg AS HG,
+		ig AS IG,
+		ig AS IGLOTTERY,
+		ig AS IGLOTTO,
+		igpj AS IGPJ,
+		igpj AS IGPJLOTTERY,
+		igpj AS IGPJLOTTO,
+		mgGame AS MG,
+		aghsr AS AGBY,
+		ob AS OB,
+		og AS OG,
+		pt AS PT,
+		shenbo AS SB1,
+		shenboGame AS SB2,
+		bgVideo AS BG,
+		<!--bgLottery AS BG2,-->
+		IF((shenbo=0 )OR(shenboGame=0) ,"0","1") AS SB,
+		<!--IF((bgVideo=0)OR(bgLottery=0) ,"0","1") AS BG,-->
+		VR as VR,
+		yoplay as YOPLAY,
+		tasspta as TASSPTA,
+		vgqp as VG,
+		gy as GY,
+		nb as NB,
+		ps as PS,
+		kyqp as KYQP,
+		lyqp as LYQP,
+		jdb AS JDB,
+		sw AS SW,
+		ibc AS IBC,
+		esw AS ESW,
+		cqj AS CQJ
+		FROM t_platform_status p WHERE p.cid =(SELECT id FROM t_cagent WHERE
+		cagent=(SELECT cagent FROM t_user WHERE uid=#{uid}))
+	</select>
+
+	<select id="selectCagentByUid" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT
+		t_cagent.`cagent` AS cagent,
+		t_cagent.id
+		FROM
+		t_cagent
+		WHERE cagent =
+		(SELECT
+		cagent
+		FROM
+		t_user
+		WHERE uid = #{uid})
+	</select>
+	
+		<!-- 用户获取分层可以支付列表 -->
+	<select id="selectUserTypeById" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT c.payment_id FROM t_user a 
+		INNER JOIN t_user_type b ON a.type_id = b.id 
+		INNER JOIN t_user_channel c ON b.id = c.typeid 
+		WHERE a.uid = #{uid} AND FIND_IN_SET(#{typeid},channel) 
+		AND FIND_IN_SET(c.payment_id,b.onlinepay_id) 
+	</select>
+	
+	<!-- 用户可用支付列表 -->
+	<select id="selectUserPaymentList" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT
+		*
+		FROM
+		t_cagent_ysepay t
+		WHERE
+		id IN  
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+  		#{item}
+ 		</foreach>
+ 		and status=0
+ 	<!-- 	and LOCATE(#{payType},t.type)>0  -->
+		ORDER BY ca_index DESC,id ASC
+	</select>
+	
+	<!-- 根据id获取支付商 -->
+	<select id="selectYsepaybyId" parameterType="java.lang.String"
+		resultType="java.util.Map">
+	<!-- 	SELECT * FROM t_cagent_ysepay
+		WHERE id = #{id} -->
+		SELECT
+		tuc.dividend_rate,
+		tuc.coding_rate,
+		tcy.payment_name,
+		tcy.payment_config,
+		tcy.pay_url,
+		tcy.ish5_wx,
+		tcy.ish5_ali,
+		tcy.ish5_cft,
+		tcy.ish5_yl,
+		tcy.ish5_jd,
+		tcy.wx_minquota,
+		tcy.wx_maxquota,
+		tcy.ali_minquota,
+		tcy.ali_maxquota,
+		tcy.qrminquota,
+		tcy.qrmaxquota,
+		tcy.yl_minquota,
+		tcy.yl_maxquota,
+		tcy.jd_minquota,
+		tcy.jd_maxquota,
+		tcy.kj_minquota,
+		tcy.kj_maxquota,
+		tcy.wxtm_minquota,
+		tcy.wxtm_maxquota,
+		tcy.alitm_minquota,
+		tcy.alitm_maxquota,
+		tcy.minquota,
+		tcy.maxquota
+		FROM
+		t_user tu
+		LEFT JOIN t_user_channel tuc ON tu.type_id = tuc.typeid
+		LEFT JOIN t_cagent_ysepay tcy ON tuc.payment_id = tcy.id
+		WHERE
+		tu.uid = #{uid}
+		AND tcy.id = #{pid};
+	</select>
+	
+		<!--查询t_proxy_user user_name-->
+	<select id="selectProxyByName" parameterType="java.lang.String"
+		resultType="java.util.Map">
+<!-- 		SELECT pu.user_name,pu.domain FROM t_cagent ca LEFT JOIN t_proxy_user pu ON ca.id=pu.cid
+		WHERE ca.cagent=#{cagent}  and pu.domain not in ('') -->
+		SELECT pu.user_name,pu.domain FROM t_cagent ca LEFT JOIN t_proxy_user pu ON pu.cid = ca.id 
+	WHERE ca.cagent = #{cagent}
+	UNION ALL 
+	SELECT user_name, domain FROM t_junior_proxy_user jpu WHERE proxy_user_id IN ( SELECT id FROM t_proxy_user WHERE cid = ( SELECT id FROM t_cagent WHERE cagent = #{cagent}   ) );
+		
+	</select>
+	
+	<!--查询selectUserQuantityByid-->
+	<select id="selectUserQuantityByid" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT marking_quantity,user_quantity FROM t_user_quantity tuq  WHERE  tuq.uid=#{uid}
+	</select>
+	<!-- 根据paymentName获取支付商 -->
+	<select id="selectTcagentYsepay" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT * FROM t_cagent_ysepay WHERE payment_name = #{paymentName}
+	</select>
+	
+	<update id="updatePersonalInformation" parameterType="java.util.Map">
+		update t_user 
+		<set>
+		<if test="mobile != null and mobile !=''">
+			 mobile = #{mobile},
+		</if>
+		<if test="email != null and email !=''">
+			 email = #{email},
+		</if>
+		<if test="rmk != null and rmk !=''">
+			 rmk = #{rmk},
+		</if>
+		<if test="userName != null and userName !=''">
+			 realname = #{userName},
+		</if>
+		<if test="mobile != null and mobile !=''">
+			 mobile = #{mobile},
+		</if>
+		<if test="loginmobile != null and loginmobile !=''">
+			 loginmobile = #{loginmobile},
+		</if>
+		</set>
+		where uid = #{uid} ; 
+	</update>
+	
+	<select id="selectWithDrawStatusCount" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		SELECT COUNT(1) FROM t_withdraw WHERE uid=#{uid} AND STATUS=0
+	</select>
+	
+	<select id="selectUserTypeHandicap" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT * FROM t_user_type_handicap  WHERE game=#{game} AND  type_id=(SELECT type_id FROM t_user WHERE uid=#{uid})
+	</select>
+	
+	<select id="selectMsgconfig" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT * from t_cagent_msgconfig where `status`=0 and cid = (select id from t_cagent where cagent = #{cagent})
+	</select>
+	
+	<insert id="InsertMsgLog" parameterType="java.lang.String">
+		insert into t_cagent_msg(cagent,mname,mobileno,msg,sendtime,status,type,domain)
+		VALUES(#{cagent},#{mname},#{mobileno},#{msg},NOW(),'0',#{type},#{domain})
+	</insert>
+	
+	<select id="selectMsgLog" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT * from t_cagent_msg 
+			where `status`=0 
+		<if test="cagent != null and cagent !=''">
+			and  cagent = #{cagent}
+		</if>
+		<if test="mobileno != null and mobileno !=''">
+			and   mobileno = #{mobileno}
+		</if>
+		<if test="type != null and type !=''">
+			and   type = #{type}
+		</if>
+		<if test="sendtime != null and sendtime !=''">
+			and   sendtime &gt; #{sendtime}
+		</if>
+		order by id desc
+	</select>
+	
+	<update id="updateMsgValue" parameterType="java.lang.String">
+		update t_cagent_msg set status = #{status}  where id=#{id}; 
+	</update>
+	
+	<select id="selectUserByMobileNo" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT * FROM t_user  WHERE cagent=#{cagent} and loginmobile=#{mobileNo}
+		<if test="password != null and password !=''">
+			and   password = #{password}
+		</if>
+	</select>
+
+    <select id="selectDisUserByMobileNo" parameterType="java.lang.String"
+            resultType="java.util.Map">
+        SELECT * FROM t_user_dissociate  WHERE cagent=#{cagent} and loginmobile=#{mobileNo}
+        <if test="password != null and password !=''">
+            and   password = #{password}
+        </if>
+    </select>
+	
+	<insert id="insertMobileLog" parameterType="java.util.Map">
+		INSERT INTO t_mobile_log (uid, old_mobile, new_mobile, update_time, ip,cagent) 
+		VALUES ( #{uid}, #{old_mobile}, #{new_mobile}, #{update_time}, #{ip}, #{cagent});
+	</insert>
+	
+	<select id="selectMobileLog" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT * from t_mobile_log where DATE_FORMAT(update_time, '%Y-%m-%d')=DATE_FORMAT(NOW(), '%Y-%m-%d') and uid=#{uid};
+	</select>
+	
+	<select id="selectQkpwdCheck" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT  * FROM t_user WHERE qk_pwd ='' AND  uid=#{uid};
+	</select>
+	
+	<select id="getOrderCount" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+		SELECT count(uid) FROM t_amount_record i where  i.status = '0' and i.uid = #{userId} 
+	</select>
+	
+	<!-- 用户可用支付渠道 -->
+	<select id="selectUserPaychannel" parameterType="java.lang.String"
+		resultType="java.util.Map">
+			SELECT
+     payment_channel
+		FROM
+			t_user_type tut
+		 WHERE id=(SELECT t_user.type_id FROM t_user WHERE uid = #{uid})
+	</select>
+	
+	<!-- 用户可用支付列表 -->
+	
+	<select id="selectCagentQuota" parameterType="java.lang.String"
+		resultType="java.util.Map">
+			SELECT * FROM  t_cagent_storedvalue WHERE cid=(SELECT id FROM t_cagent  WHERE cagent =#{cagent});
+	</select>
+	
+	<!-- PS游戏token -->
+	<insert id="insertPSToken" parameterType="java.util.Map">
+		INSERT INTO t_ps_auth(auth,step,create_time,uid) VALUE(#{auth},#{step},now(),#{uid})  
+	</insert>
+	
+	<!-- PS游戏查询token -->
+	<select id="selectPSByauth" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT tpa.auth,tu.ag_username FROM t_ps_auth tpa LEFT JOIN t_user  tu ON tpa.uid= tu.uid  WHERE auth=#{auth}
+	</select>
+	
+	<!-- PS游戏token 状态-->
+	<update id="UpdatePSToken" parameterType="java.util.Map">
+		UPDATE t_ps_auth SET step=#{step},update_time=NOW()  WHERE auth=#{auth} 
+	</update>
+	
+	<!-- 查询订单状态 -->
+	<select id="selectOrderNoStatus" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+			SELECT COUNT(*) FROM  t_recharge WHERE order_no = #{outTradeNo} AND trade_status = 'success'
+	</select>
+
+	<!-- 查询 -->
+	<select id="getContactInfo" parameterType="java.util.Map"
+			resultType="java.util.Map">
+	  SELECT
+	  *
+	  FROM
+	  t_contact_config
+	  WHERE cagent = #{cagent} AND website = #{website}
+	</select>
+
+	<select id="getProxyUserByrefererCode" parameterType="java.lang.String"
+			resultType="java.util.Map">
+		select b.id as pid,a.d_user_type FROM t_proxy_user a
+		inner join user b on
+		a.user_name=b.login_name
+		where
+		a.referral_code = #{referralCode}
+	</select>
+	<select  id="getJuniorProxyUserByrefererCode" parameterType="java.lang.String"
+			resultType="java.util.Map">
+
+		SELECT a.up_id AS pid,c.id AS up_id,b.d_user_type FROM t_junior_proxy_user a
+		LEFT JOIN
+		t_proxy_user b ON a.proxy_user_id=b.id
+		LEFT JOIN `user` c ON
+		b.user_name=c.login_name
+		where
+		a.referral_code = #{referral_code}
+	</select>
+	
+	
+	<!-- 查询用户基本信息 -->
+	<select id="findUserInfoByUid" resultType="java.util.Map">
+		SELECT
+			u.uid AS uid,ifnull(u.username,'#') AS username,u.type_id AS typeId,
+			ifnull(c.cagent,'#') AS cagent,c.id AS cid,ifnull(s.remainvalue,0.00) AS remainvalue
+		FROM t_user u
+		LEFT JOIN t_cagent c ON c.cagent = u.cagent 
+		LEFT JOIN t_cagent_storedvalue s ON s.cid = c.id
+		WHERE uid = #{uid}
+	</select>
+	
+	<!-- 插入充值订单信息 -->
+	<insert id="createTopUpRecharge" parameterType="com.cn.tianxia.api.common.PayEntity">
+		INSERT INTO t_recharge
+		(uid,pay_type,bank_code,trade_status,trade_no,order_no,order_amount,order_time,ip,merchant,pay_id,description,pay_amount,cid)
+		VALUES
+		(#{uId},#{payType},#{payCode},'paying','',#{orderNo},#{amount},NOW(),INET_ATON(#{ip}),#{topay},#{payId},#{description},#{amount},#{cid});
+	</insert>
+	
+	<!-- 修改用户钱包余额 -->
+	<update id="transferToGame">
+		UPDATE t_user SET wallet = wallet - #{amount} WHERE uid = #{uid} AND wallet >=#{amount}
+	</update>
+	<!-- 退还 或给与 用户钱包 -->
+	<update id="transferReturnOrGiving">
+		UPDATE t_user SET wallet = wallet - #{amount} WHERE uid = #{uid}
+	</update>
+	
+	<!-- 获取用户余额 -->
+	<select id="findUserById" resultType="double">
+		SELECT wallet FROM t_user WHERE uid = #{uid} AND is_stop = 0
+	</select>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.tianxia.api.domain.txdata.GameListDao">
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.GameList">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="game_id" jdbcType="VARCHAR" property="game_id" />
+    <result column="game_name_en" jdbcType="VARCHAR" property="game_name_en" />
+    <result column="game_name_cn" jdbcType="VARCHAR" property="game_name_cn" />
+    <result column="src" jdbcType="VARCHAR" property="src" />
+    <result column="game_type" jdbcType="VARCHAR" property="game_type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, game_id, game_name_en, game_name_cn, src, game_type
+  </sql>
+  <select id="selectByGameType" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from platform_games_list
+    where game_type = #{gameType,jdbcType=VARCHAR}
+    <if test="gameName!='' || gameName!=null">
+      and game_name_cn like '%${gameName}%'
+    </if>
+    ORDER BY id DESC
+    LIMIT ${(pageNo-1)*pageSize},#{pageSize}
+  </select>
+
+  <select id="selectByGameTypeCount" parameterType="java.util.Map" resultType="java.util.Map">
+    select
+      count(1) AS count
+    from platform_games_list
+    where game_type = #{gameType,jdbcType=VARCHAR}
+    <if test="gameName!='' || gameName!=null">
+      and game_name_cn like '%${gameName}%'
+    </if>
+  </select>
+</mapper>

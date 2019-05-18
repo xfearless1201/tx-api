@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.CagentQrcodepayDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.CagentQrcodepayEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="accountcode" property="accountcode" jdbcType="VARCHAR" />
+    <result column="accountname" property="accountname" jdbcType="VARCHAR" />
+    <result column="accountimg" property="accountimg" jdbcType="VARCHAR" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="dayquota" property="dayquota" jdbcType="DOUBLE" />
+    <result column="minquota" property="minquota" jdbcType="DOUBLE" />
+    <result column="maxquota" property="maxquota" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cid, type, accountcode, accountname, accountimg, rmk, status, updatetime, uid, 
+    dayquota, minquota, maxquota
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cagent_qrcodepay
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_cagent_qrcodepay
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.CagentQrcodepayEntity" >
+    insert into t_cagent_qrcodepay (id, cid, type, accountcode, 
+      accountname, accountimg, rmk, 
+      status, updatetime, uid, 
+      dayquota, minquota, maxquota
+      )
+    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{type,jdbcType=CHAR}, #{accountcode,jdbcType=VARCHAR}, 
+      #{accountname,jdbcType=VARCHAR}, #{accountimg,jdbcType=VARCHAR}, #{rmk,jdbcType=VARCHAR}, 
+      #{status,jdbcType=CHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{uid,jdbcType=INTEGER}, 
+      #{dayquota,jdbcType=DOUBLE}, #{minquota,jdbcType=DOUBLE}, #{maxquota,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.CagentQrcodepayEntity" >
+    insert into t_cagent_qrcodepay
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="accountcode != null" >
+        accountcode,
+      </if>
+      <if test="accountname != null" >
+        accountname,
+      </if>
+      <if test="accountimg != null" >
+        accountimg,
+      </if>
+      <if test="rmk != null" >
+        rmk,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="dayquota != null" >
+        dayquota,
+      </if>
+      <if test="minquota != null" >
+        minquota,
+      </if>
+      <if test="maxquota != null" >
+        maxquota,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="accountcode != null" >
+        #{accountcode,jdbcType=VARCHAR},
+      </if>
+      <if test="accountname != null" >
+        #{accountname,jdbcType=VARCHAR},
+      </if>
+      <if test="accountimg != null" >
+        #{accountimg,jdbcType=VARCHAR},
+      </if>
+      <if test="rmk != null" >
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="dayquota != null" >
+        #{dayquota,jdbcType=DOUBLE},
+      </if>
+      <if test="minquota != null" >
+        #{minquota,jdbcType=DOUBLE},
+      </if>
+      <if test="maxquota != null" >
+        #{maxquota,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.CagentQrcodepayEntity" >
+    update t_cagent_qrcodepay
+    <set >
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="accountcode != null" >
+        accountcode = #{accountcode,jdbcType=VARCHAR},
+      </if>
+      <if test="accountname != null" >
+        accountname = #{accountname,jdbcType=VARCHAR},
+      </if>
+      <if test="accountimg != null" >
+        accountimg = #{accountimg,jdbcType=VARCHAR},
+      </if>
+      <if test="rmk != null" >
+        rmk = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="dayquota != null" >
+        dayquota = #{dayquota,jdbcType=DOUBLE},
+      </if>
+      <if test="minquota != null" >
+        minquota = #{minquota,jdbcType=DOUBLE},
+      </if>
+      <if test="maxquota != null" >
+        maxquota = #{maxquota,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.CagentQrcodepayEntity" >
+    update t_cagent_qrcodepay
+    set cid = #{cid,jdbcType=INTEGER},
+      type = #{type,jdbcType=CHAR},
+      accountcode = #{accountcode,jdbcType=VARCHAR},
+      accountname = #{accountname,jdbcType=VARCHAR},
+      accountimg = #{accountimg,jdbcType=VARCHAR},
+      rmk = #{rmk,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      uid = #{uid,jdbcType=INTEGER},
+      dayquota = #{dayquota,jdbcType=DOUBLE},
+      minquota = #{minquota,jdbcType=DOUBLE},
+      maxquota = #{maxquota,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 批量查询配置信息 -->
+  <select id="findAllByIds" resultMap="BaseResultMap">
+    SELECT 
+    	<include refid="Base_Column_List" />
+    FROM t_cagent_qrcodepay
+    WHERE status=0 AND id IN 
+    <foreach collection="ids" item="ids" open="(" separator="," close=")">
+    	#{ids}
+    </foreach>
+  </select>
+</mapper>

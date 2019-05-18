@@ -1,0 +1,72 @@
+spring:
+  #缓存配置
+  redis:
+    database: 0
+    #timeout: 6000ms
+    password: Aa123456
+    #sentinel:
+      #master: mymaster
+      #nodes: 192.168.0.223:27001
+    cluster:
+      max-redirects: 3   #获取失败 最大重定向次数
+      nodes:
+        - 192.168.0.177:6379
+        - 192.168.0.177:6380
+        - 192.168.0.178:6379
+        - 192.168.0.178:6380
+        - 192.168.0.179:6379
+        - 192.168.0.179:6380
+    jedis:
+      pool:
+        max-active: 1000  #连接池最大连接数(使用负值表示没有限制)
+        max-idle: 10      #连接池中的最大空闲连接
+        min-idle: 5       #连接池中的最小空闲连接
+        max-wait: 3000      #连接池最大阻塞等待时间(使用负值表示没有限制)
+  #数据源      
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.0.175:3100/txdata_db1?useUnicode=true&characterEncoding=utf8&useSSL=true&allowMultiQueries=true
+      username: txwl_java
+      password: diptyS3FLEZIdWmJtyllarErs7vJQRBCsM57VvDhuVhBhrBkrBE++5oOOWD3JcDXsBAQ9mYEptoSLhfqqr/1fw==
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      validationQuery: SELECT 'x'
+      public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALQyScJPnDEtI+6TU82wl3srwfkXzy1+6X3CFcYMMd2Ha8u9ywPbs9hpT8XRjs8YtPRKdANNn+MGw/hzkXJh0G8CAwEAAQ==
+      connectionProperties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALQyScJPnDEtI+6TU82wl3srwfkXzy1+6X3CFcYMMd2Ha8u9ywPbs9hpT8XRjs8YtPRKdANNn+MGw/hzkXJh0G8CAwEAAQ==
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+            
+##多数据源的配置
+dynamic:
+  datasource:
+    txdata_slave:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.0.175:3100/txdata_db1?useUnicode=true&characterEncoding=utf8&useSSL=true&allowMultiQueries=true
+      username: txwl_dev
+      password: XLm5spa8Xmb0MDwri10wPyQwgqIc9awyelT/RcO3en9ju9OXq98IwVTkAdupbivgSqzwv29ZrTw6HoF3lrSLVw==
+      public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAL/Jm4M/5f+5zF4p8UnDZiuLZvlzMGSz5U9V+SbcK4jqewQoasAXOW3Xgy5psfhl+nHFc5m3AVYfhDhUw4ocUyECAwEAAQ==
+      connectionProperties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAL/Jm4M/5f+5zF4p8UnDZiuLZvlzMGSz5U9V+SbcK4jqewQoasAXOW3Xgy5psfhl+nHFc5m3AVYfhDhUw4ocUyECAwEAAQ==
+    ftpdata_master:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.0.175:3100/ftpdata_xmldb?useUnicode=true&characterEncoding=utf8&useSSL=true&allowMultiQueries=true
+      username: txwl_dev
+      password: XLm5spa8Xmb0MDwri10wPyQwgqIc9awyelT/RcO3en9ju9OXq98IwVTkAdupbivgSqzwv29ZrTw6HoF3lrSLVw==
+      public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAL/Jm4M/5f+5zF4p8UnDZiuLZvlzMGSz5U9V+SbcK4jqewQoasAXOW3Xgy5psfhl+nHFc5m3AVYfhDhUw4ocUyECAwEAAQ==
+      connectionProperties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAL/Jm4M/5f+5zF4p8UnDZiuLZvlzMGSz5U9V+SbcK4jqewQoasAXOW3Xgy5psfhl+nHFc5m3AVYfhDhUw4ocUyECAwEAAQ==

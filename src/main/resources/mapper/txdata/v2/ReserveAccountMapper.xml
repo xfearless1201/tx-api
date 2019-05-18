@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.ReserveAccountDao">
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.ReserveAccountEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="adduid" property="adduid" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, username, cagent, rmk, addtime, adduid, cid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_reserve_account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_reserve_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.ReserveAccountEntity" >
+    insert into t_reserve_account (id, username, cagent, 
+      rmk, addtime, adduid, 
+      cid)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{cagent,jdbcType=VARCHAR}, 
+      #{rmk,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, #{adduid,jdbcType=INTEGER}, 
+      #{cid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.ReserveAccountEntity" >
+    insert into t_reserve_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="cagent != null" >
+        cagent,
+      </if>
+      <if test="rmk != null" >
+        rmk,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="adduid != null" >
+        adduid,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="cagent != null" >
+        #{cagent,jdbcType=VARCHAR},
+      </if>
+      <if test="rmk != null" >
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adduid != null" >
+        #{adduid,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.ReserveAccountEntity" >
+    update t_reserve_account
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+      <if test="rmk != null" >
+        rmk = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adduid != null" >
+        adduid = #{adduid,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.ReserveAccountEntity" >
+    update t_reserve_account
+    set username = #{username,jdbcType=VARCHAR},
+      cagent = #{cagent,jdbcType=VARCHAR},
+      rmk = #{rmk,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=TIMESTAMP},
+      adduid = #{adduid,jdbcType=INTEGER},
+      cid = #{cid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 查询系统保留账户 -->
+  <select id="selectReserveAccount" parameterType="java.lang.String"
+          resultMap="BaseResultMap">
+    SELECT * FROM t_reserve_account WHERE 1 = 1
+    <if test="userName != null and userName !=''">
+      AND lower(username) = lower(#{userName})
+    </if>
+    <if test="cagent != null and cagent !=''">
+      AND cagent = #{cagent}
+    </if>
+  </select>
+
+</mapper>

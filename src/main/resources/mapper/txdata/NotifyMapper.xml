@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.tianxia.api.domain.txdata.NotifyDao">
+	
+	<sql id="recharge_clounm_list">
+		r_id AS rId,uid AS uid,pay_type AS payType,bank_code AS bankCode,order_no AS orderNo,
+		order_amount AS orderAmount,order_time AS orderTime,trade_status AS tradeStatus,trade_no AS tradeNo,
+		ip AS ip,finish_time AS finishTime,merchant AS merchant,upuid AS upuid,pay_id AS payId,cagent AS cagent,
+		description AS description,pay_amount AS payAmount,notify_ip AS notifyIp,order_status AS orderStatus,
+		cj AS cj,dml AS dml,cid AS cid ,integral as integralAmount
+	</sql>
+
+	<select id="queryTuser" parameterType="java.util.Map" resultType="Double">
+		SELECT tuy.c_integral_ratio FROM t_user tu LEFT JOIN t_user_type tuy ON
+		tu.type_id=tuy.id
+		WHERE tu.uid=#{uid};
+	</select>
+
+	<select id="querytuserwallet" parameterType="java.util.Map" resultType="Double">
+		SELECT balance FROM t_user_wallet WHERE uid=#{uid} AND TYPE=1;
+	</select>
+
+	<update id="updateUserMoney" parameterType="java.util.Map">
+		UPDATE t_user SET wallet = wallet + #{cj} + #{amt} WHERE uid = #{uid};
+	</update>
+
+	<update id="updateTrecharge" parameterType="java.util.Map">
+		UPDATE t_recharge SET trade_status = 'success', trade_no = #{tradeNo} WHERE order_no = #{outTradeNo};
+	</update>
+
+	<update id="updateTCagentStoredvalue" parameterType="java.util.Map">
+		UPDATE `t_cagent_storedvalue`
+		SET usedvaue = usedvaue +#{amt}+#{cj}, remainvalue = remainvalue -#{amt}-#{cj}
+		WHERE cid = ( SELECT id FROM t_cagent WHERE t_cagent.cagent =#{cagent});
+	</update>
+
+	<update id="updateTuserwallet" parameterType="java.util.Map">
+		UPDATE t_user_wallet SET balance=balance+#{jfb} WHERE uid=#{uid} AND TYPE=1;
+	</update>
+
+	<insert id="insertUserTreasure" parameterType="java.util.Map">
+		INSERT INTO t_user_treasure
+		(uid,amount,old_money,new_money,number,TYPE,t_type,ADDTIME)
+		VALUES (#{uid},#{amt},#{wallet},#{wallet}+#{amt},#{outTradeNo} ,'IN','存款', NOW());
+	</insert>
+
+	<insert id="insertUserTreasure1" parameterType="java.util.Map">
+		INSERT INTO t_user_treasure
+		(uid,amount,old_money,new_money,number,TYPE,t_type,ADDTIME)
+		VALUES
+		(#{uid},#{cj},#{wallet}+#{amt},#{wallet}+#{amt}+#{cj},#{outTradeNo} ,'IN','彩金',
+		NOW());
+	</insert>
+
+	<insert id="insertTUserQuantity" parameterType="java.util.Map">
+		INSERT INTO t_user_quantity
+		(cid,uid,marking_quantity,user_quantity,winAmount,user_winAmount)
+		VALUES ((SELECT id FROM t_cagent WHERE t_cagent.cagent
+		=#{cagent}),#{uid},#{dml}, 0,0,0)
+		ON DUPLICATE KEY UPDATE marking_quantity =
+		VALUES
+		(marking_quantity) + marking_quantity,
+		user_quantity =
+		VALUES
+		(user_quantity) + user_quantity,
+		winAmount =
+		VALUES
+		(winAmount) + winAmount;
+	</insert>
+
+	<insert id="insertTCagentStoredvalueLog" parameterType="java.util.Map">
+		INSERT INTO `t_cagent_storedvalue_log`
+		(`cid`,`t_type`,`type`,`value`,`addtime`)
+		VALUES ((SELECT id FROM t_cagent WHERE t_cagent.cagent =#{cagent})
+		,'存款','OUT',#{amt}, NOW());
+	</insert>
+
+	<insert id="insertTCagentStoredvalueLog1" parameterType="java.util.Map">
+		INSERT INTO `t_cagent_storedvalue_log`
+		(`cid`,`t_type`,`type`,`value`,`addtime`)
+		VALUES ((SELECT id FROM
+		t_cagent WHERE t_cagent.cagent =#{cagent}) ,'彩金','OUT',#{cj}, NOW());
+	</insert>
+
+	<insert id="insertTuserwallet" parameterType="java.util.Map">
+		INSERT INTO `txdata_db1`.`t_user_wallet` ( `uid`, `balance`,
+		`frozen_balance`, `type`, `uptime`) VALUES ( #{uid}, #{jfb}, 0.00, '1',
+		NOW());
+	</insert>
+
+	<insert id="insertTuserwalletlog" parameterType="java.util.Map">
+		INSERT INTO `txdata_db1`.`t_user_wallet_log` (`uid`, `type`, `wtype`,
+		`amount`, `old_money`, `new_money`, `uptime`, `upuid`, `rmk`)
+		VALUES ( #{uid}, 'IN', '1', #{jfb}, #{old_integral}, #{jfb}+#{old_integral}, NOW(), 0,
+		'在线充值积分');
+	</insert>
+	
+	<!-- 通过订单号查询订单信息 -->
+	<select id="findRechargeByOrderNo" resultType="com.cn.tianxia.api.project.RechargeVO">
+		SELECT
+			r.r_id AS id,r.order_no AS orderNo,r.order_amount AS orderAmount,r.trade_status AS tradeStatus,
+			r.trade_no AS tradeNo,r.pay_type AS payType,r.bank_code AS payCode,u.uid AS uid,c.id AS cid,
+			u.wallet AS walletBalance,c.cagent,y.id AS payId,y.payment_name AS paymentName,
+			y.payment_config AS paymentConfig
+		FROM t_recharge r
+		LEFT JOIN t_user u ON r.uid=u.uid
+		LEFT JOIN t_cagent c ON c.cagent=u.cagent
+		LEFT JOIN t_cagent_ysepay y ON y.id=r.pay_id
+		WHERE r.trade_status='paying' AND r.order_no=#{orderNo} 
+	</select>
+	
+	<!-- 更新订单状态 -->
+	<update id="updateRechargeStatus">
+		UPDATE t_recharge
+	    <set >
+	      <if test="tradeNo != null" >
+	        trade_no = #{tradeNo},
+	      </if>
+	      <if test="tradeStatus != null" >
+	        trade_status=#{tradeStatus},
+	      </if>
+	     	finish_time=now()
+	    </set>
+	   WHERE order_no=#{orderNo} AND uid=#{uid}
+	</update>
+	
+	<!-- 插入用户资金流水 -->
+	<insert id="saveUserTreasureAndQuantity" parameterType="com.cn.tianxia.api.project.RechargeVO">
+		INSERT INTO t_onlinepay_callback_log
+			(params,ip,status,uptime)
+		VALUES
+			(#{params},INET_ATON(#{ip}),'success',NOW());
+		INSERT INTO t_user_treasure
+			(uid,amount,old_money,new_money,number,type,t_type,addtime,cagent,ip)
+		VALUES
+			<if test="type == 1">
+			(#{uid},#{cj},#{walletBalance}+#{orderAmount},#{walletBalance}+#{orderAmount}+#{cj},#{orderNo} ,'IN','彩金',NOW(),#{cagent},INET_ATON(#{ip})),
+			</if>
+			(#{uid},#{orderAmount},#{walletBalance},#{walletBalance}+#{orderAmount},#{orderNo} ,'IN','存款', NOW(),#{cagent},INET_ATON(#{ip}));
+			
+		INSERT INTO t_cagent_storedvalue_log
+			(cid,t_type,type,value,addtime)
+		VALUES
+			<if test="type == 1">
+			(#{cid},'彩金','OUT',#{cj}, NOW()),
+			</if>
+			(#{cid},'存款','OUT',#{orderAmount}, NOW());
+		INSERT INTO t_user_quantity
+			(cid,uid,marking_quantity,user_quantity,winAmount,user_winAmount)
+		VALUES
+			(#{cid},#{uid},#{dml}, 0,0,0)
+		ON DUPLICATE KEY UPDATE marking_quantity = marking_quantity+#{dml}
+	</insert>
+	
+	<!-- 查询用户的资金流水 -->
+	<select id="findUserTreasureByOrderNo" resultType="Integer">
+		SELECT COUNT(1) FROM t_user_treasure 
+		WHERE uid=#{uid} AND number=#{orderNo} AND cagent=#{cagent} 
+		AND addtime BETWEEN DATE_FORMAT(NOW(),'%Y-%m-%d 00:00:00') AND NOW() ;
+	</select>
+	
+	<update id="updateRechargeAndBalance" parameterType="com.cn.tianxia.api.project.RechargeVO">
+		UPDATE t_recharge r 
+		LEFT JOIN t_user u on r.uid = u.uid
+		LEFT JOIN t_cagent c on u.cagent = c.cagent
+		LEFT JOIN t_cagent_storedvalue s on c.id = s.cid
+		SET r.trade_status = 'success', r.trade_no = #{tradeNo},
+			s.usedvaue = s.usedvaue+#{orderAmount}+#{cj}, 
+			s.remainvalue = s.remainvalue-#{remainvalue},
+			u.wallet = u.wallet + #{cj}+#{orderAmount}
+		WHERE r.order_no=#{orderNo} and r.uid=#{uid}
+	</update>
+	
+	<select id="selectCagentQuota" resultType="Double">
+		SELECT remainvalue FROM  t_cagent_storedvalue WHERE cid=#{cid};
+	</select>
+	
+	<!-- 根据订单号查询订单详情 -->
+	<select id="findNotifyOrderByOrderNo" resultType="com.cn.tianxia.api.vo.RechargeOrderVO">
+		SELECT
+			<include refid="recharge_clounm_list"></include>
+		FROM
+		t_recharge
+		WHERE trade_status!='success' AND order_no=#{orderNo} 
+	</select>
+	
+	<!-- 通过支付商ID查询支付商信息 -->
+	<select id="getCagentYespayByPayId" resultType="com.cn.tianxia.api.vo.CagentYespayVO">
+		SELECT 
+	  		id AS id,cid AS cid,pay_url AS payUrl,payment_name AS paymentName,payment_config AS paymentConfig
+	  	FROM t_cagent_ysepay WHERE id=#{payId}
+	</select>
+
+	<!-- 通过平台编码和支付商编码查询支付商信息 -->
+	<select id="getCagentYsepayByCagentAndPayment" resultType="com.cn.tianxia.api.vo.CagentYespayVO">
+		SELECT
+	  		id AS id,cid AS cid,pay_url AS payUrl,payment_name AS paymentName,payment_config AS paymentConfig
+	  	FROM t_cagent_ysepay WHERE cid = (SELECT id FROM t_cagent WHERE cagent = #{cagent}) AND payment_name = #{paymentName}
+	</select>
+	
+	<!-- 获取用户可用余额 -->
+	<select id="getUserBalance" resultType="Double">
+		SELECT wallet FROM t_user WHERE uid=#{uid} 
+	</select>
+	
+	<!-- 获取用户所在平台所在分层的彩金倍率和打码量倍率 -->
+	<select id="getCjOrDmlRate" resultType="com.cn.tianxia.api.vo.CjOrDmlRateVO">
+		SELECT
+			IFNULL(dividend_rate,0) AS dividendRate,IFNULL(coding_rate,0) AS codingRate
+		FROM t_user_channel
+		WHERE 1=1 
+		AND payment_id=#{payId} 
+		AND cid=#{cid} 
+		AND typeid=(select type_id from t_user where uid=#{uid}) 
+		AND type =#{type}
+        GROUP BY typeid 
+	</select>
+	
+	<!-- 批量修改订单业务 -->
+	<update id="batchUpdateNotifyOrderProcess" parameterType="com.cn.tianxia.api.vo.RechargeOrderVO">
+		UPDATE t_recharge r 
+		LEFT JOIN t_user u on r.uid = u.uid
+		LEFT JOIN t_cagent c on u.cagent = c.cagent
+		LEFT JOIN t_cagent_storedvalue s on c.id = s.cid
+		SET r.trade_status = #{tradeStatus}, r.trade_no = #{tradeNo},r.finish_time=#{finishTime},
+			r.order_amount = #{orderAmount},r.order_status=#{orderStatus},r.description=#{description},
+			r.cj=#{cj},r.dml=#{dml},r.notify_ip=INET_ATON(#{notifyIp}),r.integral=#{integralAmount},
+			s.usedvaue = s.usedvaue+#{orderAmount}+#{cj}, 
+			s.remainvalue = s.remainvalue-#{remainvalue},
+			u.wallet = u.wallet + #{cj}+#{orderAmount}
+		WHERE r.order_no=#{orderNo} and r.uid=#{uid} and s.remainvalue>=#{remainvalue}
+	</update>
+	
+	<!-- 修改订单状态 -->
+	<update id="updateNotifyOrderStatus" parameterType="com.cn.tianxia.api.vo.RechargeOrderVO">
+		UPDATE t_recharge
+	    <set >
+	      <if test="orderAmount != null" >
+	        order_amount = #{orderAmount},
+	      </if>
+	      <if test="tradeStatus != null" >
+	        trade_status = #{tradeStatus},
+	      </if>
+	      <if test="tradeNo != null" >
+	        trade_no = #{tradeNo},
+	      </if>
+	      <if test="orderStatus != null" >
+	        order_status = #{orderStatus},
+	      </if>
+	      <if test="finishTime != null" >
+	        finish_time = #{finishTime},
+	      </if>
+	      <if test="description != null" >
+	        description = #{description},
+	      </if>
+	      <if test="notifyIp != null" >
+	        notify_ip = INET_ATON(#{notifyIp}),
+	      </if>
+	      <if test="cj != null" >
+	        cj = #{cj},
+	      </if>
+	      <if test="dml != null" >
+	        dml = #{dml},
+	      </if>
+	      <if test="integralAmount != null">
+	      	integral = #{integralAmount}
+	      </if>
+	    </set>
+	    where r_id = #{rId}
+	</update>
+	
+	<!-- 批量写入回调业务 -->
+	<insert id="batchSaveNotifyProcess" parameterType="com.cn.tianxia.api.vo.RechargeOrderVO">
+		INSERT INTO t_onlinepay_callback_log
+			(params,ip,status,uptime)
+		VALUES
+			(#{notifyParams},INET_ATON(#{notifyIp}),#{tradeStatus},#{finishTime});
+		INSERT INTO t_user_treasure
+			(uid,amount,old_money,new_money,number,type,t_type,addtime,cagent,ip)
+		VALUES
+			<if test="type == 1">
+			(#{uid},#{cj},#{walletBalance}+#{orderAmount},#{walletBalance}+#{orderAmount}+#{cj},#{orderNo} ,'IN','彩金',#{finishTime},#{cagent},INET_ATON(#{notifyIp})),
+			</if>
+			(#{uid},#{orderAmount},#{walletBalance},#{walletBalance}+#{orderAmount},#{orderNo} ,'IN','存款',#{finishTime},#{cagent},INET_ATON(#{notifyIp}));
+			
+		INSERT INTO t_cagent_storedvalue_log
+			(cid,t_type,type,value,addtime)
+		VALUES
+			<if test="type == 1">
+			(#{cid},'彩金','OUT',#{cj},#{finishTime}),
+			</if>
+			(#{cid},'存款','OUT',#{orderAmount},#{finishTime});
+		INSERT INTO t_user_quantity
+			(cid,uid,marking_quantity,user_quantity,winAmount,user_winAmount)
+		VALUES
+			(#{cid},#{uid},#{dml}, 0,0,0)
+		ON DUPLICATE KEY UPDATE marking_quantity = marking_quantity+#{dml};
+		INSERT INTO t_user_wallet
+			(uid,balance,frozen_balance,type,uptime)
+		VALUES
+			(#{uid},#{integralAmount},0,1,#{finishTime})
+		ON DUPLICATE KEY UPDATE balance = balance+#{integralAmount};
+		INSERT INTO t_user_wallet_log (uid,type,wtype,amount,old_money,new_money,uptime,upuid,rmk)
+		VALUES (#{uid},'IN','1', #{integralAmount}, #{integralBalance}, #{integralAmount}+#{integralBalance},#{finishTime}, 0,
+		'在线充值积分')
+	</insert>
+	
+	<select id="getCangetIdByCagent" resultType="Integer">
+		SELECT id FROM t_cagent c
+		LEFT JOIN t_user u ON c.cagent = u.cagent where u.uid=#{uid}
+	</select>
+	
+	<select id="getCagentIntegralRatio" resultType="Double">
+		SELECT tuy.c_integral_ratio FROM t_user tu LEFT JOIN t_user_type tuy ON
+		tu.type_id=tuy.id
+		WHERE tu.uid=#{uid}
+	</select>
+	
+	<select id="getCagentIntegralBalance" resultType="Double">
+		SELECT balance FROM t_user_wallet WHERE uid=#{uid} AND type=1
+	</select>
+</mapper>

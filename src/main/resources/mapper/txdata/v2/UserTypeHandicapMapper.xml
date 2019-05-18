@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.UserTypeHandicapDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.UserTypeHandicapEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="game" property="game" jdbcType="VARCHAR" />
+    <result column="Handicap" property="handicap" jdbcType="VARCHAR" />
+    <result column="odds" property="odds" jdbcType="VARCHAR" />
+    <result column="utime" property="utime" jdbcType="TIMESTAMP" />
+    <result column="upsn" property="upsn" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, type_id, game, Handicap, odds, utime, upsn
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_type_handicap
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_type_handicap
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.UserTypeHandicapEntity" >
+    insert into t_user_type_handicap (id, type_id, game, 
+      Handicap, odds, utime, 
+      upsn)
+    values (#{id,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER}, #{game,jdbcType=VARCHAR}, 
+      #{handicap,jdbcType=VARCHAR}, #{odds,jdbcType=VARCHAR}, #{utime,jdbcType=TIMESTAMP}, 
+      #{upsn,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.UserTypeHandicapEntity" >
+    insert into t_user_type_handicap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="game != null" >
+        game,
+      </if>
+      <if test="handicap != null" >
+        Handicap,
+      </if>
+      <if test="odds != null" >
+        odds,
+      </if>
+      <if test="utime != null" >
+        utime,
+      </if>
+      <if test="upsn != null" >
+        upsn,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="game != null" >
+        #{game,jdbcType=VARCHAR},
+      </if>
+      <if test="handicap != null" >
+        #{handicap,jdbcType=VARCHAR},
+      </if>
+      <if test="odds != null" >
+        #{odds,jdbcType=VARCHAR},
+      </if>
+      <if test="utime != null" >
+        #{utime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upsn != null" >
+        #{upsn,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.UserTypeHandicapEntity" >
+    update t_user_type_handicap
+    <set >
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="game != null" >
+        game = #{game,jdbcType=VARCHAR},
+      </if>
+      <if test="handicap != null" >
+        Handicap = #{handicap,jdbcType=VARCHAR},
+      </if>
+      <if test="odds != null" >
+        odds = #{odds,jdbcType=VARCHAR},
+      </if>
+      <if test="utime != null" >
+        utime = #{utime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upsn != null" >
+        upsn = #{upsn,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.UserTypeHandicapEntity" >
+    update t_user_type_handicap
+    set type_id = #{typeId,jdbcType=INTEGER},
+      game = #{game,jdbcType=VARCHAR},
+      Handicap = #{handicap,jdbcType=VARCHAR},
+      odds = #{odds,jdbcType=VARCHAR},
+      utime = #{utime,jdbcType=TIMESTAMP},
+      upsn = #{upsn,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByGameAndUid" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_user_type_handicap
+    WHERE
+    game=#{game} AND  type_id = (SELECT type_id FROM t_user WHERE uid=#{uid})
+  </select>
+</mapper>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.tianxia.api.domain.txdata.UserDissociateMapper">
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.UserDissociateVO">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="realname" jdbcType="VARCHAR" property="realname" />
+    <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+    <result column="reg_ip" jdbcType="VARCHAR" property="regIp" />
+    <result column="ag_username" jdbcType="VARCHAR" property="agUsername" />
+    <result column="ag_password" jdbcType="VARCHAR" property="agPassword" />
+    <result column="hg_username" jdbcType="VARCHAR" property="hgUsername" />
+    <result column="mg_username" jdbcType="VARCHAR" property="mgUsername" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="vip_level" jdbcType="CHAR" property="vipLevel" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="cagent" jdbcType="VARCHAR" property="cagent" />
+    <result column="is_daili" jdbcType="CHAR" property="isDaili" />
+    <result column="is_delete" jdbcType="CHAR" property="isDelete" />
+    <result column="qk_pwd" jdbcType="VARCHAR" property="qkPwd" />
+    <result column="reg_date" jdbcType="TIMESTAMP" property="regDate" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="wallet" jdbcType="DOUBLE" property="wallet" />
+    <result column="top_uid" jdbcType="INTEGER" property="topUid" />
+    <result column="is_stop" jdbcType="CHAR" property="isStop" />
+    <result column="is_mobile" jdbcType="CHAR" property="isMobile" />
+    <result column="rmk" jdbcType="VARCHAR" property="rmk" />
+    <result column="type_id" jdbcType="INTEGER" property="typeId" />
+    <result column="junior_uid" jdbcType="INTEGER" property="juniorUid" />
+    <result column="regurl" jdbcType="VARCHAR" property="regurl" />
+    <result column="loginmobile" jdbcType="VARCHAR" property="loginmobile" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, password, username, realname, login_ip, reg_ip, ag_username, ag_password,
+    hg_username, mg_username, email, vip_level, mobile, cagent, is_daili, is_delete,
+    qk_pwd, reg_date, login_time, wallet, top_uid, is_stop, is_mobile, rmk, type_id,
+    junior_uid, regurl, loginmobile
+  </sql>
+
+  <select id="selectByUsernameForUser" parameterType="java.lang.Integer" resultType="java.util.Map">
+    select
+     uid, password, username, realname, login_ip, reg_ip, ag_username, ag_password,
+     hg_username, mg_username, email, vip_level, mobile, cagent, is_daili, is_delete,
+     qk_pwd, reg_date, login_time, wallet, top_uid, is_stop, is_mobile, rmk, type_id,
+     junior_uid, regurl, loginmobile
+    from t_user
+    where is_delete=0
+      <if test="flag ==0">
+         and `username` = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="flag ==1">
+          and `loginmobile` = #{username,jdbcType=VARCHAR} and `cagent`=#{cagent,jdbcType=VARCHAR}
+      </if>
+  </select>
+
+  <select id="selectByUsernameForUserDis" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_dissociate
+    where
+      <if test="flag ==0">
+          `username` = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="flag ==1">
+          `loginmobile` = #{username,jdbcType=VARCHAR} and `cagent`=#{cagent,jdbcType=VARCHAR}
+      </if>
+  </select>
+
+  <insert id="insertSelective" parameterType="java.lang.String">
+    insert into t_user(
+        uid,
+        password,
+        username,
+        realname,
+        login_ip,
+        reg_ip,
+        ag_username,
+        ag_password,
+        hg_username,
+        mg_username,
+        email,
+        vip_level,
+        mobile,
+        cagent,
+        is_daili,
+        is_delete,
+        qk_pwd,
+        reg_date,
+        login_time,
+        wallet,
+        top_uid,
+        is_stop,
+        is_mobile,
+        rmk,
+        type_id,
+        junior_uid,
+        regurl,
+        loginmobile)
+      select *
+      from t_user_dissociate
+      where
+      <if test="flag ==0">
+          `username` = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="flag ==1">
+          `loginmobile` = #{username,jdbcType=VARCHAR} and `cagent`=#{cagent,jdbcType=VARCHAR}
+      </if>
+  </insert>
+
+  <update id="updateByUsername" parameterType="com.cn.tianxia.api.project.UserDissociateVO">
+    delete from t_user_dissociate
+    where
+      <if test="flag ==0">
+          `username` = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="flag ==1">
+          `loginmobile` = #{username,jdbcType=VARCHAR} and `cagent`=#{cagent,jdbcType=VARCHAR}
+      </if>
+  </update>
+</mapper>

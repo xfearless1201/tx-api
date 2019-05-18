@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.UserWalletLogDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.UserWalletLogEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="wtype" property="wtype" jdbcType="CHAR" />
+    <result column="amount" property="amount" jdbcType="REAL" />
+    <result column="old_money" property="oldMoney" jdbcType="REAL" />
+    <result column="new_money" property="newMoney" jdbcType="REAL" />
+    <result column="uptime" property="uptime" jdbcType="TIMESTAMP" />
+    <result column="upuid" property="upuid" jdbcType="INTEGER" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, type, wtype, amount, old_money, new_money, uptime, upuid, rmk
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_wallet_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_wallet_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.UserWalletLogEntity" >
+    insert into t_user_wallet_log (id, uid, type, 
+      wtype, amount, old_money, new_money, 
+      uptime, upuid, rmk
+      )
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      #{wtype,jdbcType=CHAR}, #{amount,jdbcType=REAL}, #{oldMoney,jdbcType=REAL}, #{newMoney,jdbcType=REAL}, 
+      #{uptime,jdbcType=TIMESTAMP}, #{upuid,jdbcType=INTEGER}, #{rmk,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.UserWalletLogEntity" >
+    insert into t_user_wallet_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="wtype != null" >
+        wtype,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="oldMoney != null" >
+        old_money,
+      </if>
+      <if test="newMoney != null" >
+        new_money,
+      </if>
+      <if test="uptime != null" >
+        uptime,
+      </if>
+      <if test="upuid != null" >
+        upuid,
+      </if>
+      <if test="rmk != null" >
+        rmk,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="wtype != null" >
+        #{wtype,jdbcType=CHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=REAL},
+      </if>
+      <if test="oldMoney != null" >
+        #{oldMoney,jdbcType=REAL},
+      </if>
+      <if test="newMoney != null" >
+        #{newMoney,jdbcType=REAL},
+      </if>
+      <if test="uptime != null" >
+        #{uptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upuid != null" >
+        #{upuid,jdbcType=INTEGER},
+      </if>
+      <if test="rmk != null" >
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.UserWalletLogEntity" >
+    update t_user_wallet_log
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="wtype != null" >
+        wtype = #{wtype,jdbcType=CHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=REAL},
+      </if>
+      <if test="oldMoney != null" >
+        old_money = #{oldMoney,jdbcType=REAL},
+      </if>
+      <if test="newMoney != null" >
+        new_money = #{newMoney,jdbcType=REAL},
+      </if>
+      <if test="uptime != null" >
+        uptime = #{uptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upuid != null" >
+        upuid = #{upuid,jdbcType=INTEGER},
+      </if>
+      <if test="rmk != null" >
+        rmk = #{rmk,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.UserWalletLogEntity" >
+    update t_user_wallet_log
+    set uid = #{uid,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      wtype = #{wtype,jdbcType=CHAR},
+      amount = #{amount,jdbcType=REAL},
+      old_money = #{oldMoney,jdbcType=REAL},
+      new_money = #{newMoney,jdbcType=REAL},
+      uptime = #{uptime,jdbcType=TIMESTAMP},
+      upuid = #{upuid,jdbcType=INTEGER},
+      rmk = #{rmk,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

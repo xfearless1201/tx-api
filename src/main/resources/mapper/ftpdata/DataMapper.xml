@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.tianxia.api.domain.ftpdata.DataDao">
+
+	<select id="selectBetList" parameterType="java.util.Map" resultType="java.util.Map">
+		select bettime,type,FORMAT(betAmount,2) betAmount,FORMAT(validBetAmount,2) validBetAmount ,FORMAT(Payout,2) Payout,FORMAT(netAmount,2) netAmount
+		from(
+		<if test="type == 'NB' or type =='ALL'" >
+			select createtime as bettime,'NB体育' as type,betAmount as betAmount,betAmount as validBetAmount,0 Payout ,amount as netAmount from nb_record b,
+			(SELECT id FROM nb_record  WHERE userId=#{username} AND cagent=#{cagent} AND createtime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='PS'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'PS' or type =='ALL'" >
+			select tm as bettime,'PS电子' as type,bet as betAmount,bet as validBetAmount,0 Payout ,win as netAmount from ps_record b,
+			(SELECT id FROM ps_record  WHERE username=#{username} AND cagent=#{cagent} AND tm BETWEEN #{startime} and #{endtime} 
+			<if test="type =='PS'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'GY' or type =='ALL'" >
+			select bettime,'GY彩票' as type,betAmount,validBetAmount,validBetAmount+amount Payout ,amount as netAmount from gy_record b,
+			(SELECT id FROM gy_record  WHERE username=#{username} AND cagent=#{cagent} AND betTime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='GY'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'VG' or type =='ALL'" >
+			SELECT createtime AS bettime, 'VG棋牌' AS TYPE,betAmount,validBetAmount,validBetAmount + money Payout,money AS netAmount FROM vgqp_report b,
+			(SELECT id FROM vgqp_report a WHERE username = #{username} AND cagent = #{cagent} AND createtime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='VG'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'JF' or type =='ALL'" >
+			select bettime,'江丰游戏' type,betAmount,validBetAmount,validBetAmount+netAmount Payout ,netAmount from jf_record b,
+			(SELECT id FROM jf_record  WHERE UserName=#{username} AND cagent=#{cagent} AND betTime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='JF'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'KYQP' or type =='ALL'" >
+			select game_start_time as bettime,'开元棋牌' type,all_bet as betAmount,cell_score as validBetAmount,cell_score+profit Payout ,profit as netAmount from kyqp_record b,
+			(SELECT id FROM kyqp_record  WHERE account=#{username} AND cagent=#{cagent} AND game_start_time BETWEEN #{startime} and #{endtime} 
+			<if test="type =='KYQP'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'ESW' or type =='ALL'" >
+			select endTime as bettime,'德胜棋牌' type,totalBet as betAmount,cellScore as validBetAmount,cellScore+totalWinLost Payout ,totalWinLost as netAmount from esw_record b,
+			(SELECT id FROM esw_record  WHERE userCode=#{username} AND cagent=#{cagent} AND endTime BETWEEN #{startime} and #{endtime}
+			<if test="type =='ESW'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'LYQP' or type =='ALL'" >
+			select game_start_time as bettime,'乐游棋牌' type,all_bet as betAmount,cell_score as validBetAmount,cell_score+profit Payout ,profit as netAmount from lyqp_record b,
+			(SELECT id FROM lyqp_record  WHERE account=#{username} AND cagent=#{cagent} AND game_start_time BETWEEN #{startime} and #{endtime}
+			<if test="type =='LYQP'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'YOPLAY' or type =='ALL'" >
+			select bettime ,'YOPLAY电子' as type ,betAmount,validBetamount,validBetAmount+netAmount Payout,netAmount	 from ag_yoplay_game b ,
+			(select id from ag_yoplay_game where playername=#{username} and  cagent =#{cagent} and betTime BETWEEN  #{startime} and #{endtime} 
+				<if test="type =='YOPLAY'">
+					LIMIT #{starLimit},#{pageSize}
+				</if>
+			)a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'TASSPTA' or type =='ALL'" >
+			select bettime ,'AG体育' as type ,betAmount,validBetamount,validBetAmount+netAmount Payout,netAmount	 from ag_ty b ,
+			(select id from ag_ty where playername=#{username} and  cagent =#{cagent} and betTime BETWEEN  #{startime} and #{endtime} 
+				<if test="type =='TASSPTA'">
+					LIMIT #{starLimit},#{pageSize}
+				</if>
+			)a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'VR' or type =='ALL'">
+			select createTime as bettime ,'VR彩票' as type ,cost as betamount	,cost as validBetamount,playerPrize as Payout,playerPrize-cost as netAmount	 from vr_record b ,
+			(select id from vr_record where playername=#{username} and  cagent =#{cagent} and createTime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='VR'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>)a
+			where b.id=a.id
+		</if>
+			<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'AG' or type =='ALL'">
+			select bettime,'AG视讯' type,betAmount,validBetAmount,validBetAmount+netAmount Payout ,netAmount from ag_br b,
+			(SELECT id FROM ag_br WHERE playername=#{username} and  cagent =#{cagent} and bettime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='AG'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		
+		<if test="type == 'AGBY' or type =='ALL' ">
+			select creationtime as bettime,'AG捕鱼' as type,cost as betAmount,cost as validBetAmount,earn as Payout,earn-cost as netAmount from ag_hsr b,
+			(SELECT id FROM ag_hsr WHERE lower(playername)=#{username} and lower(cagent) =#{cagent} and creationtime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='AGBY'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'BBIN' or type =='ALL' ">
+			select wagersdate as bettime ,'BBIN视讯' as type, betamount,commissionable as validBetAmount,commissionable+payoff as Payout,payoff as netAmount FROM bbin_record b,
+			(SELECT id FROM bbin_record WHERE UserName=lower(#{username}) and  cagent =lower(#{cagent}) and wagersdate BETWEEN #{startime} and #{endtime} 
+			<if test="type =='BBIN'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'BBINGAME' or type =='ALL' ">
+			select wagersdate as bettime ,'BBIN电子' as type, betamount,commissionable as validBetAmount,commissionable+payoff as Payout,payoff as netAmount FROM bbingame_record b,
+			(SELECT id FROM bbingame_record WHERE username=lower(#{username}) and  cagent =lower(#{cagent}) and wagersdate BETWEEN #{startime} and #{endtime} 
+			<if test="type =='BBINGAME'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		
+		<if test="type == 'CG' or type =='ALL' ">
+			select endtime as bettime,'卡卡湾88视讯' as type,stakeamount as betamount,validstake as validBetAmount,winloss+validstake as Payout,winloss as netAmount from cg_record b,
+			(SELECT id FROM cg_record WHERE username=#{username} and  cagent =#{cagent} and endtime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='CG'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'DS' or type =='ALL' ">
+			select endtime as bettime,'DS视讯' as type,stakeamount as betamount,validstake as validBetAmount,winloss+validstake as Payout,winloss as netAmount from ds_record b,
+			(SELECT id FROM ds_record WHERE username=#{username} and  cagent =#{cagent} and endtime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='DS'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'GGBY' or type =='ALL'">
+			select bettimestr as bettime,'GG捕鱼' as type,bet as betamount,bet as validBetAmount,bet+profit as Payout,profit as netAmount from ggby_record b,
+			(SELECT id FROM ggby_record WHERE accountno=#{username} and  cagent =#{cagent} and bettimestr BETWEEN #{startime} and #{endtime} 
+			<if test="type =='GGBY'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+        <if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'HABA' or type =='ALL'">
+			select dtcompleted as bettime,'HABA电子' as type,stake as betamount,stake as validBetAmount,payout,payout-stake as netAmount  from haba_record b,
+			(SELECT id FROM haba_record WHERE username=#{username} and  cagent =#{cagent} and dtcompleted BETWEEN #{startime} and #{endtime} 
+			<if test="type =='HABA'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+        <if test="type =='ALL'">
+            union all
+        </if>
+        <if test="type == 'JDB' or type =='ALL'">
+            select gameDate as bettime,'JDB电子' as type,bet+gambleBet as betamount,jackpot as validBetAmount,total as Payout,validBet as netAmount  from jdb_record b,
+            (SELECT id FROM jdb_record WHERE playerId=#{username} and  cagent =#{cagent} and gameDate BETWEEN #{startime} and #{endtime}
+            <if test="type =='JDB'">
+                LIMIT #{starLimit},#{pageSize}
+            </if>) a
+            where b.id=a.id
+        </if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'HG' or type =='ALL'">
+			select date_created as bettime ,'皇冠体育' as type,wager_stake as betamount,final_stake as validBetAmount,final_stake+win_amt as Payout,win_amt as netAmount from hg_normal_record b,
+			(SELECT id FROM hg_normal_record WHERE account_code=#{hg_username} and  lower(cagent) =#{cagent} and date_created BETWEEN #{startime} and #{endtime} AND betting_status=1
+			<if test="type =='HG'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+			union all
+			select last_update   as bettime ,'皇冠体育' as type,wager_stake as betamount,final_stake as validBetAmount,final_stake+win_amt as Payout,win_amt as netAmount from hg_parlay_record b,
+			(SELECT id FROM hg_parlay_record WHERE account_code=#{hg_username} and  lower(cagent) =#{cagent} and last_update BETWEEN #{startime} and #{endtime} AND betting_status=1
+			<if test="type =='HG'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'IG' or type =='ALL'">
+			select bettime as bettime,'IG彩票' as type,stakeamount as betamount,validstake as validBetAmount,winloss+validstake as Payout,winloss as netAmount from ig_record b,
+			(SELECT id FROM ig_record WHERE username=#{username} and  cagent =#{cagent} and bettime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='IG'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'IGPJ' or type =='ALL'">
+			select bettime as bettime,'IGPJ彩票' as type,stakeamount as betamount,validstake as validBetAmount,winloss+validstake as Payout,winloss as netAmount from igpj_record b,
+			(SELECT id FROM igpj_record WHERE username=#{username} and  cagent =#{cagent} and bettime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='IGPJ'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'MG' or type =='ALL'">
+			select transactionTimestampDate as bettime,'MG电子' as type,case when type='mgsaspibet' then amount else 0 end as betamount,
+			case when type='mgsaspibet' then amount else 0 end as validBetAmount,
+			case when type='mgsaspibet' then 0 else amount end as Payout ,
+			case when type='mgsaspibet' then -1*amount else amount end  as netAmount from mggame_record b,
+			(SELECT id FROM mggame_record WHERE mbrusername=#{username} and  cagent =#{cagent} and transactionTimestampDate BETWEEN #{startime} and #{endtime} 
+			<if test="type =='MG'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'OB' or type =='ALL'">
+			select bettime as bettime,'OB视讯' as type,betamount as betamount,validamount as validBetAmount,winorloss+validamount as Payout,winorloss as netAmount from ob_record b,
+			(SELECT id FROM ob_record WHERE client=lower(#{username}) and  cagent =lower(#{cagent}) and bettime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='OB'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<!-- 用户名存在大小写问题 -->
+		<if test="type == 'OG' or type =='ALL'">
+			select addtime as bettime,'OG视讯' as type,bettingamount as betamount, bettingamount as validBetAmount, winloseamount+bettingamount as Payout  ,winloseamount  as netAmount from og_record b,
+			(SELECT id FROM og_record WHERE username=lower(#{username}) and  cagent =lower(#{cagent}) and addtime BETWEEN #{startime} and #{endtime} 
+			<if test="type =='OG'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'BG' or type =='ALL'">
+			select order_time as bettime,'BG视讯' as type,bet_amount as betamount, valid_amount as validBetAmount, amount as Payout  ,payment  as netAmount from bg_video_record b,
+			(SELECT id FROM bg_video_record WHERE login_id=lower(#{username}) and  cagent =lower(#{cagent}) and order_time BETWEEN #{startime} and #{endtime}
+			<if test="type =='BG'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'PT' or type =='ALL'">
+			select gamedate as bettime,'PT电子' as type,bet as betamount ,bet as validBetAmount ,
+			case when win=0 then 0 else bet+win end as payout,
+			case when win=0 then win-bet else win end as netAmount  from pt_record b,
+			(SELECT id FROM pt_record WHERE playername=#{username} and  cagent =#{cagent} and gamedate BETWEEN #{startime} and #{endtime} 
+			<if test="type =='PT'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'SHENBO' or type =='ALL'">
+			select betupdatedon as bettime,'申博视讯' as type,ABS(riskamt) as betamount,ABS(riskamt) as validBetAmount,winamt as Payout,winloss as netAmount from shenbo_record b,
+			(SELECT id FROM shenbo_record WHERE username=#{username} and  cagent =#{cagent} and betupdatedon BETWEEN #{startime} and #{endtime} 
+			<if test="type =='SHENBO'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'TGP' or type =='ALL'">
+			select betupdatedon as bettime,'申博电子(TGP)' as type,ABS(riskamt) as betamount,ABS(riskamt) as validBetAmount,winamt as Payout,winloss as netAmount from shenbogame_record b,
+			(SELECT id FROM shenbogame_record WHERE username=#{username} and  cagent =#{cagent} and betupdatedon BETWEEN #{startime} and #{endtime}  ORDER BY betupdatedon DESC 
+			<if test="type =='TGP'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'SW' or type =='ALL'">
+			select ts as bettime,'SW电子' as type,ABS(bet) as betamount,ABS(bet) as validBetAmount,win as Payout,revenue as netAmount from sw_record b,
+			(SELECT id FROM sw_record WHERE playerCode=#{username} and  cagent =#{cagent} and ts BETWEEN #{startime} and #{endtime}  ORDER BY ts DESC
+			<if test="type =='SW'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'IBC' or type =='ALL'">
+			select transactionTime as bettime,'IBC体育' as type,stake as betamount, stake as validBetAmount, winLoseAmount as Payout  ,winLoseAmount  as netAmount from ibc_record b,
+			(SELECT id FROM ibc_record WHERE playerName=lower(#{username}) and  cagent =lower(#{cagent}) and transactionTime BETWEEN #{startime} and #{endtime}
+			<if test="type =='IBC'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'CQJ' or type =='ALL'">
+			select  bettime,'CQJ电子' as type,bet as betamount, bet as validBetAmount, win as Payout  ,win  as netAmount from cqj_record b,
+			(SELECT id FROM cqj_record WHERE account=lower(#{username}) and  cagent =lower(#{cagent}) and bettime	 BETWEEN #{startime} and #{endtime}
+			<if test="type =='CQJ'">
+				LIMIT #{starLimit},#{pageSize}
+			</if>) a
+			where b.id=a.id
+		</if>
+		
+		) c  ORDER BY betTime DESC
+		<if test="type =='ALL'">
+		 LIMIT #{starLimit},#{pageSize}
+		</if>
+	</select>
+
+	<select id="selectBetCount" parameterType="java.util.Map" resultType="java.util.Map">
+			select SUM(cnt) cnt from (
+		<if test="type == 'NB' or type =='ALL'">
+		select  count(1) cnt  from nb_record
+		WHERE
+		LOWER(userId) = LOWER(#{username})
+		AND LOWER(cagent) = LOWER(#{cagent})
+		AND createtime BETWEEN #{startime} AND #{endtime}
+		</if> 
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'PS' or type =='ALL'">
+		select  count(1) cnt  from ps_record
+		WHERE
+		LOWER(username) = LOWER(#{username})
+		AND LOWER(cagent) = LOWER(#{cagent})
+		AND tm BETWEEN #{startime} AND #{endtime}
+		</if> 
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'GY' or type =='ALL'">
+			select  count(1) cnt  from gy_record
+			WHERE
+			LOWER(username) = LOWER(#{username})
+			AND LOWER(cagent) = LOWER(#{cagent})
+			AND betTime BETWEEN #{startime} AND #{endtime}
+		</if> 
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'VG' or type=='ALL'">
+			select count(1) cnt from vgqp_report
+			 where username=#{username} and  cagent =#{cagent} and createtime BETWEEN #{startime} and #{endtime}  
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'JF' or type=='ALL'">
+			select count(1) cnt from jf_record
+			 where UserName=#{username} and  cagent =#{cagent} and betTime BETWEEN #{startime} and #{endtime}  
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'KYQP' or type=='ALL'">
+			select count(1) cnt from kyqp_record
+			 where account=#{username} and  cagent =#{cagent} and game_start_time BETWEEN #{startime} and #{endtime}  
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'ESW' or type =='ALL'">
+			select  count(1) cnt   from esw_record
+			where userCode=#{username} and  cagent =#{cagent} and endTime BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'LYQP' or type=='ALL'">
+			select count(1) cnt from lyqp_record
+			where account=#{username} and  cagent =#{cagent} and game_start_time BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'VR' or type=='ALL'">
+			select count(1) cnt from vr_record
+			 where playername=#{username} and  cagent =#{cagent} and createTime BETWEEN #{startime} and #{endtime} 
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'AG' or type=='ALL'">
+		    select count(1) cnt from ag_br br
+		    WHERE playername=#{username} and  cagent =#{cagent} and bettime BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'AGBY' or type =='ALL'">
+		    select count(1) cnt  from ag_hsr hsr
+		    WHERE playername=#{username} and  cagent =#{cagent} and creationtime BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'BBIN' or type =='ALL'">
+		    select  count(1) cnt  from bbin_record
+		    where type='0' and username=lower(#{username}) and  cagent =#{cagent} and wagersdate BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'BBINGAME'  or type =='ALL'">
+		    select  count(1) cnt  from bbingame_record
+		    where username=lower(#{username}) and  cagent =#{cagent} and wagersdate BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'CG'  or type =='ALL'">
+			select  count(1) cnt  from cg_record
+	    	where username=#{username} and  cagent =#{cagent} and endtime BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'DS' or type =='ALL'">
+			select  count(1) cnt  from ds_record
+	    	where username=#{username} and  cagent =#{cagent} and endtime BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'GGBY' or type =='ALL'">
+			select  count(1) cnt  from ggby_record
+	    	where accountno=#{username} and  cagent =#{cagent} and bettimestr BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'HABA'  or type =='ALL'">
+			select  count(1) cnt   from haba_record
+	    	where username=#{username} and  cagent =#{cagent} and dtcompleted BETWEEN #{startime} and #{endtime}
+		</if>
+        <if test="type== 'ALL'">
+            union all
+        </if>
+        <if test="type == 'JDB'  or type =='ALL'">
+            select  count(1) cnt   from jdb_record
+            where playerId=#{username} and  cagent =#{cagent} and gameDate BETWEEN #{startime} and #{endtime}
+        </if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'HG'  or type =='ALL'">
+			select  count(1) cnt  from hg_normal_record
+			where account_code=#{hg_username} and  lower(cagent) =#{cagent} and date_created BETWEEN #{startime} and #{endtime}  AND betting_status=1
+			union all
+			select  count(1) cnt  from hg_parlay_record
+	    	where account_code=#{hg_username} and  lower(cagent) =#{cagent} and match_date BETWEEN #{startime} and #{endtime}  AND betting_status=1
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'IG' or type =='ALL'">
+			select  count(1) cnt  from ig_record
+	    	where username=#{username} and  cagent =#{cagent} and bettime BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'IGPJ' or type =='ALL'">
+			select  count(1) cnt  from igpj_record
+	    	where username=#{username} and  cagent =#{cagent} and bettime BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'MG'  or type =='ALL'">
+			select  count(1) cnt  from mggame_record
+	    	where mbrusername=#{username} and  cagent =#{cagent} and transactionTimestampDate BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'OB'  or type =='ALL'">
+			select  count(1) cnt  from ob_record
+	    	where client=lower(#{username}) and  cagent =#{cagent} and bettime BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<!-- 用户名存在大小写问题 -->
+		<if test="type == 'OG'  or type =='ALL'">
+			select  count(1) cnt  from og_record
+			where username=lower(#{username}) and  cagent =#{cagent} and addtime BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'PT' or type =='ALL'">
+			select  count(1) cnt  from pt_record
+			where 1=1  and playername=#{username} and  cagent =#{cagent} and gamedate BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type== 'ALL'">
+			union all
+		</if>
+		<if test="type == 'SHENBO' or type =='ALL'">
+			select  count(1) cnt  from shenbo_record
+			where  gameprovidercode='SB' and  username=#{username} and  cagent =#{cagent} and betupdatedon BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'TGP' or type =='ALL'">
+			select  count(1) cnt  from shenbogame_record
+			where   username=#{username} and  cagent =#{cagent} and betupdatedon BETWEEN #{startime} and #{endtime}
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		
+		<if test="type == 'BG' or type =='ALL'">
+			select  count(1) cnt  from bg_video_record
+			WHERE
+			LOWER(login_id) = LOWER(#{username})
+			AND LOWER(cagent) = LOWER(#{cagent})
+			AND last_update_time BETWEEN #{startime} AND #{endtime}
+		</if>  
+		
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'YOPLAY' or type =='ALL'">
+			select  count(1) cnt  from ag_yoplay_game
+			WHERE
+			LOWER(playerName) = LOWER(#{username})
+			AND LOWER(cagent) = LOWER(#{cagent})
+			AND betTime BETWEEN #{startime} AND #{endtime}
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'TASSPTA' or type =='ALL'">
+			select  count(1) cnt  from ag_ty
+			WHERE
+			LOWER(playerName) = LOWER(#{username})
+			AND LOWER(cagent) = LOWER(#{cagent})
+			AND betTime BETWEEN #{startime} AND #{endtime}
+		</if>   
+		
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'BGLOTTERY' or type =='ALL'">
+			select  count(1) cnt  from bg_lottery_record
+			WHERE
+			LOWER(login_id) = LOWER(#{username})
+			AND LOWER(cagent) = LOWER(#{cagent})
+			AND last_update_time BETWEEN #{startime} AND #{endtime}
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'SW' or type =='ALL'">
+			select  count(1) cnt  from sw_record
+			WHERE
+			LOWER(playerCode) = LOWER(#{username})
+			AND LOWER(cagent) = LOWER(#{cagent})
+			AND ts BETWEEN #{startime} AND #{endtime}
+		</if>
+        <if test="type =='ALL'">
+            union all
+        </if>
+        <if test="type == 'IBC' or type =='ALL'">
+            select  count(1) cnt  from ibc_record
+            WHERE
+            LOWER(playerName) = LOWER(#{username})
+            AND LOWER(cagent) = LOWER(#{cagent})
+            AND transactionTime BETWEEN #{startime} AND #{endtime}
+        </if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'CQJ' or type =='ALL'">
+			select  count(1) cnt  from cqj_record
+			WHERE
+			LOWER(account) = LOWER(#{username})
+			AND LOWER(cagent) = LOWER(#{cagent})
+			AND bettime BETWEEN #{startime} AND #{endtime}
+		</if>
+		) aa
+	</select>
+	
+	
+	<select id="selectBetSum" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT  SUM(betamount) betamountTotal,SUM(netAmount) netAmountTotal,SUM(Payout) payoutTotal,SUM(validBetAmount) validBetAmountTotal
+		from(
+		<if test="type == 'NB' or type =='ALL'" >
+			SELECT createtime as bettime,gameType AS TYPE,betAmount as betAmount,betAmount as validBetAmount,0 Payout,amount AS netAmount FROM nb_record b,
+			(SELECT id FROM nb_record a WHERE userId = #{username} AND cagent =#{cagent} AND createtime BETWEEN #{startime} and #{endtime}) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'PS' or type =='ALL'" >
+			SELECT tm as bettime,gid AS TYPE,bet as betAmount,bet as validBetAmount,0 Payout,win AS netAmount FROM ps_record b,
+			(SELECT id FROM ps_record a WHERE username = #{username} AND cagent =#{cagent} AND tm BETWEEN #{startime} and #{endtime}) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'GY' or type =='ALL'" >
+			SELECT bettime,'GY彩票' AS TYPE,betAmount,validBetAmount,validBetAmount + amount Payout,amount AS netAmount FROM gy_record b,
+			(SELECT id FROM gy_record a WHERE username = #{username} AND cagent =#{cagent} AND bettime BETWEEN #{startime} and #{endtime}) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'VG' or type =='ALL'" >
+			SELECT createtime AS bettime,'VG棋牌' AS TYPE,betAmount,validBetAmount,validBetAmount + money Payout,money AS netAmount FROM vgqp_report b,
+			(SELECT id FROM vgqp_report a WHERE username = #{username} AND cagent =#{cagent} AND createtime  BETWEEN #{startime} and #{endtime}) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'JF' or type =='ALL'" >
+			select bettime,'江丰游戏' type,betAmount,validBetAmount,validBetAmount+netAmount Payout ,netAmount from jf_record b,
+			(SELECT id FROM jf_record  WHERE UserName=#{username} AND cagent=#{cagent} AND betTime BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'KYQP' or type =='ALL'" >
+			select game_start_time as bettime,'开元棋牌' type,all_bet as betAmount,cell_score as validBetAmount,cell_score+profit Payout ,profit as netAmount from kyqp_record b,
+			(SELECT id FROM kyqp_record  WHERE account=#{username} AND cagent=#{cagent} AND game_start_time BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'ESW' or type =='ALL'" >
+			select endTime as bettime,'德胜棋牌' type,totalBet as betAmount,cellScore as validBetAmount,cellScore+totalWinLost Payout ,totalWinLost as netAmount from esw_record b,
+			(SELECT id FROM esw_record  WHERE userCode=#{username} AND cagent=#{cagent} AND endTime BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'LYQP' or type =='ALL'" >
+			select game_start_time as bettime,'乐游棋牌' type,all_bet as betAmount,cell_score as validBetAmount,cell_score+profit Payout ,profit as netAmount from lyqp_record b,
+			(SELECT id FROM lyqp_record  WHERE account=#{username} AND cagent=#{cagent} AND game_start_time BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'VR' or type =='ALL'">
+			select createTime as bettime ,'VR彩票' as type ,cost as betamount	,cost as validBetamount,playerPrize as Payout,playerPrize-cost as netAmount	 from vr_record 
+			where id in ( select id from vr_record where playername=#{username} and  cagent =#{cagent} and createTime BETWEEN #{startime} and #{endtime}) 
+		</if>
+			<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'YOPLAY' or type =='ALL'">
+			select bettime,'YOPLAY电子' type,betAmount,validBetAmount,validBetAmount+netAmount Payout ,netAmount from ag_yoplay_game b,
+			(SELECT id FROM ag_yoplay_game WHERE playername=#{username} and  cagent =#{cagent} and bettime BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'TASSPTA' or type =='ALL'">
+			select bettime,'AG体育' type,betAmount,validBetAmount,validBetAmount+netAmount Payout ,netAmount from ag_ty b,
+			(SELECT id FROM ag_ty WHERE playername=#{username} and  cagent =#{cagent} and bettime BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'AG' or type =='ALL'">
+			select bettime,'AG视讯' type,betAmount,validBetAmount,validBetAmount+netAmount Payout ,netAmount from ag_br b,
+			(SELECT id FROM ag_br WHERE playername=#{username} and  cagent =#{cagent} and bettime BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'AGBY' or type =='ALL' ">
+			select creationtime as bettime,'AG捕鱼' as type,cost as betAmount,cost as validBetAmount,earn as Payout,earn-cost as netAmount from ag_hsr b,
+			(SELECT id FROM ag_hsr WHERE playername=#{username} and  cagent =#{cagent} and creationtime BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'BBIN' or type =='ALL' ">
+			select wagersdate as bettime ,'BBIN视讯' as type, betamount,commissionable as validBetAmount,commissionable+payoff as Payout,payoff as netAmount FROM bbin_record b,
+			(SELECT id FROM bbin_record WHERE username=lower(#{username}) and  cagent =lower(#{cagent}) and wagersdate BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'BBINGAME' or type =='ALL' ">
+			select wagersdate as bettime ,'BBIN电子' as type, betamount,commissionable as validBetAmount,commissionable+payoff as Payout,payoff as netAmount FROM bbingame_record b,
+			(SELECT id FROM bbingame_record WHERE username=lower(#{username}) and  cagent =lower(#{cagent}) and wagersdate BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		
+		<if test="type == 'CG' or type =='ALL' ">
+			select endtime as bettime,'卡卡湾88视讯' as type,stakeamount as betamount,validstake as validBetAmount,winloss+validstake as Payout,winloss as netAmount from cg_record b,
+			(SELECT id FROM cg_record WHERE username=#{username} and  cagent =#{cagent} and endtime BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'DS' or type =='ALL' ">
+			select endtime as bettime,'DS视讯' as type,stakeamount as betamount,validstake as validBetAmount,winloss+validstake as Payout,winloss as netAmount from ds_record b,
+			(SELECT id FROM ds_record WHERE username=#{username} and  cagent =#{cagent} and endtime BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'GGBY' or type =='ALL'">
+			select bettimestr as bettime,'GG捕鱼' as type,bet as betamount,bet as validBetAmount,bet+profit as Payout,profit as netAmount from ggby_record b,
+			(SELECT id FROM ggby_record WHERE accountno=#{username} and  cagent =#{cagent} and bettimestr BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+        <if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'HABA' or type =='ALL'">
+			select dtcompleted as bettime,'HABA电子' as type,stake as betamount,stake as validBetAmount,payout,payout-stake as netAmount  from haba_record b,
+			(SELECT id FROM haba_record WHERE username=#{username} and  cagent =#{cagent} and dtcompleted BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+        <if test="type =='ALL'">
+            union all
+        </if>
+        <if test="type == 'JDB' or type =='ALL'">
+            select gameDate as bettime,'JDB电子' as type,bet+gambleBet as betamount,jackpot as validBetAmount,total as Payout,validBet as netAmount  from jdb_record b,
+            (SELECT id FROM jdb_record WHERE playerId=#{username} and  cagent =#{cagent} and gameDate BETWEEN #{startime} and #{endtime} ) a
+            where b.id=a.id
+        </if>
+        <if test="type =='ALL'">
+			union all
+		</if>
+
+		<if test="type == 'HG' or type =='ALL'">
+			select date_created as bettime ,'皇冠体育' as type,wager_stake as betamount,final_stake as validBetAmount,final_stake+win_amt as Payout,win_amt as netAmount from hg_normal_record b,
+			(SELECT id FROM hg_normal_record WHERE account_code=#{hg_username} and  lower(cagent) =#{cagent} and date_created BETWEEN #{startime} and #{endtime}  AND betting_status=1 ) a
+			where b.id=a.id
+			union all
+			select last_update   as bettime ,'皇冠体育' as type,wager_stake as betamount,final_stake as validBetAmount,final_stake+win_amt as Payout,win_amt as netAmount from hg_parlay_record b,
+			(SELECT id FROM hg_parlay_record WHERE account_code=#{hg_username} and  lower(cagent) =#{cagent} and last_update BETWEEN #{startime} and #{endtime}  AND betting_status=1 ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'IG' or type =='ALL'">
+			select bettime as bettime,'IG彩票' as type,stakeamount as betamount,validstake as validBetAmount,winloss+validstake as Payout,winloss as netAmount from ig_record b,
+			(SELECT id FROM ig_record WHERE username=#{username} and  cagent =#{cagent} and bettime BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'IGPJ' or type =='ALL'">
+			select bettime as bettime,'IGPJ彩票' as type,stakeamount as betamount,validstake as validBetAmount,winloss+validstake as Payout,winloss as netAmount from igpj_record b,
+			(SELECT id FROM igpj_record WHERE username=#{username} and  cagent =#{cagent} and bettime BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'MG' or type =='ALL'">
+			select transactionTimestampDate as bettime,'MG电子' as type,case when type='mgsaspibet' then amount else 0 end as betamount,
+			case when type='mgsaspibet' then amount else 0 end as validBetAmount,
+			case when type='mgsaspibet' then 0 else amount end as Payout ,
+			case when type='mgsaspibet' then -1*amount else amount end  as netAmount from mggame_record b,
+			(SELECT id FROM mggame_record WHERE mbrusername=#{username} and  cagent =#{cagent} and transactionTimestampDate BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'OB' or type =='ALL'">
+			select bettime as bettime,'OB视讯' as type,betamount as betamount,validamount as validBetAmount,winorloss+validamount as Payout,winorloss as netAmount from ob_record b,
+			(SELECT id FROM ob_record WHERE client=lower(#{username}) and  cagent =lower(#{cagent}) and bettime BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<!-- 用户名存在大小写问题 -->
+		<if test="type == 'OG' or type =='ALL'">
+			select addtime as bettime,'OG视讯' as type,bettingamount as betamount, bettingamount as validBetAmount, winloseamount+bettingamount as Payout  ,winloseamount  as netAmount from og_record b,
+			(SELECT id FROM og_record WHERE username=lower(#{username}) and  cagent =lower(#{cagent}) and addtime BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'PT' or type =='ALL'">
+			select gamedate as bettime,'PT电子' as type,bet as betamount ,bet as validBetAmount ,
+			 win as  payout,  win-bet as  netAmount   from pt_record b,
+			(SELECT id FROM pt_record WHERE playername=#{username} and  cagent =#{cagent} and gamedate BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'SHENBO' or type =='ALL'">
+			select betupdatedon as bettime,'申博视讯' as type,ABS(riskamt) as betamount,ABS(riskamt) as validBetAmount,winamt as Payout,winloss as netAmount from shenbo_record b,
+			(SELECT id FROM shenbo_record WHERE username=#{username} and  cagent =#{cagent} and betupdatedon BETWEEN #{startime} and #{endtime} ) a
+			where b.id=a.id
+		</if>
+				<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'TGP' or type =='ALL'">
+			select betupdatedon as bettime,'申博电子(TGP)' as type,ABS(riskamt) as betamount,ABS(riskamt) as validBetAmount,winamt as Payout,winloss as netAmount from shenbogame_record b,
+			(SELECT id FROM shenbogame_record WHERE username=#{username} and  cagent =#{cagent} and betupdatedon BETWEEN #{startime} and #{endtime}  ORDER BY betupdatedon DESC ) a
+			where b.id=a.id
+		</if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+
+		<if test="type == 'BG' or type =='ALL'">
+			SELECT
+			last_update_time AS bettime,
+			'bg视讯' AS TYPE,
+			ABS(bet_amount) AS betAmount,
+			ABS(valid_amount) AS validBetAmount,
+			ABS(ABS(valid_amount)+payment) AS
+			Payout,
+			payment AS netAmount
+			FROM
+			bg_video_record b,
+		(SELECT id FROM bg_video_record 	WHERE
+			LOWER(login_id) = LOWER(#{username})
+			AND LOWER(cagent) = LOWER(#{cagent})
+			AND last_update_time BETWEEN #{startime} AND #{endtime} ) a
+		WHERE a.id=b.id
+		</if>
+
+		<if test="type =='ALL'">
+			union all
+		</if>
+
+		<if test="type == 'BGLOTTERY' or type =='ALL'">
+		SELECT
+			last_update_time AS bettime,
+			'bg彩票' AS TYPE,
+			ABS(bet_amount) AS betAmount,
+			ABS(valid_amount) AS validBetAmount,
+			ABS(ABS(valid_amount)+payment) AS
+			Payout,
+			payment AS netAmount
+			FROM
+			bg_lottery_record b,
+		(SELECT id FROM bg_lottery_record 	WHERE
+			LOWER(login_id) = LOWER(#{username})
+			AND LOWER(cagent) = LOWER(#{cagent})
+			AND last_update_time BETWEEN #{startime} AND #{endtime} ) a
+		WHERE a.id=b.id
+		</if>
+
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'SW' or type =='ALL'">
+			SELECT
+			ts AS bettime,
+			'SW电子' AS TYPE,
+			ABS(bet) AS betAmount,
+			ABS(bet) AS validBetAmount,
+			win AS Payout,
+			revenue AS netAmount
+			FROM
+			sw_record b,
+			(SELECT id FROM sw_record 	WHERE
+			LOWER(playerCode) = LOWER(#{username})
+			AND LOWER(cagent) = LOWER(#{cagent})
+			AND ts BETWEEN #{startime} AND #{endtime} ) a
+			WHERE a.id=b.id
+		</if>
+        <if test="type =='ALL'">
+            union all
+        </if>
+        <if test="type == 'IBC' or type =='ALL'">
+            SELECT
+            transactionTime AS bettime,
+            'IBC体育' AS TYPE,
+            ABS(stake) AS betAmount,
+            ABS(stake) AS validBetAmount,
+            winLoseAmount AS Payout,
+            winLoseAmount AS netAmount
+            FROM
+            ibc_record b,
+            (SELECT id FROM ibc_record 	WHERE
+            LOWER(playerName) = LOWER(#{username})
+            AND LOWER(cagent) = LOWER(#{cagent})
+            AND transactionTime BETWEEN #{startime} AND #{endtime} ) a
+            WHERE a.id=b.id
+        </if>
+		<if test="type =='ALL'">
+			union all
+		</if>
+		<if test="type == 'CQJ' or type =='ALL'">
+			SELECT
+			bettime,
+			'CQJ电子' AS TYPE,
+			ABS(bet) AS betAmount,
+			ABS(bet) AS validBetAmount,
+			win AS Payout,
+			win AS netAmount
+			FROM
+			cqj_record b,
+			(SELECT id FROM cqj_record 	WHERE
+			LOWER(account) = LOWER(#{username})
+			AND LOWER(cagent) = LOWER(#{cagent})
+			AND bettime BETWEEN #{startime} AND #{endtime} ) a
+			WHERE a.id=b.id
+		</if>
+		) c
+	</select> 
+</mapper>

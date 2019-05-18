@@ -1,0 +1,35 @@
+#tomcat      
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+  port: 8087
+  servlet:
+    context-path: /JJF
+#spring    
+spring:
+  profiles:
+    active: dev
+  #视图
+  #freemarker:
+    #suffix: .html
+    #request-context-attribute: request
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  http:
+    multipart:
+      enabled: true
+      max-file-size: 1MB
+      max-request-size: 10MB
+      file-size-threshold: 0
+#mybatis
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.cn.tianxia.api.project
+    
+#打印日志
+logging:
+  config: classpath:log4j.yml 

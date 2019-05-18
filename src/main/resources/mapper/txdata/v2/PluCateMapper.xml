@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.PluCateDao">
+	<resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.PluCateEntity">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="cid" property="cid" jdbcType="INTEGER" />
+		<result column="pid" property="pid" jdbcType="INTEGER" />
+		<result column="catename" property="catename" jdbcType="VARCHAR" />
+		<result column="path" property="path" jdbcType="VARCHAR" />
+		<result column="uptime" property="uptime" jdbcType="TIMESTAMP" />
+		<result column="upuid" property="upuid" jdbcType="INTEGER" />
+		<result column="rmk" property="rmk" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, cid, pid, catename, path, uptime, upuid, rmk
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_plu_cate
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_plu_cate
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.cn.tianxia.api.project.v2.PluCateEntity">
+		insert into t_plu_cate (id,
+		cid, pid,
+		catename, path, uptime,
+		upuid, rmk)
+		values
+		(#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER},
+		#{pid,jdbcType=INTEGER},
+		#{catename,jdbcType=VARCHAR},
+		#{path,jdbcType=VARCHAR}, #{uptime,jdbcType=TIMESTAMP},
+		#{upuid,jdbcType=INTEGER}, #{rmk,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.PluCateEntity">
+		insert into t_plu_cate
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="cid != null">
+				cid,
+			</if>
+			<if test="pid != null">
+				pid,
+			</if>
+			<if test="catename != null">
+				catename,
+			</if>
+			<if test="path != null">
+				path,
+			</if>
+			<if test="uptime != null">
+				uptime,
+			</if>
+			<if test="upuid != null">
+				upuid,
+			</if>
+			<if test="rmk != null">
+				rmk,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="cid != null">
+				#{cid,jdbcType=INTEGER},
+			</if>
+			<if test="pid != null">
+				#{pid,jdbcType=INTEGER},
+			</if>
+			<if test="catename != null">
+				#{catename,jdbcType=VARCHAR},
+			</if>
+			<if test="path != null">
+				#{path,jdbcType=VARCHAR},
+			</if>
+			<if test="uptime != null">
+				#{uptime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="upuid != null">
+				#{upuid,jdbcType=INTEGER},
+			</if>
+			<if test="rmk != null">
+				#{rmk,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.PluCateEntity">
+		update t_plu_cate
+		<set>
+			<if test="cid != null">
+				cid = #{cid,jdbcType=INTEGER},
+			</if>
+			<if test="pid != null">
+				pid = #{pid,jdbcType=INTEGER},
+			</if>
+			<if test="catename != null">
+				catename = #{catename,jdbcType=VARCHAR},
+			</if>
+			<if test="path != null">
+				path = #{path,jdbcType=VARCHAR},
+			</if>
+			<if test="uptime != null">
+				uptime = #{uptime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="upuid != null">
+				upuid = #{upuid,jdbcType=INTEGER},
+			</if>
+			<if test="rmk != null">
+				rmk = #{rmk,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.PluCateEntity">
+		update t_plu_cate
+		set cid = #{cid,jdbcType=INTEGER},
+		pid = #{pid,jdbcType=INTEGER},
+		catename = #{catename,jdbcType=VARCHAR},
+		path =
+		#{path,jdbcType=VARCHAR},
+		uptime = #{uptime,jdbcType=TIMESTAMP},
+		upuid =
+		#{upuid,jdbcType=INTEGER},
+		rmk = #{rmk,jdbcType=VARCHAR}
+		where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+	<select id="selectTypeByCagentName" parameterType="java.lang.String"
+		resultType="java.util.List">
+		select tpc.id,tpc.pid,tpc.catename from t_plu_cate tpc
+		INNER JOIN (select id from t_plu_cate where pid=0) parent
+		ON
+		(tpc.pid=parent.id OR tpc.id=parent.id)
+		WHERE cid=(select id from
+		t_cagent where cagent=#{cagentName})
+		order by tpc.id
+	</select>
+	<select id="getGoodsType" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		select id,pid,catename from t_plu_cate tpc
+		<where>
+			<if test="pid != null">
+				AND pid=#{pid}
+			</if>
+			<if test="cagentName != null and cagentName != ''">
+				AND cid=(select id from t_cagent where
+				cagent=#{cagentName})
+			</if>
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.PluInfoDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.PluInfoEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cateid" property="cateid" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="pluname" property="pluname" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="cprice" property="cprice" jdbcType="DOUBLE" />
+    <result column="oprice" property="oprice" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+    <result column="uptime" property="uptime" jdbcType="TIMESTAMP" />
+    <result column="upuid" property="upuid" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="sketch" property="sketch" jdbcType="VARCHAR" />
+    <result column="seq" property="seq" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cateid, cid, pluname, icon, cprice, oprice, price, status,describe,upuid, rmk, uptime, 
+    upuid, type, sketch, seq
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+     	id, cateid, cid, pluname, icon, cprice, oprice, price, t_plu_info.status,t_plu_info.describe,upuid, rmk, uptime, 
+    	upuid, type, sketch, seq
+    from t_plu_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_plu_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.PluInfoEntity" >
+    insert into t_plu_info (id, cateid, cid, 
+      pluname, icon, cprice, 
+      oprice, price, status, describe, 
+      rmk, uptime, upuid, 
+      type, sketch, seq)
+    values (#{id,jdbcType=INTEGER}, #{cateid,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, 
+      #{pluname,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{cprice,jdbcType=DOUBLE}, 
+      #{oprice,jdbcType=DOUBLE}, #{price,jdbcType=DOUBLE}, #{status,jdbcType=CHAR}, #{describe,jdbcType=VARCHAR}, 
+      #{rmk,jdbcType=VARCHAR}, #{uptime,jdbcType=TIMESTAMP}, #{upuid,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{sketch,jdbcType=VARCHAR}, #{seq,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.PluInfoEntity" >
+    insert into t_plu_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cateid != null" >
+        cateid,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="pluname != null" >
+        pluname,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="cprice != null" >
+        cprice,
+      </if>
+      <if test="oprice != null" >
+        oprice,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="describe != null" >
+        describe,
+      </if>
+      <if test="rmk != null" >
+        rmk,
+      </if>
+      <if test="uptime != null" >
+        uptime,
+      </if>
+      <if test="upuid != null" >
+        upuid,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="sketch != null" >
+        sketch,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cateid != null" >
+        #{cateid,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="pluname != null" >
+        #{pluname,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="cprice != null" >
+        #{cprice,jdbcType=DOUBLE},
+      </if>
+      <if test="oprice != null" >
+        #{oprice,jdbcType=DOUBLE},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="describe != null" >
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="rmk != null" >
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="uptime != null" >
+        #{uptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upuid != null" >
+        #{upuid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="sketch != null" >
+        #{sketch,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.PluInfoEntity" >
+    update t_plu_info
+    <set >
+      <if test="cateid != null" >
+        cateid = #{cateid,jdbcType=INTEGER},
+      </if>
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="pluname != null" >
+        pluname = #{pluname,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="cprice != null" >
+        cprice = #{cprice,jdbcType=DOUBLE},
+      </if>
+      <if test="oprice != null" >
+        oprice = #{oprice,jdbcType=DOUBLE},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="describe != null" >
+        describe = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="rmk != null" >
+        rmk = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="uptime != null" >
+        uptime = #{uptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upuid != null" >
+        upuid = #{upuid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="sketch != null" >
+        sketch = #{sketch,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        seq = #{seq,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.PluInfoEntity" >
+    update t_plu_info
+    set cateid = #{cateid,jdbcType=INTEGER},
+      cid = #{cid,jdbcType=INTEGER},
+      pluname = #{pluname,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      cprice = #{cprice,jdbcType=DOUBLE},
+      oprice = #{oprice,jdbcType=DOUBLE},
+      price = #{price,jdbcType=DOUBLE},
+      status = #{status,jdbcType=CHAR},
+      describe = #{describe,jdbcType=VARCHAR},
+      rmk = #{rmk,jdbcType=VARCHAR},
+      uptime = #{uptime,jdbcType=TIMESTAMP},
+      upuid = #{upuid,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      sketch = #{sketch,jdbcType=VARCHAR},
+      seq = #{seq,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="getAllGoods" parameterType="com.cn.tianxia.api.vo.PluInfoVO" resultType="java.util.Map">
+		select id,pluname,icon,cprice,oprice,price,type from t_plu_info
+		where status=0
+		<if test="cagentName != null and cagentName != ''">
+			AND cid=(select id from t_cagent where cagent=#{cagentName})
+		</if>
+		<if test="cateId != null and cateId !=0 ">
+			AND cateid=#{cateId}
+		</if>
+		<if test="parentId != null and parentId !=0 ">
+			AND cateid in (select id from t_plu_cate where (pid=#{parentId} or id=#{parentId}))
+		</if>
+		<if test="goodsName != null and goodsName !='' ">
+			AND pluname=#{goodsName}
+		</if>
+		<if test="type != null and type !=-1 ">
+			AND type=#{type}
+		</if>
+		<if test="id != null and id !='' ">
+			AND id=#{id}
+		</if>
+		ORDER BY seq DESC,id ASC 
+		LIMIT ${(pageNo-1)*pageSize},#{pageSize}
+	</select>
+	<select id="countGoods" parameterType="com.cn.tianxia.api.vo.PluInfoVO" resultType="java.lang.Integer">
+		select count(1) from t_plu_info
+		where status=0
+		<if test="cagentName != null and cagentName != ''">
+			AND cid=(select id from t_cagent where cagent=#{cagentName})
+		</if>
+		<if test="cateId != null and cateId !=0 ">
+			AND cateid=#{cateId}
+		</if>
+		<if test="parentId != null and parentId !=0 ">
+			AND cateid in (select id from t_plu_cate where (pid=#{parentId} or id=#{parentId}))
+		</if>
+		<if test="goodsName != null and goodsName !='' ">
+			AND pluname=#{goodsName}
+		</if>
+		<if test="type != null and type !=-1 ">
+			AND type=#{type}
+		</if>
+	</select>
+	
+	<select id="getGoodsInfo" parameterType="java.lang.Integer" resultType="com.cn.tianxia.api.vo.PluInfoVO">
+		SELECT 
+			tpc.id,tpc.pluname,tpc.icon,tpc.cprice,tpc.oprice,tpc.price,tpc.describe,tpi.num,tpc.type
+		FROM t_plu_info tpc
+		INNER JOIN t_plu_inventory tpi on tpc.id=tpi.pluid
+		WHERE tpc.id=#{id}
+	</select>
+	
+	<select id="getExchangeRankList" parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT
+			id,pluname,icon,cprice,oprice,price,type,sketch
+		FROM
+			t_plu_info where status = 0
+		<if test="cagentName != null and cagentName != ''">
+			and cid=(select id from t_cagent where cagent=#{cagentName})
+		</if>
+		AND rmk = 'HOT'
+		order by uptime DESC
+	</select>
+</mapper>

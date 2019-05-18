@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.tianxia.api.domain.txdata.v2.CagentLuckyDrawDetailDao" >
+  <resultMap id="BaseResultMap" type="com.cn.tianxia.api.project.v2.CagentLuckyDrawDetailEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="lid" property="lid" jdbcType="INTEGER" />
+    <result column="balance" property="balance" jdbcType="REAL" />
+    <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="validBetAmount" property="validbetamount" jdbcType="REAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, lid, balance, times, validBetAmount
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cagent_luckydraw_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_cagent_luckydraw_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.tianxia.api.project.v2.CagentLuckyDrawDetailEntity" >
+    insert into t_cagent_luckydraw_detail (id, lid, balance, 
+      times, validBetAmount)
+    values (#{id,jdbcType=INTEGER}, #{lid,jdbcType=INTEGER}, #{balance,jdbcType=REAL}, 
+      #{times,jdbcType=INTEGER}, #{validbetamount,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.tianxia.api.project.v2.CagentLuckyDrawDetailEntity" >
+    insert into t_cagent_luckydraw_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="lid != null" >
+        lid,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="times != null" >
+        times,
+      </if>
+      <if test="validbetamount != null" >
+        validBetAmount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="lid != null" >
+        #{lid,jdbcType=INTEGER},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=REAL},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=INTEGER},
+      </if>
+      <if test="validbetamount != null" >
+        #{validbetamount,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.tianxia.api.project.v2.CagentLuckyDrawDetailEntity" >
+    update t_cagent_luckydraw_detail
+    <set >
+      <if test="lid != null" >
+        lid = #{lid,jdbcType=INTEGER},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=REAL},
+      </if>
+      <if test="times != null" >
+        times = #{times,jdbcType=INTEGER},
+      </if>
+      <if test="validbetamount != null" >
+        validBetAmount = #{validbetamount,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.tianxia.api.project.v2.CagentLuckyDrawDetailEntity" >
+    update t_cagent_luckydraw_detail
+    set lid = #{lid,jdbcType=INTEGER},
+      balance = #{balance,jdbcType=REAL},
+      times = #{times,jdbcType=INTEGER},
+      validBetAmount = #{validbetamount,jdbcType=REAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByLid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_cagent_luckydraw_detail
+    where lid = #{lid,jdbcType=INTEGER}
+  </select>
+</mapper>

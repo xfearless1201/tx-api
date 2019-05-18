@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.tianxia.api.domain.txdata.LuckyDrawDao">
+
+    <!--1.查询网站活动-->
+	<select id="selectLuckyDrawStatus" parameterType="java.lang.String" resultType="java.util.Map">
+		select c.id,c.cid,c.luckyname,c.status,c.amountLimit,c.amountUsed,c.minamount,
+		case when 
+		c.amountLimit-c.amountUsed > c.maxamount
+		then c.maxamount 
+		else c.amountLimit-c.amountUsed end as maxamount , c.typesof as typesOf
+		,c.begintime,c.endtime,c.type,b.cagent,d.balance,d.times,c.oldbegintime,c.oldendtime from t_referer_url a
+		 join t_cagent b on a.name=b.cagent
+		 join t_cagent_luckydraw c on c.cid=b.id
+		 join t_cagent_luckydraw_detail d ON c.id=d.lid
+		where c.status=0 and  a.domain=#{domain} GROUP BY d.id
+	</select>
+	
+	<select id="selectLuckyDrawDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		select * from t_cagent_luckydraw_detail where lid=#{lid}
+	</select> 
+
+    <!--2.根据充值或加款以及有效投注额查询可抢红包的次数-->
+	<select id="selectUserTimes" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select times from t_cagent_luckydraw_detail where lid=#{lid}
+		    and    balance &lt;= (
+							        select sum(amount) from t_user_treasure where uid=#{uid} and t_type in('存款','加款')
+									and addtime BETWEEN #{begintime} and #{endtime}
+								)
+            ORDER BY balance desc LIMIT 1
+
+	</select>
+	
+	<select id="selectUserValidBetTimes" parameterType="java.util.Map" resultType="java.util.Map">
+		select times from t_cagent_luckydraw_detail where lid=#{lid} and validBetAmount &lt; ( ) ORDER BY balance desc LIMIT 1
+	</select>
+
+    <!--4.查询今次已经抢红包的次数-->
+	<select id="selectUserLuckDrawTodayTimes" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT max(todaytimes)as todaytimes,addtime from t_user_luckrdraw_log i where i.lid = #{lid}
+		and i.uid = #{uid} 
+		and addtime BETWEEN #{begintime} and #{endtime}
+		GROUP BY uid   
+	</select>
+    <!--4.查询截止目前为止会员抢红包的总次数-->
+    <select id="selectUserLuckDrawTotalTimes" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT max(totaltimes)as totaltimes,addtime from t_user_luckrdraw_log i where i.cid = #{lid}
+		and i.uid = #{uid}
+		GROUP BY uid
+	</select>
+	
+	<select id="selectByPrimaryKey" parameterType="java.util.Map" resultType="java.util.Map" >
+	    select 
+			*
+	    from t_user
+	    where uid = #{uid,jdbcType=INTEGER}
+    </select>
+
+    <!--3.查询平台商可抢红包的总金额-->
+    <select id="selectByCidCagentStoredvalue" parameterType="java.lang.Integer" resultType="java.util.Map" >
+	    select 
+		 id, cid, totalvalue, usedvaue, remainvalue
+	    from t_cagent_storedvalue
+	    where cid = #{cid}
+    </select>
+    
+  <insert timeout="20" id="insertUserTreasure" parameterType="java.util.Map">
+		insert into
+		t_user_treasure(uid,amount,old_money,new_money,number,type,t_type,addtime,s_type, rmk,platform_type,operator_id,cagent)
+		VALUES(#{uid},#{amount},#{oldmoney},#{newmoney},#{number},#{type},#{ttype},NOW(), #{stype}, #{rmk},#{platformtype},#{operatorid},#{cagent})
+		; 
+	</insert>
+  <update id="updateByPrimaryKeySelective" parameterType="java.util.Map" >
+    update t_user
+    <set >
+      <if test="wallet != null" >
+        wallet = #{wallet},
+      </if>
+    </set>
+    where uid = #{uid}
+  </update>
+  
+   <select id="getUserWalletId" parameterType="java.util.Map" resultType="java.util.Map" >
+	    select id from t_user_treasure
+	    where uid = #{uid} and number = #{number} 
+   </select>
+    <!--6.添加红包日志-->
+   <insert id="insertUserLuckrdrawLog" parameterType="java.util.Map">
+   		insert into
+		t_user_luckrdraw_log(cid,lid,uid,orderid,amount,addtime,todaytimes,totaltimes,ip)
+		VALUES(#{cid},#{lid},#{uid},#{orderid},#{amount},#{addtime},#{todaytimes},#{totaltimes}, #{ip})
+		; 
+  	</insert>
+  	
+   <insert timeout="20"  id="insertStoredvalueLog" parameterType="java.util.Map">
+   		insert into
+		t_cagent_storedvalue_log(cid,t_type,type,value,addtime,operator_id)
+		VALUES(#{cid},'彩金','OUT',#{result},NOW(),'0')
+		; 
+  	</insert>
+  	
+  	<update id="updateStoredvalue" parameterType="java.util.Map" >
+	    update t_cagent_storedvalue
+	    <set >
+	      <if test="usedvaue != null" >
+	        usedvaue = #{usedvaue},
+	      </if>
+	      <if test="remainvalue != null" >
+	        remainvalue = #{remainvalue},
+	      </if>
+	    </set>
+	    where id = #{id}
+  </update>
+  <!--5.更新已用红包金额-->
+  <update id="updateLuckydraw" parameterType="java.util.Map" >
+    update t_cagent_luckydraw
+    <set >
+      <if test="amountUsed != null" >
+        amountUsed = #{amountUsed}
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+    <!--2.查询有效投注额-->
+    <select id="selectUserDetail" parameterType="java.util.Map" resultType="java.lang.String">
+    	
+    	select   
+				 IFNULL(SUM(valid_bet_amount),0) AS validBetAmount from(
+        SELECT 
+				IFNULL(SUM(valid_bet_amount),0) AS valid_bet_amount
+        FROM (
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.ag_platform_report
+        where type=0
+        <if test="uid!=null">
+            and ag_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and ag_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and ag_platform_report.bet_time &lt;= #{endtime}
+        </if>
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.ag_platform_report
+        where type=1
+        <if test="uid!=null">
+            and ag_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and ag_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and ag_platform_report.bet_time &lt;= #{endtime}
+        </if>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.bbin_platform_report
+        where type=0
+        <if test="uid!=null">
+            and bbin_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and bbin_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and bbin_platform_report.bet_time &lt;= #{endtime}
+        </if>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.bbin_platform_report
+        where type=1
+        <if test="uid!=null">
+            and bbin_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and bbin_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and bbin_platform_report.bet_time &lt;= #{endtime}
+        </if>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.cg_platform_report
+        <where>
+            <if test="uid!=null">
+                and cg_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and cg_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and cg_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.ds_platform_report
+        <where>
+            <if test="uid!=null">
+                and ds_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and ds_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and ds_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.ggby_platform_report
+        <where>
+            <if test="uid!=null">
+                and ggby_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and ggby_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and ggby_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.haba_platform_report
+        <where>
+            <if test="uid!=null">
+                and haba_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and haba_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and haba_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.hg_platform_report
+        <where>
+            <if test="uid!=null">
+                and hg_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and hg_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and hg_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.ig_platform_report
+        where type=1
+        <if test="uid!=null">and ig_platform_report.uid=#{uid}
+        </if>
+            <if test="
+        begintime!=null">and ig_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="
+        endtime!=null">and ig_platform_report.bet_time &lt;= #{endtime}
+            </if>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.mggame_platform_report
+        <where>
+            <if test="uid!=null">
+                and mggame_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and mggame_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and mggame_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.ob_platform_report
+        <where>
+            <if test="uid!=null">
+                and ob_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and ob_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and ob_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.og_platform_report
+        <where>
+            <if test="uid!=null">
+                and og_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and og_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and og_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.pt_platform_report
+        <where>
+            <if test="uid!=null">
+                and pt_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and pt_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and pt_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.shenbo_platform_report
+        <where>
+            <if test="uid!=null">
+                and shenbo_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and shenbo_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and shenbo_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM ftpdata_xmldb.shenbogame_platform_report
+        <where>
+            <if test="uid!=null">
+                and shenbogame_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and shenbogame_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and shenbogame_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.bg_video_platform_report
+        <where>
+            <if test="uid!=null">
+                and bg_video_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and bg_video_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and bg_video_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM ftpdata_xmldb.bg_lottery_platform_report
+        <where>
+            <if test="uid!=null">
+                and bg_lottery_platform_report.uid=#{uid}
+            </if>
+            <if test="begintime!=null">
+                and bg_lottery_platform_report.bet_time &gt;= #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and bg_lottery_platform_report.bet_time &lt;= #{endtime}
+            </if>
+        </where>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.ig_platform_report
+        where type=2
+        <if test="uid!=null">
+            and ig_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and ig_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and ig_platform_report.bet_time &lt;= #{endtime}
+        </if>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.igpj_platform_report
+        where type=1
+        <if test="uid!=null">
+            and igpj_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and igpj_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and igpj_platform_report.bet_time &lt;= #{endtime}
+        </if>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.igpj_platform_report
+        where type=2
+        <if test="uid!=null">
+            and igpj_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and igpj_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and igpj_platform_report.bet_time &lt;= #{endtime}
+        </if>
+
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+       
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.vr_platform_report
+        where 1=1
+        <if test="uid!=null">
+            and vr_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and vr_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and vr_platform_report.bet_time &lt;= #{endtime}
+        </if>
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+       ftpdata_xmldb.ag_yoplay_platform_report
+        where 1=1
+        <if test="uid!=null">
+            and ag_yoplay_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and ag_yoplay_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and ag_yoplay_platform_report.bet_time &lt;= #{endtime}
+        </if>
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+        
+       UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+       ftpdata_xmldb.kyqp_platform_report
+        where 1=1
+        <if test="uid!=null">
+            and kyqp_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and kyqp_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and kyqp_platform_report.bet_time &lt;= #{endtime}
+        </if>
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.lyqp_platform_report
+        where 1=1
+        <if test="uid!=null">
+            and lyqp_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and lyqp_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and lyqp_platform_report.bet_time &lt;= #{endtime}
+        </if>
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.jdb_platform_report
+        where 1=1
+        <if test="uid!=null">
+            and jdb_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and jdb_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and jdb_platform_report.bet_time &lt;= #{endtime}
+        </if>
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.sw_platform_report
+        where 1=1
+        <if test="uid!=null">
+            and sw_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and sw_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and sw_platform_report.bet_time &lt;= #{endtime}
+        </if>
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.ps_platform_report
+        where 1=1
+        <if test="uid!=null">
+            and ps_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and ps_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and ps_platform_report.bet_time &lt;= #{endtime}
+        </if>
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.gy_platform_report
+        where 1=1
+        <if test="uid!=null">
+            and gy_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and gy_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and gy_platform_report.bet_time &lt;= #{endtime}
+        </if>
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+
+        UNION ALL
+        SELECT SUM(valid_bet_amount) AS valid_bet_amount FROM
+        ftpdata_xmldb.vgqp_platform_report
+        where 1=1
+        <if test="uid!=null">
+            and vgqp_platform_report.uid=#{uid}
+        </if>
+        <if test="begintime!=null">
+            and vgqp_platform_report.bet_time &gt;= #{begintime}
+        </if>
+        <if test="endtime!=null">
+            and vgqp_platform_report.bet_time &lt;= #{endtime}
+        </if>
+        GROUP BY DATE_FORMAT(bet_time, '%Y-%m-%d')
+
+        )t1 )t2
+
+
+        
+    </select>
+    
+    <!-- 修改红包活动状态 -->
+    <update id="updateStatusByAmount">
+    	 update t_cagent_luckydraw set status = #{status}  where id = #{id}
+    </update>
+    
+    <select id="selectLuckyDrawsByValidBetAmount" resultType="Double">
+    	select ifnull(MIN(validBetAmount),0) as minValidBetAmount from t_cagent_luckydraw_detail where lid=#{lid}
+    </select>
+    
+    <select id="selectLuckyDrawsTotalTimes" resultType="Integer">
+    	SELECT ifnull(MAX(times),0) AS times FROM t_cagent_luckydraw_detail WHERE lid=#{lid}
+    	 AND validBetAmount &lt;= #{validBetAmount}
+           ORDER BY validBetAmount desc LIMIT 1
+    </select>
+</mapper>
